@@ -6,22 +6,22 @@
 <title>Recipe Buddy 🍳</title>
 
 <link rel="stylesheet" href="style.css">
+
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#8e44ad">
-<link rel="icon" href="icon.png">
+
+
+<meta name="theme-color" content="#c77dff">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<meta name="apple-mobile-web-app-title" content="Recipe Buddy">
+
 
 </head>
-<script>
 
-if("serviceWorker" in navigator){
 
-navigator.serviceWorker.register(
-"service-worker.js"
-);
-
-}
-
-</script>
 
 <body>
 
@@ -29,12 +29,14 @@ navigator.serviceWorker.register(
 <nav>
 
 <a href="index.html">🏠 Home</a>
+
 <a href="recipe.html">🍳 Recipes</a>
+
 <a href="gallery.html">📸 Gallery</a>
+
 <a href="grocery.html">🛒 Grocery</a>
+
 <a href="favorites.html">❤️ Favorites</a>
-<a href="her-favorites.html">💕 Her Meals</a>
-<a href="add-recipe.html">➕ Add Recipe</a>
 
 </nav>
 
@@ -44,13 +46,19 @@ navigator.serviceWorker.register(
 
 <div class="hero">
 
-<h1>🍳 Recipe Buddy</h1>
+
+<h1>
+🍳 Recipe Buddy
+</h1>
+
 
 <p>
 Meals made with love ❤️
 </p>
 
+
 </div>
+
 
 
 
@@ -59,23 +67,23 @@ Meals made with love ❤️
 
 <div class="card">
 
-<h2>🍽 Recipe Finder</h2>
+<h2>🍽 Find Recipes</h2>
 
 <p>
-Search hundreds of recipes, ingredients, and cooking ideas.
+Search meals and cooking ideas.
 </p>
 
 
 <a href="recipe.html">
 
 <button>
-Find Recipes
+Open Recipes
 </button>
 
 </a>
 
-
 </div>
+
 
 
 
@@ -88,7 +96,7 @@ Find Recipes
 <h2>📸 Recipe Gallery</h2>
 
 <p>
-Browse meals with pictures and choose what to cook.
+Browse your meals.
 </p>
 
 
@@ -109,19 +117,20 @@ Open Gallery
 
 
 
+
 <div class="card">
 
-<h2>🛒 Grocery List</h2>
+<h2>🛒 Grocery Shopping</h2>
 
 <p>
-Keep track of ingredients while shopping.
+Keep track of ingredients.
 </p>
 
 
 <a href="grocery.html">
 
 <button>
-Open Grocery List
+Open Grocery
 </button>
 
 </a>
@@ -129,31 +138,6 @@ Open Grocery List
 
 </div>
 
-
-
-
-
-
-
-<div class="card">
-
-<h2>❤️ Favorite Recipes</h2>
-
-<p>
-Save the meals you love.
-</p>
-
-
-<a href="favorites.html">
-
-<button>
-View Favorites
-</button>
-
-</a>
-
-
-</div>
 
 
 
@@ -170,36 +154,10 @@ Special meals made for someone special.
 </p>
 
 
-<a href="cook-for-her.html">
-
-<button>
-Open Cook For Her
-</button>
-
-</a>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="card">
-
-<h2>💕 Her Favorite Meals</h2>
-
-<p>
-Keep track of meals she loves.
-</p>
-
-
 <a href="her-favorites.html">
 
 <button>
-Her Meals
+Open Her Meals
 </button>
 
 </a>
@@ -213,86 +171,23 @@ Her Meals
 
 
 
-<div class="card">
-
-<h2>➕ Create Your Own Recipe</h2>
-
-<p>
-Build your own personal cookbook.
-</p>
+<script>
 
 
-<a href="add-recipe.html">
-
-<button>
-Add Recipe
-</button>
-
-</a>
+if("serviceWorker" in navigator){
 
 
-</div>
+navigator.serviceWorker.register(
+
+"service-worker.js"
+
+);
 
 
+}
 
 
-
-
-
-<div class="mobile-nav">
-
-
-<a href="index.html">
-
-🏠
-
-<span>Home</span>
-
-</a>
-
-
-
-<a href="recipe.html">
-
-🍳
-
-<span>Recipes</span>
-
-</a>
-
-
-
-<a href="gallery.html">
-
-📸
-
-<span>Gallery</span>
-
-</a>
-
-
-
-<a href="grocery.html">
-
-🛒
-
-<span>Grocery</span>
-
-</a>
-
-
-
-<a href="favorites.html">
-
-❤️
-
-<span>Favorites</span>
-
-</a>
-
-
-
-</div>
+</script>
 
 
 

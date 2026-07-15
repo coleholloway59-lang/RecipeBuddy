@@ -1,8 +1,6 @@
 const CACHE_NAME = "recipe-buddy-v1";
 
-
-const files = [
-
+const filesToCache = [
 "index.html",
 "recipe.html",
 "gallery.html",
@@ -10,59 +8,40 @@ const files = [
 "favorites.html",
 "her-favorites.html",
 "add-recipe.html",
-"cook-for-her.html",
 "style.css",
-"recipes.js"
-
+"recipes.js",
+"manifest.json"
 ];
 
 
-
-
-self.addEventListener(
-"install",
-event=>{
-
+self.addEventListener("install", event => {
 
 event.waitUntil(
 
 caches.open(CACHE_NAME)
+.then(cache => {
 
-.then(cache=>{
-
-return cache.addAll(files);
+return cache.addAll(filesToCache);
 
 })
 
 );
-
 
 });
 
 
 
-
-
-
-
-self.addEventListener(
-"fetch",
-event=>{
-
+self.addEventListener("fetch", event => {
 
 event.respondWith(
 
 caches.match(event.request)
-
-.then(response=>{
-
+.then(response => {
 
 return response || fetch(event.request);
-
 
 })
 
 );
-
 
 });
