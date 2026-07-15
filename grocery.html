@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Grocery List 🛒</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8e44ad">
+</head>
+
+<script>
+
+if("serviceWorker" in navigator){
+
+navigator.serviceWorker.register(
+"service-worker.js"
+);
+
+}
+
+</script>
+<body>
+
+
+<nav>
+
+<a href="index.html">🏠 Home</a>
+<a href="recipe.html">🍳 Recipes</a>
+<a href="grocery.html">🛒 Grocery</a>
+<a href="favorites.html">❤️ Favorites</a>
+
+</nav>
+
+
+
+<div class="hero">
+
+<h1>🛒 Grocery Shopping</h1>
+
+<p>Your cooking shopping list</p>
+
+</div>
+
+
+
+
+<div class="card">
+
+
+<input 
+id="item"
+placeholder="Add grocery item..."
+>
+
+
+<button onclick="addItem()">
+
+➕ Add
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h2>🛍️ Shopping List</h2>
+
+
+<ul id="list"></ul>
+
+
+</div>
+
+
+
+
+<button onclick="clearList()">
+
+🗑️ Clear All
+
+</button>
+
+
+
+
+
+<script>
+
+
+
+let groceries =
+JSON.parse(
+localStorage.getItem("shoppingList")
+) || [];
+
+
+
+
+
+function save(){
+
+localStorage.setItem(
+"shoppingList",
+JSON.stringify(groceries)
+);
+
+}
+
+
+
+
+
+function showList(){
+
+
+let output="";
+
+
+groceries.sort(
+(a,b)=>a.done-b.done
+);
+
+
+
+groceries.forEach((item,index)=>{
+
+
+output+=`
+
+
+<li>
+
+
+<input 
+type="checkbox"
+
+${item.done ? "checked":""}
+
+onclick="checkItem(${index})"
+
+>
+
+
+${item.name}
+
+
+
+<button onclick="removeItem(${index})">
+
+❌
+
+</button>
+
+
+
+</li>
+
+
+`;
+
+
+
+});
+
+
+
+document.getElementById("list").innerHTML=output;
+
+
+}
+
+
+
+
+
+
+
+
+function addItem(){
+
+
+let text=
+document
+.getElementById("item")
+.value;
+
+
+
+if(text!=""){
+
+
+groceries.push({
+
+name:text,
+
+done:false
+
+});
+
+
+save();
+
+
+document.getElementById("item").value="";
+
+
+showList();
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+function checkItem(index){
+
+
+groceries[index].done =
+!groceries[index].done;
+
+
+save();
+
+
+showList();
+
+
+}
+
+
+
+
+
+
+
+function removeItem(index){
+
+
+groceries.splice(index,1);
+
+
+save();
+
+
+showList();
+
+
+}
+
+
+
+
+
+
+
+function clearList(){
+
+
+groceries=[];
+
+
+save();
+
+
+showList();
+
+
+}
+
+
+
+
+showList();
+
+
+
+</script>
+
+
+</body>
+
+</html>

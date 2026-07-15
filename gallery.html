@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Recipe Gallery 🍽️</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8e44ad">
+</head>
+
+<script>
+
+if("serviceWorker" in navigator){
+
+navigator.serviceWorker.register(
+"service-worker.js"
+);
+
+}
+
+</script>
+<body>
+
+
+<nav>
+
+<a href="index.html">🏠 Home</a>
+<a href="recipe.html">🍳 Recipes</a>
+<a href="gallery.html">📸 Gallery</a>
+<a href="grocery.html">🛒 Grocery</a>
+<a href="favorites.html">❤️ Favorites</a>
+
+</nav>
+
+
+
+
+<div class="hero">
+
+<h1>📸 Recipe Gallery</h1>
+
+<p>
+Choose your next meal
+</p>
+
+</div>
+
+
+
+
+
+<div id="gallery"></div>
+
+
+
+
+
+<script src="recipes.js"></script>
+
+
+
+<script>
+
+
+let customRecipes =
+JSON.parse(
+localStorage.getItem("customRecipes")
+) || [];
+
+
+
+let allRecipes=[
+
+...recipes,
+
+...customRecipes
+
+];
+
+
+
+
+let output="";
+
+
+
+
+allRecipes.forEach(recipe=>{
+
+
+output+=`
+
+
+<div class="card">
+
+
+<img
+
+src="${recipe.image}"
+
+class="recipe-image"
+
+>
+
+
+
+<h2>
+
+${recipe.name}
+
+</h2>
+
+
+
+<p>
+
+🍽 ${recipe.category}
+
+</p>
+
+
+<p>
+
+⏱ ${recipe.time}
+
+</p>
+
+
+
+<a href="recipe.html">
+
+<button>
+
+View Recipe
+
+</button>
+
+</a>
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+
+document.getElementById("gallery").innerHTML=output;
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

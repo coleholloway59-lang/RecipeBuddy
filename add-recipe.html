@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Add Recipe 🍳</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8e44ad">
+</head>
+
+<script>
+
+if("serviceWorker" in navigator){
+
+navigator.serviceWorker.register(
+"service-worker.js"
+);
+
+}
+
+</script>
+<body>
+
+
+<nav>
+
+<a href="index.html">🏠 Home</a>
+<a href="recipe.html">🍳 Recipes</a>
+<a href="grocery.html">🛒 Grocery</a>
+<a href="favorites.html">❤️ Favorites</a>
+
+</nav>
+
+
+
+<div class="hero">
+
+<h1>📸 Add Your Recipe</h1>
+
+<p>Create your own cookbook</p>
+
+</div>
+
+
+
+<div class="card">
+
+
+<input id="name" placeholder="Recipe name">
+
+
+<br><br>
+
+
+<input id="category" placeholder="Category">
+
+
+<br><br>
+
+
+<input id="time" placeholder="Cooking time">
+
+
+<br><br>
+
+
+<textarea id="ingredients"
+placeholder="Ingredients (separate with commas)">
+</textarea>
+
+
+<br><br>
+
+
+<textarea id="instructions"
+placeholder="Cooking instructions">
+</textarea>
+
+
+<br><br>
+
+
+<button onclick="saveRecipe()">
+
+Save Recipe ❤️
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<script>
+
+
+function saveRecipe(){
+
+
+let customRecipes =
+JSON.parse(
+localStorage.getItem("customRecipes")
+) || [];
+
+
+
+let recipe={
+
+
+name:
+document.getElementById("name").value,
+
+
+category:
+document.getElementById("category").value,
+
+
+time:
+document.getElementById("time").value,
+
+
+difficulty:
+"Custom",
+
+
+image:
+"food.jpg",
+
+
+ingredients:
+document.getElementById("ingredients")
+.value
+.split(","),
+
+
+
+instructions:
+document.getElementById("instructions")
+.value
+
+
+};
+
+
+
+customRecipes.push(recipe);
+
+
+
+localStorage.setItem(
+"customRecipes",
+JSON.stringify(customRecipes)
+);
+
+
+
+alert(
+"Recipe saved! 🍳"
+);
+
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head<link rel="icon" href="icon.png">>
+
+<title>❤️ Favorite Recipes</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8e44ad">
+</head>
+
+<script>
+
+if("serviceWorker" in navigator){
+
+navigator.serviceWorker.register(
+"service-worker.js"
+);
+
+}
+
+</script>
+<body>
+
+
+<nav>
+
+<a href="index.html">🏠 Home</a>
+<a href="recipe.html">🍽 Recipes</a>
+<a href="grocery.html">🛒 Grocery</a>
+<a href="favorites.html">❤️ Favorites</a>
+
+</nav>
+
+
+
+<h1>❤️ My Favorite Recipes</h1>
+
+
+<div id="favorites"></div>
+
+
+
+<script src="recipes.js"></script>
+
+
+<script>
+
+
+let favorites = JSON.parse(
+localStorage.getItem("favorites")
+) || [];
+
+
+
+let output="";
+
+
+
+recipes.forEach(recipe=>{
+
+
+if(favorites.includes(recipe.name)){
+
+
+output += `
+
+
+<div class="card">
+
+
+<img 
+src="${recipe.image}"
+class="recipe-image"
+>
+
+
+<h2>${recipe.name}</h2>
+
+
+<p>
+${recipe.category}
+</p>
+
+
+<p>
+${recipe.instructions}
+</p>
+
+
+</div>
+
+
+`;
+
+
+}
+
+
+});
+
+
+
+if(output==""){
+
+output="<h2>No favorite recipes yet ❤️</h2>";
+
+}
+
+
+
+document.getElementById("favorites").innerHTML=output;
+
+
+
+</script>
+<div class="mobile-nav">
+
+<a href="index.html">
+🏠
+<span>Home</span>
+</a>
+
+
+<a href="recipe.html">
+🍳
+<span>Recipes</span>
+</a>
+
+
+<a href="grocery.html">
+🛒
+<span>Grocery</span>
+</a>
+
+
+<a href="favorites.html">
+❤️
+<span>Favorites</span>
+</a>
+
+
+</div>
+
+
+</body>
+
+</html>

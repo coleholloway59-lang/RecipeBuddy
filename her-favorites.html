@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>💕 Her Favorite Meals</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8e44ad">
+</head>
+
+<script>
+
+if("serviceWorker" in navigator){
+
+navigator.serviceWorker.register(
+"service-worker.js"
+);
+
+}
+
+</script>
+<body>
+
+
+<nav>
+
+<a href="index.html">🏠 Home</a>
+<a href="recipe.html">🍳 Recipes</a>
+<a href="grocery.html">🛒 Grocery</a>
+<a href="favorites.html">❤️ Favorites</a>
+<a href="her-favorites.html">💕 Her Meals</a>
+
+</nav>
+
+
+
+<div class="hero">
+
+<h1>💕 Her Favorite Meals</h1>
+
+<p>
+Meals she loves the most ❤️
+</p>
+
+</div>
+
+
+
+
+<div class="card">
+
+
+<input 
+id="meal"
+placeholder="Favorite meal..."
+>
+
+
+<br><br>
+
+
+<textarea 
+id="note"
+placeholder="Why she loves it..."
+></textarea>
+
+
+<br><br>
+
+
+<button onclick="addMeal()">
+
+❤️ Save Meal
+
+</button>
+
+
+</div>
+
+
+
+
+
+<div id="meals"></div>
+
+
+
+
+
+<script>
+
+
+let meals =
+JSON.parse(
+localStorage.getItem("herMeals")
+) || [];
+
+
+
+
+function showMeals(){
+
+
+let output="";
+
+
+
+meals.forEach((meal,index)=>{
+
+
+output+=`
+
+
+<div class="card">
+
+
+<h2>❤️ ${meal.name}</h2>
+
+
+<p>
+
+${meal.note}
+
+</p>
+
+
+<button onclick="removeMeal(${index})">
+
+❌ Remove
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+
+document.getElementById("meals").innerHTML =
+
+output || "<h2>No meals saved yet ❤️</h2>";
+
+
+
+}
+
+
+
+
+
+function addMeal(){
+
+
+let name =
+document
+.getElementById("meal")
+.value;
+
+
+
+let note =
+document
+.getElementById("note")
+.value;
+
+
+
+
+if(name!=""){
+
+
+meals.push({
+
+name:name,
+
+note:note
+
+});
+
+
+
+localStorage.setItem(
+
+"herMeals",
+
+JSON.stringify(meals)
+
+);
+
+
+
+document.getElementById("meal").value="";
+
+document.getElementById("note").value="";
+
+
+
+showMeals();
+
+
+}
+
+
+}
+
+
+
+
+
+function removeMeal(index){
+
+
+meals.splice(index,1);
+
+
+localStorage.setItem(
+
+"herMeals",
+
+JSON.stringify(meals)
+
+);
+
+
+
+showMeals();
+
+
+}
+
+
+
+showMeals();
+
+
+</script>
+
+
+</body>
+
+</html>
