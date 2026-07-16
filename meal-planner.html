@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <title>Meal Planner 📅</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <meta name="theme-color" content="#8e44ad">
+
+    <meta
+        name="mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
+
+    <meta
+        name="apple-mobile-web-app-title"
+        content="Recipe Buddy"
+    >
+</head>
+
+<body>
+
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="recipe.html">🍳 Recipes</a>
+    <a href="gallery.html">📸 Gallery</a>
+    <a href="meal-planner.html">📅 Planner</a>
+    <a href="grocery.html">🛒 Grocery</a>
+    <a href="favorites.html">❤️ Favorites</a>
+    <a href="add-recipe.html">➕ Add Recipe</a>
+    <a href="import-recipe.html">📲 Import</a>
+</nav>
+
+<header class="hero">
+
+    <h1>📅 Weekly Meal Planner</h1>
+
+    <p>
+        Choose meals for each day and build your weekly cooking plan.
+    </p>
+
+</header>
+
+<main>
+
+    <section class="card">
+
+        <h2>This Week</h2>
+
+        <p>
+            Choose a recipe for each day. Your choices save automatically.
+        </p>
+
+        <button
+            type="button"
+            onclick="addWeekToGroceryList()"
+        >
+            🛒 Add Entire Week to Grocery List
+        </button>
+
+        <br><br>
+
+        <button
+            type="button"
+            onclick="clearPlanner()"
+        >
+            🗑️ Clear Weekly Plan
+        </button>
+
+        <p
+            id="plannerStatus"
+            style="text-align:center; font-weight:bold;"
+        ></p>
+
+    </section>
+
+    <section id="plannerContainer"></section>
+
+</main>
+
+<div class="mobile-nav">
+
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="recipe.html">
+        🍳
+        <span>Recipes</span>
+    </a>
+
+    <a href="meal-planner.html">
+        📅
+        <span>Planner</span>
+    </a>
+
+    <a href="grocery.html">
+        🛒
+        <span>Grocery</span>
+    </a>
+
+    <a href="favorites.html">
+        ❤️
+        <span>Favorites</span>
+    </a>
+
+</div>
+
+<script src="recipes.js"></script>
+
+<script>
+    const builtInRecipes =
+        typeof recipes !== "undefined" ? recipes : [];
+
+    const customRecipes =
+        JSON.parse(
+            localStorage.getItem("customRecipes")
+        ) || [];
+
+    const allRecipes = [
+        ...builtInRecipes,
+        ...customRecipes
+    ];
+
+    const days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+    ];
+
+    function getMealPlan() {
+        return JSON.parse(
+            localStorage.getItem("weeklyMealPlan")
+        ) || {};
+    }
+
+    function saveMealPlan(plan) {
+        localStorage.setItem(
+            "weeklyMealPlan",
+            JSON.stringify(plan)
+        );
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function getRecipeByName(name) {
+        return allRecipes.find(function (recipe) {
+            return recipe.name === name;
+        });
+    }
+
+    function createRecipeOptions(selectedRecipe) {
+        const sortedRecipes =
+            allRecipes
+                .slice()
+                .sort(function (first, second) {
+                    return first.name.localeCompare(second.name);
+                });
+
+        let options = `
+            <option value="">
+                Choose a recipe
+            </option>
+        `;
+
+        sortedRecipes.forEach(function (recipe) {
+            const selected =
+                recipe.name === selectedRecipe
+                    ? "selected"
+                    : "";
+
+            options += `
+                <option
+                    value="${escapeHtml(recipe.name)}"
+                    ${selected}
+                >
+                    ${escapeHtml(recipe.name)}
+                </option>
+            `;
+        });
+
+        return options;
+    }
+
+    function displayPlanner() {
+        const plan = getMealPlan();
+
+        const container =
+            document.getElementById("plannerContainer");
+
+        container.innerHTML =
+            days
+                .map(function (day) {
+                    const selectedRecipe =
+                        plan[day] || "";
+
+                    const recipe =
+                        selectedRecipe
+                            ? getRecipeByName(selectedRecipe)
+                            : null;
+
+                    const details =
+                        recipe
+                            ? `
+                                <div
+                                    style="
+                                        margin-top:16px;
+                                        padding-top:16px;
+                                        border-top:1px solid #ead5e5;
+                                    "
+                                >
+                                    <p>
+                                        <strong>Category:</strong>
+                                        ${escapeHtml(
+                                            recipe.category || "Other"
+                                        )}
+                                    </p>
+
+                                    <p>
+                                        <strong>Difficulty:</strong>
+                                        ${escapeHtml(
+                                            recipe.difficulty ||
+                                            "Not listed"
+                                        )}
+                                    </p>
+
+                                    <p>
+                                        <strong>Time:</strong>
+                                        ${escapeHtml(
+                                            recipe.time ||
+                                            recipe.prepTime ||
+                                            "Not listed"
+                                        )}
+                                    </p>
+
+                                    <button
+                                        type="button"
+                                        onclick="openRecipe(
+                                            '${encodeURIComponent(
+                                                recipe.name
+                                            )}'
+                                        )"
+                                    >
+                                        🍳 Open Recipe
+                                    </button>
+
+                                    <br><br>
+
+                                    <button
+                                        type="button"
+                                        onclick="addDayToGroceryList(
+                                            '${day}'
+                                        )"
+                                    >
+                                        🛒 Add This Meal’s Ingredients
+                                    </button>
+                                </div>
+                            `
+                            : `
+                                <p style="color:#765f70;">
+                                    No meal selected yet.
+                                </p>
+                            `;
+
+                    return `
+                        <section class="card">
+
+                            <h2>${day}</h2>
+
+                            <label for="meal-${day}">
+                                <strong>Select meal</strong>
+                            </label>
+
+                            <select
+                                id="meal-${day}"
+                                onchange="updateDay(
+                                    '${day}',
+                                    this.value
+                                )"
+                            >
+                                ${createRecipeOptions(
+                                    selectedRecipe
+                                )}
+                            </select>
+
+                            ${details}
+
+                        </section>
+                    `;
+                })
+                .join("");
+    }
+
+    function updateDay(day, recipeName) {
+        const plan = getMealPlan();
+
+        if (recipeName) {
+            plan[day] = recipeName;
+        } else {
+            delete plan[day];
+        }
+
+        saveMealPlan(plan);
+
+        document.getElementById("plannerStatus").textContent =
+            day + " was updated.";
+
+        displayPlanner();
+    }
+
+    function openRecipe(encodedName) {
+        const recipeName =
+            decodeURIComponent(encodedName);
+
+        localStorage.setItem(
+            "recipeSearchRequest",
+            recipeName
+        );
+
+        window.location.href = "recipe.html";
+    }
+
+    function addIngredientsToShoppingList(recipe) {
+        const shoppingList =
+            JSON.parse(
+                localStorage.getItem("shoppingList")
+            ) || [];
+
+        const ingredients =
+            Array.isArray(recipe.ingredients)
+                ? recipe.ingredients
+                : [];
+
+        ingredients.forEach(function (ingredient) {
+            const alreadyExists =
+                shoppingList.some(function (item) {
+                    const itemName =
+                        typeof item === "string"
+                            ? item
+                            : item.name;
+
+                    return (
+                        itemName.toLowerCase() ===
+                        ingredient.toLowerCase()
+                    );
+                });
+
+            if (!alreadyExists) {
+                shoppingList.push({
+                    name: ingredient,
+                    done: false
+                });
+            }
+        });
+
+        localStorage.setItem(
+            "shoppingList",
+            JSON.stringify(shoppingList)
+        );
+    }
+
+    function addDayToGroceryList(day) {
+        const plan = getMealPlan();
+
+        const recipeName = plan[day];
+
+        if (!recipeName) {
+            alert(
+                "Choose a recipe for " +
+                day +
+                " first."
+            );
+
+            return;
+        }
+
+        const recipe =
+            getRecipeByName(recipeName);
+
+        if (!recipe) {
+            alert("Recipe could not be found.");
+            return;
+        }
+
+        addIngredientsToShoppingList(recipe);
+
+        alert(
+            recipe.name +
+            " ingredients were added to the grocery list."
+        );
+    }
+
+    function addWeekToGroceryList() {
+        const plan = getMealPlan();
+
+        const selectedMeals =
+            days
+                .map(function (day) {
+                    return plan[day];
+                })
+                .filter(function (name) {
+                    return name;
+                });
+
+        if (selectedMeals.length === 0) {
+            alert(
+                "Add at least one meal to the planner first."
+            );
+
+            return;
+        }
+
+        selectedMeals.forEach(function (recipeName) {
+            const recipe =
+                getRecipeByName(recipeName);
+
+            if (recipe) {
+                addIngredientsToShoppingList(recipe);
+            }
+        });
+
+        document.getElementById("plannerStatus").textContent =
+            "The week’s ingredients were added to your grocery list. 🛒";
+    }
+
+    function clearPlanner() {
+        const plan = getMealPlan();
+
+        if (Object.keys(plan).length === 0) {
+            alert(
+                "Your weekly planner is already empty."
+            );
+
+            return;
+        }
+
+        const shouldClear =
+            confirm(
+                "Are you sure you want to clear the entire weekly plan?"
+            );
+
+        if (!shouldClear) {
+            return;
+        }
+
+        saveMealPlan({});
+
+        document.getElementById("plannerStatus").textContent =
+            "Weekly plan cleared.";
+
+        displayPlanner();
+    }
+
+    displayPlanner();
+</script>
+
+<script src="update-app.js"></script>
+
+</body>
+
+</html>
