@@ -1,11 +1,7 @@
 /* =========================================================
    RECIPE BUDDY 3.0
-   MAIN STYLESHEET
+   COMPLETE STYLE.CSS
 ========================================================= */
-
-/* =========================
-   ROOT COLORS
-========================= */
 
 :root {
   --navy-950: #071d22;
@@ -32,11 +28,8 @@
   --text-muted: #8c999b;
 
   --border: #dfe7e3;
-  --border-dark: rgba(255, 255, 255, 0.12);
-
   --danger: #ce4a4a;
   --danger-soft: #fff0f0;
-
   --warning: #d28a2b;
   --warning-soft: #fff7e8;
 
@@ -54,9 +47,9 @@
   --transition: 0.22s ease;
 }
 
-/* =========================
+/* =========================================================
    RESET
-========================= */
+========================================================= */
 
 *,
 *::before,
@@ -71,6 +64,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
   background: var(--cream);
   color: var(--text-primary);
   font-family:
@@ -83,7 +77,6 @@ body {
     sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 
 body.modal-open {
@@ -133,9 +126,9 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
-/* =========================
+/* =========================================================
    ACCESSIBILITY
-========================= */
+========================================================= */
 
 .skip-link {
   position: fixed;
@@ -154,9 +147,9 @@ a:focus-visible {
   top: 20px;
 }
 
-/* =========================
+/* =========================================================
    MAIN LAYOUT
-========================= */
+========================================================= */
 
 .app-shell {
   min-height: 100vh;
@@ -192,9 +185,9 @@ a:focus-visible {
   }
 }
 
-/* =========================
+/* =========================================================
    SIDEBAR
-========================= */
+========================================================= */
 
 .sidebar {
   position: fixed;
@@ -224,42 +217,59 @@ a:focus-visible {
 
 .brand {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 12px;
 }
 
 .brand-icon {
   display: grid;
-  width: 48px;
-  height: 48px;
+  width: 54px;
+  height: 54px;
+  flex: 0 0 auto;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.1);
-  font-size: 24px;
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.15);
+  background: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+}
+
+.sidebar-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .brand-text {
   display: flex;
+  min-width: 0;
   flex-direction: column;
 }
 
 .brand-name {
+  overflow: hidden;
   font-size: 18px;
   font-weight: 900;
   letter-spacing: -0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .brand-tagline {
+  overflow: hidden;
   color: rgba(255, 255, 255, 0.58);
-  font-size: 12px;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sidebar-close {
   display: none;
   width: 38px;
   height: 38px;
+  flex: 0 0 auto;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.09);
   color: white;
@@ -273,10 +283,10 @@ a:focus-visible {
 
 .nav-item {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) auto;
-  align-items: center;
   width: 100%;
   min-height: 48px;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
   padding: 9px 12px;
   border-radius: 13px;
   background: transparent;
@@ -387,18 +397,16 @@ a:focus-visible {
   flex-direction: column;
 }
 
-.profile-details strong {
+.profile-details strong,
+.profile-details span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .profile-details span {
-  overflow: hidden;
   color: rgba(255, 255, 255, 0.56);
   font-size: 11px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .sidebar-overlay {
@@ -410,9 +418,9 @@ a:focus-visible {
   backdrop-filter: blur(3px);
 }
 
-/* =========================
+/* =========================================================
    HEADER
-========================= */
+========================================================= */
 
 .top-header {
   position: sticky;
@@ -433,6 +441,13 @@ a:focus-visible {
 .mobile-menu-button,
 .mobile-brand {
   display: none;
+}
+
+.mobile-brand-logo {
+  width: 150px;
+  max-height: 48px;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .global-search {
@@ -528,9 +543,9 @@ a:focus-visible {
 
 .profile-button {
   display: flex;
+  min-height: 44px;
   align-items: center;
   gap: 9px;
-  min-height: 44px;
   padding: 5px 12px 5px 6px;
   border-radius: 999px;
   background: var(--surface);
@@ -543,9 +558,9 @@ a:focus-visible {
   font-weight: 800;
 }
 
-/* =========================
-   GENERAL BUTTONS
-========================= */
+/* =========================================================
+   BUTTONS
+========================================================= */
 
 .primary-button,
 .secondary-button,
@@ -646,9 +661,9 @@ a:focus-visible {
   color: var(--danger);
 }
 
-/* =========================
+/* =========================================================
    HERO
-========================= */
+========================================================= */
 
 .hero-section {
   position: relative;
@@ -784,9 +799,9 @@ a:focus-visible {
 .hero-floating-card {
   position: absolute;
   display: flex;
+  min-width: 170px;
   align-items: center;
   gap: 10px;
-  min-width: 170px;
   padding: 11px 14px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 15px;
@@ -826,9 +841,9 @@ a:focus-visible {
   bottom: 18px;
 }
 
-/* =========================
-   SECTIONS
-========================= */
+/* =========================================================
+   GENERAL SECTIONS
+========================================================= */
 
 .section-block {
   margin-top: 42px;
@@ -861,9 +876,9 @@ a:focus-visible {
   color: var(--text-secondary);
 }
 
-/* =========================
+/* =========================================================
    QUICK ACTIONS
-========================= */
+========================================================= */
 
 .quick-action-grid {
   display: grid;
@@ -945,9 +960,9 @@ a:focus-visible {
   font-size: 24px;
 }
 
-/* =========================
+/* =========================================================
    CATEGORIES
-========================= */
+========================================================= */
 
 .category-scroll {
   display: grid;
@@ -985,9 +1000,9 @@ a:focus-visible {
   font-size: 30px;
 }
 
-/* =========================
+/* =========================================================
    RECIPE CARDS
-========================= */
+========================================================= */
 
 .recipe-grid {
   display: grid;
@@ -1022,8 +1037,7 @@ a:focus-visible {
   height: 190px;
   place-items: center;
   overflow: hidden;
-  background:
-    linear-gradient(145deg, var(--green-100), #f4efe4);
+  background: linear-gradient(145deg, var(--green-100), #f4efe4);
   font-size: 65px;
 }
 
@@ -1106,9 +1120,9 @@ a:focus-visible {
   font-size: 12px;
 }
 
-/* =========================
+/* =========================================================
    DASHBOARD CARDS
-========================= */
+========================================================= */
 
 .dashboard-grid {
   display: grid;
@@ -1161,8 +1175,8 @@ a:focus-visible {
 .pantry-preview-list,
 .grocery-preview-list {
   display: grid;
-  gap: 10px;
   min-height: 100px;
+  gap: 10px;
   margin-bottom: 18px;
 }
 
@@ -1350,9 +1364,9 @@ a:focus-visible {
   height: 190px;
 }
 
-/* =========================
+/* =========================================================
    PAGE HEADERS
-========================= */
+========================================================= */
 
 .page-header {
   display: flex;
@@ -1380,9 +1394,9 @@ a:focus-visible {
   gap: 10px;
 }
 
-/* =========================
+/* =========================================================
    FILTERS
-========================= */
+========================================================= */
 
 .filter-toolbar,
 .pantry-toolbar {
@@ -1434,9 +1448,9 @@ select {
   font-size: 13px;
 }
 
-/* =========================
+/* =========================================================
    EMPTY STATES
-========================= */
+========================================================= */
 
 .empty-state {
   display: grid;
@@ -1472,9 +1486,9 @@ select {
   max-width: 420px;
 }
 
-/* =========================
+/* =========================================================
    PANTRY
-========================= */
+========================================================= */
 
 .pantry-page-grid,
 .grocery-layout,
@@ -1545,9 +1559,9 @@ select {
   font-size: 55px;
 }
 
-/* =========================
+/* =========================================================
    GROCERY
-========================= */
+========================================================= */
 
 .grocery-department-list {
   display: grid;
@@ -1617,9 +1631,9 @@ select {
   font-size: 22px;
 }
 
-/* =========================
+/* =========================================================
    MEAL PLANNER
-========================= */
+========================================================= */
 
 .meal-planner-grid {
   display: grid;
@@ -1671,9 +1685,9 @@ select {
   cursor: pointer;
 }
 
-/* =========================
+/* =========================================================
    AI CHEF
-========================= */
+========================================================= */
 
 .ai-generator-card textarea {
   min-height: 120px;
@@ -1719,9 +1733,9 @@ select {
   margin-top: 18px;
 }
 
-/* =========================
+/* =========================================================
    IMPORT
-========================= */
+========================================================= */
 
 .import-form-card {
   padding: 40px;
@@ -1761,8 +1775,8 @@ select {
   gap: 11px;
   margin: 20px 0;
   padding: 0;
-  list-style: none;
   color: var(--text-secondary);
+  list-style: none;
 }
 
 .import-status {
@@ -1773,9 +1787,9 @@ select {
   color: var(--green-700);
 }
 
-/* =========================
+/* =========================================================
    FORMS
-========================= */
+========================================================= */
 
 .profile-form,
 .settings-list {
@@ -1919,9 +1933,9 @@ select {
   color: var(--text-secondary);
 }
 
-/* =========================
-   SETTINGS SWITCH
-========================= */
+/* =========================================================
+   SETTINGS
+========================================================= */
 
 .settings-switch-row {
   display: flex;
@@ -1998,9 +2012,9 @@ select {
   color: #845353;
 }
 
-/* =========================
+/* =========================================================
    MODALS
-========================= */
+========================================================= */
 
 .modal[hidden] {
   display: none;
@@ -2091,9 +2105,9 @@ select {
   margin: 4px 0 0;
 }
 
-/* =========================
-   RECIPE MODAL CONTENT
-========================= */
+/* =========================================================
+   RECIPE MODAL
+========================================================= */
 
 .recipe-modal-hero {
   position: relative;
@@ -2198,9 +2212,9 @@ select {
   content: counter(recipe-step);
 }
 
-/* =========================
+/* =========================================================
    BARCODE SCANNER
-========================= */
+========================================================= */
 
 .scanner-view {
   position: relative;
@@ -2275,9 +2289,9 @@ select {
   gap: 10px;
 }
 
-/* =========================
-   TIMER DRAWER
-========================= */
+/* =========================================================
+   TIMER
+========================================================= */
 
 .timer-drawer {
   position: fixed;
@@ -2360,9 +2374,9 @@ select {
   font-weight: 900;
 }
 
-/* =========================
+/* =========================================================
    TOASTS
-========================= */
+========================================================= */
 
 .toast-container {
   position: fixed;
@@ -2399,30 +2413,27 @@ select {
   }
 }
 
-/* =========================
+/* =========================================================
    MOBILE NAV
-========================= */
+========================================================= */
 
 .mobile-bottom-nav {
   display: none;
 }
 
-/* =========================
+/* =========================================================
    DARK MODE
-========================= */
+========================================================= */
 
 body.dark-mode {
   --cream: #07191d;
   --surface: #0e292e;
   --surface-soft: #123239;
   --surface-muted: #193b40;
-
   --text-primary: #eef8f4;
   --text-secondary: #a8bab8;
   --text-muted: #7f9492;
-
   --border: rgba(255, 255, 255, 0.1);
-
   background: var(--cream);
 }
 
@@ -2457,9 +2468,9 @@ body.dark-mode .modal-close-button {
   color: var(--text-primary);
 }
 
-/* =========================
+/* =========================================================
    RESPONSIVE
-========================= */
+========================================================= */
 
 @media (max-width: 1320px) {
   .quick-action-grid {
@@ -2518,12 +2529,6 @@ body.dark-mode .modal-close-button {
   .mobile-brand {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-weight: 900;
-  }
-
-  .mobile-brand-icon {
-    font-size: 22px;
   }
 
   .hero-section {
@@ -2581,6 +2586,11 @@ body.dark-mode .modal-close-button {
 
   .mobile-brand {
     flex: 1;
+  }
+
+  .mobile-brand-logo {
+    width: 132px;
+    max-height: 44px;
   }
 
   .global-search {
@@ -2689,7 +2699,8 @@ body.dark-mode .modal-close-button {
     z-index: 600;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    padding: 8px max(7px, env(safe-area-inset-right))
+    padding:
+      8px max(7px, env(safe-area-inset-right))
       calc(8px + env(safe-area-inset-bottom))
       max(7px, env(safe-area-inset-left));
     border-top: 1px solid var(--border);
