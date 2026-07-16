@@ -1,300 +1,569 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
 
-<title>Recipe Buddy 🍳</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
 
-<link rel="stylesheet" href="style.css">
+    <title>Recipes 🍳</title>
 
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <meta name="theme-color" content="#8e44ad">
+
+    <meta
+        name="mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
+
+    <meta
+        name="apple-mobile-web-app-title"
+        content="Recipe Buddy"
+    >
 </head>
 
-<script>
-
-if("serviceWorker" in navigator){
-
-navigator.serviceWorker.register(
-"service-worker.js"
-);
-
-}
-
-</script>
 <body>
 
-
 <nav>
-
-<a href="index.html">🏠 Home</a>
-<a href="recipe.html">🍳 Recipes</a>
-<a href="grocery.html">🛒 Grocery</a>
-<a href="favorites.html">❤️ Favorites</a>
-<a href="add-recipe.html">➕ Add Recipe</a>
-
+    <a href="index.html">🏠 Home</a>
+    <a href="recipe.html">🍳 Recipes</a>
+    <a href="gallery.html">📸 Gallery</a>
+    <a href="grocery.html">🛒 Grocery</a>
+    <a href="favorites.html">❤️ Favorites</a>
+    <a href="add-recipe.html">➕ Add Recipe</a>
 </nav>
 
+<header class="hero">
+    <h1>🍳 Recipe Finder</h1>
 
+    <p>
+        Search recipes, ingredients, categories, and difficulty.
+    </p>
+</header>
 
-<div class="hero">
+<main>
 
-<h1>🍳 Recipe Finder</h1>
+    <section class="card">
 
-<p>Find the perfect meal</p>
+        <label for="searchBox">
+            <strong>Search recipes</strong>
+        </label>
+
+        <input
+            id="searchBox"
+            type="search"
+            placeholder="Try chicken, garlic, dinner, or easy..."
+        >
+
+        <br><br>
+
+        <label for="categoryFilter">
+            <strong>Category</strong>
+        </label>
+
+        <select id="categoryFilter">
+            <option value="all">All categories</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Date Night">Date Night</option>
+            <option value="Snack">Snack</option>
+            <option value="Drink">Drink</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <br><br>
+
+        <label for="difficultyFilter">
+            <strong>Difficulty</strong>
+        </label>
+
+        <select id="difficultyFilter">
+            <option value="all">Any difficulty</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+            <option value="Custom">Custom</option>
+        </select>
+
+        <br><br>
+
+        <button
+            type="button"
+            onclick="displayRecipes()"
+        >
+            🔎 Search
+        </button>
+
+        <p
+            id="resultCount"
+            style="text-align:center; font-weight:bold;"
+        ></p>
+
+    </section>
+
+    <section id="results"></section>
+
+</main>
+
+<div class="mobile-nav">
+
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="recipe.html">
+        🍳
+        <span>Recipes</span>
+    </a>
+
+    <a href="add-recipe.html">
+        ➕
+        <span>Add</span>
+    </a>
+
+    <a href="grocery.html">
+        🛒
+        <span>Grocery</span>
+    </a>
+
+    <a href="favorites.html">
+        ❤️
+        <span>Favorites</span>
+    </a>
 
 </div>
-
-
-
-
-<div class="card">
-
-
-<input 
-id="searchBox"
-placeholder="Search recipes or ingredients..."
->
-
-
-<select id="category">
-
-<option value="all">All Categories</option>
-<option>Dinner</option>
-<option>Dessert</option>
-<option>Breakfast</option>
-<option>Date Night</option>
-
-</select>
-
-
-
-<select id="difficulty">
-
-<option value="all">Any Difficulty</option>
-<option>Easy</option>
-<option>Medium</option>
-<option>Hard</option>
-
-</select>
-
-
-
-<button onclick="searchRecipes()">
-
-🔎 Search
-
-</button>
-
-
-</div>
-
-
-
-
-
-<div id="results"></div>
-
-
-
-
 
 <script src="recipes.js"></script>
 
-
 <script>
-
-
-let customRecipes =
-JSON.parse(
-localStorage.getItem("customRecipes")
-) || [];
-
-
-
-let allRecipes=[
-...recipes,
-...customRecipes
-];
-
-
-
-
-
-
-
-function searchRecipes(){
-
-
-let word =
-document
-.getElementById("searchBox")
-.value
-.toLowerCase();
-
-
-
-let category =
-document
-.getElementById("category")
-.value;
-
-
-
-let difficulty =
-document
-.getElementById("difficulty")
-.value;
-
-
-
-let output="";
-
-
-
-
-allRecipes.forEach(recipe=>{
-
-
-let ingredients =
-recipe.ingredients.join(" ").toLowerCase();
-
-
-
-let matchesSearch =
-
-recipe.name.toLowerCase().includes(word)
-
-||
-
-ingredients.includes(word);
-
-
-
-let matchesCategory =
-
-category=="all"
-
-||
-
-recipe.category==category;
-
-
-
-let matchesDifficulty =
-
-difficulty=="all"
-
-||
-
-recipe.difficulty==difficulty;
-
-
-
-
-
-
-if(
-
-matchesSearch
-
-&&
-
-matchesCategory
-
-&&
-
-matchesDifficulty
-
-){
-
-
-
-output+=`
-
-
-<div class="card">
-
-
-<img 
-src="${recipe.image}"
-class="recipe-image"
->
-
-
-
-<h2>
-${recipe.name}
-</h2>
-
-
-
-<p>
-🍽 ${recipe.category}
-</p>
-
-
-<p>
-⏱ ${recipe.time}
-</p>
-
-
-<p>
-⭐ ${recipe.difficulty}
-</p>
-
-
-
-<h3>Ingredients</h3>
-
-
-<ul>
-
-${recipe.ingredients.map(item=>
-
-`<li>${item}</li>`
-
-).join("")}
-
-</ul>
-
-
-
-<h3>Instructions</h3>
-
-
-<p>
-${recipe.instructions}
-</p>
-
-
-
-</div>
-
-
-`;
-
-
-
-}
-
-
-
-});
-
-
-
-document.getElementById("results").innerHTML =
-
-output || "<h2>No recipes found 😢</h2>";
-
-
-
-}
-
-
-
+    const builtInRecipes =
+        typeof recipes !== "undefined" ? recipes : [];
+
+    const customRecipes =
+        JSON.parse(
+            localStorage.getItem("customRecipes")
+        ) || [];
+
+    const allRecipes = [
+        ...builtInRecipes,
+        ...customRecipes
+    ];
+
+    function normalizeInstructions(recipe) {
+        if (Array.isArray(recipe.instructions)) {
+            return recipe.instructions;
+        }
+
+        if (typeof recipe.instructions === "string") {
+            return recipe.instructions
+                .split("\n")
+                .map(function (step) {
+                    return step.trim();
+                })
+                .filter(function (step) {
+                    return step.length > 0;
+                });
+        }
+
+        return [];
+    }
+
+    function escapeForButton(value) {
+        return String(value)
+            .replace(/\\/g, "\\\\")
+            .replace(/'/g, "\\'");
+    }
+
+    function displayRecipes() {
+        const search =
+            document
+                .getElementById("searchBox")
+                .value
+                .toLowerCase()
+                .trim();
+
+        const category =
+            document.getElementById("categoryFilter").value;
+
+        const difficulty =
+            document.getElementById("difficultyFilter").value;
+
+        const matchingRecipes =
+            allRecipes.filter(function (recipe) {
+                const ingredients =
+                    Array.isArray(recipe.ingredients)
+                        ? recipe.ingredients.join(" ")
+                        : "";
+
+                const searchableText = [
+                    recipe.name || "",
+                    recipe.category || "",
+                    recipe.difficulty || "",
+                    recipe.notes || "",
+                    ingredients
+                ]
+                    .join(" ")
+                    .toLowerCase();
+
+                const matchesSearch =
+                    searchableText.includes(search);
+
+                const matchesCategory =
+                    category === "all" ||
+                    recipe.category === category;
+
+                const matchesDifficulty =
+                    difficulty === "all" ||
+                    recipe.difficulty === difficulty;
+
+                return (
+                    matchesSearch &&
+                    matchesCategory &&
+                    matchesDifficulty
+                );
+            });
+
+        renderRecipes(matchingRecipes);
+    }
+
+    function renderRecipes(recipeList) {
+        const results =
+            document.getElementById("results");
+
+        const resultCount =
+            document.getElementById("resultCount");
+
+        resultCount.textContent =
+            recipeList.length +
+            (recipeList.length === 1
+                ? " recipe found"
+                : " recipes found");
+
+        if (recipeList.length === 0) {
+            results.innerHTML = `
+                <div class="empty-message">
+                    <h2>No recipes found</h2>
+
+                    <p>
+                        Try another word, ingredient, or category.
+                    </p>
+                </div>
+            `;
+
+            return;
+        }
+
+        results.innerHTML =
+            recipeList
+                .map(function (recipe, index) {
+                    const ingredients =
+                        Array.isArray(recipe.ingredients)
+                            ? recipe.ingredients
+                            : [];
+
+                    const instructions =
+                        normalizeInstructions(recipe);
+
+                    const recipeId =
+                        recipe.id ||
+                        recipe.name ||
+                        "recipe-" + index;
+
+                    const safeName =
+                        escapeForButton(recipe.name);
+
+                    const sourceButton =
+                        recipe.source &&
+                        recipe.source !== "Built In"
+                            ? `
+                                <p>
+                                    <a
+                                        href="${recipe.source}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Open original recipe link
+                                    </a>
+                                </p>
+                            `
+                            : "";
+
+                    const notesSection =
+                        recipe.notes
+                            ? `
+                                <h3>Personal Notes</h3>
+                                <p>${recipe.notes}</p>
+                            `
+                            : "";
+
+                    return `
+                        <article class="card">
+
+                            <img
+                                class="recipe-image"
+                                src="${recipe.image || "food.jpg"}"
+                                alt="${recipe.name}"
+                                onerror="this.src='food.jpg'"
+                            >
+
+                            <h2>${recipe.name}</h2>
+
+                            <p>
+                                <strong>Category:</strong>
+                                ${recipe.category || "Other"}
+                            </p>
+
+                            <p>
+                                <strong>Difficulty:</strong>
+                                ${recipe.difficulty || "Not listed"}
+                            </p>
+
+                            <p>
+                                <strong>Servings:</strong>
+                                ${recipe.servings || "Not listed"}
+                            </p>
+
+                            <p>
+                                <strong>Prep time:</strong>
+                                ${recipe.prepTime || recipe.time || "Not listed"}
+                            </p>
+
+                            <p>
+                                <strong>Cook time:</strong>
+                                ${recipe.cookTime || "Not listed"}
+                            </p>
+
+                            <h3>Ingredients</h3>
+
+                            <ul>
+                                ${ingredients
+                                    .map(function (ingredient) {
+                                        return `<li>${ingredient}</li>`;
+                                    })
+                                    .join("")}
+                            </ul>
+
+                            <h3>Instructions</h3>
+
+                            <ol>
+                                ${instructions
+                                    .map(function (step) {
+                                        return `<li>${step}</li>`;
+                                    })
+                                    .join("")}
+                            </ol>
+
+                            ${notesSection}
+
+                            ${sourceButton}
+
+                            <button
+                                type="button"
+                                onclick="addToGrocery('${safeName}')"
+                            >
+                                🛒 Add Ingredients
+                            </button>
+
+                            <br><br>
+
+                            <button
+                                type="button"
+                                onclick="saveFavorite('${safeName}')"
+                            >
+                                ❤️ Save Favorite
+                            </button>
+
+                            <br><br>
+
+                            <button
+                                type="button"
+                                onclick="deleteCustomRecipe('${recipeId}')"
+                            >
+                                🗑️ Delete Custom Recipe
+                            </button>
+
+                        </article>
+                    `;
+                })
+                .join("");
+    }
+
+    function findRecipeByName(name) {
+        return allRecipes.find(function (recipe) {
+            return recipe.name === name;
+        });
+    }
+
+    function addToGrocery(recipeName) {
+        const recipe = findRecipeByName(recipeName);
+
+        if (!recipe) {
+            alert("Recipe could not be found.");
+            return;
+        }
+
+        const shoppingList =
+            JSON.parse(
+                localStorage.getItem("shoppingList")
+            ) || [];
+
+        const ingredients =
+            Array.isArray(recipe.ingredients)
+                ? recipe.ingredients
+                : [];
+
+        ingredients.forEach(function (ingredient) {
+            const alreadyExists =
+                shoppingList.some(function (item) {
+                    const itemName =
+                        typeof item === "string"
+                            ? item
+                            : item.name;
+
+                    return itemName === ingredient;
+                });
+
+            if (!alreadyExists) {
+                shoppingList.push({
+                    name: ingredient,
+                    done: false
+                });
+            }
+        });
+
+        localStorage.setItem(
+            "shoppingList",
+            JSON.stringify(shoppingList)
+        );
+
+        alert(
+            recipe.name +
+            " ingredients were added to the grocery list."
+        );
+    }
+
+    function saveFavorite(recipeName) {
+        const favorites =
+            JSON.parse(
+                localStorage.getItem("favorites")
+            ) || [];
+
+        if (!favorites.includes(recipeName)) {
+            favorites.push(recipeName);
+
+            localStorage.setItem(
+                "favorites",
+                JSON.stringify(favorites)
+            );
+
+            alert(
+                recipeName +
+                " was saved to Favorites ❤️"
+            );
+        } else {
+            alert(
+                "That recipe is already in Favorites."
+            );
+        }
+    }
+
+    function deleteCustomRecipe(recipeId) {
+        const savedCustomRecipes =
+            JSON.parse(
+                localStorage.getItem("customRecipes")
+            ) || [];
+
+        const matchIndex =
+            savedCustomRecipes.findIndex(
+                function (recipe) {
+                    return (
+                        String(recipe.id) ===
+                        String(recipeId)
+                    );
+                }
+            );
+
+        if (matchIndex === -1) {
+            alert(
+                "Only recipes you created can be deleted here."
+            );
+
+            return;
+        }
+
+        const shouldDelete =
+            confirm(
+                "Are you sure you want to delete this recipe?"
+            );
+
+        if (!shouldDelete) {
+            return;
+        }
+
+        savedCustomRecipes.splice(matchIndex, 1);
+
+        localStorage.setItem(
+            "customRecipes",
+            JSON.stringify(savedCustomRecipes)
+        );
+
+        location.reload();
+    }
+
+    const requestedRecipe =
+        localStorage.getItem("recipeSearchRequest");
+
+    if (requestedRecipe) {
+        document.getElementById("searchBox").value =
+            requestedRecipe;
+
+        localStorage.removeItem("recipeSearchRequest");
+    }
+
+    document
+        .getElementById("searchBox")
+        .addEventListener(
+            "input",
+            displayRecipes
+        );
+
+    document
+        .getElementById("categoryFilter")
+        .addEventListener(
+            "change",
+            displayRecipes
+        );
+
+    document
+        .getElementById("difficultyFilter")
+        .addEventListener(
+            "change",
+            displayRecipes
+        );
+
+    displayRecipes();
 </script>
 
-
+<script src="update-app.js"></script>
 
 </body>
 
