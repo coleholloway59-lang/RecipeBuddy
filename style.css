@@ -1,233 +1,471 @@
-body {
+/* =========================================
+   RECIPE BUDDY — FULL-SCREEN IPHONE DESIGN
+========================================= */
 
-font-family: Arial, sans-serif;
-
-background:#fff0f7;
-
-color:#3b2035;
-
-margin:0;
-
-padding:15px;
-
-padding-bottom:90px;
-
+* {
+    box-sizing: border-box;
 }
 
+:root {
+    --primary: #8e44ad;
+    --primary-light: #c77dff;
+    --primary-dark: #663399;
 
+    --background: #fff0f7;
+    --card: #ffffff;
 
-/* Top menu */
+    --text: #3b2035;
+    --muted: #765f70;
+    --border: #ead5e5;
+
+    --shadow: 0 8px 24px rgba(70, 25, 65, 0.12);
+    --large-shadow: 0 15px 40px rgba(70, 25, 65, 0.18);
+
+    --radius: 22px;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+    scroll-behavior: smooth;
+    background: var(--background);
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+
+    padding-top: env(safe-area-inset-top);
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+
+    padding-bottom: calc(
+        88px + env(safe-area-inset-bottom)
+    );
+
+    overflow-x: hidden;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(199, 125, 255, 0.18),
+            transparent 35%
+        ),
+        var(--background);
+}
+
+main {
+    width: 100%;
+    min-height: 45vh;
+}
+
+a {
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* =========================================
+   TOP NAVIGATION
+========================================= */
 
 nav {
+    width: min(1100px, 100%);
 
-background:#8e44ad;
+    margin: 10px auto 22px;
+    padding: 14px 18px;
 
-padding:15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 
-border-radius:20px;
+    gap: 10px;
 
-text-align:center;
+    background: rgba(142, 68, 173, 0.96);
 
+    border-radius: 20px;
+
+    box-shadow: var(--shadow);
+
+    position: sticky;
+    top: calc(8px + env(safe-area-inset-top));
+    z-index: 1000;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
-
 
 nav a {
+    padding: 9px 12px;
 
-color:white;
+    color: white;
 
-text-decoration:none;
+    text-decoration: none;
+    font-weight: bold;
 
-font-weight:bold;
-
-margin:8px;
-
-display:inline-block;
-
+    border-radius: 12px;
 }
 
-
-
-
-/* App header */
+/* =========================================
+   HERO
+========================================= */
 
 .hero {
+    width: min(1100px, 100%);
 
-background:linear-gradient(
-135deg,
-#ff8fd8,
-#9b59ff
-);
+    margin: 8px auto 25px;
+    padding: 58px 24px;
 
-color:white;
+    text-align: center;
+    color: white;
 
-padding:45px 20px;
+    border-radius: 30px;
 
-border-radius:25px;
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(255, 255, 255, 0.25),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #ff8fd8,
+            #9b59ff
+        );
 
-text-align:center;
-
-box-shadow:0 5px 20px #aaa;
-
+    box-shadow: var(--large-shadow);
 }
-
-
 
 .hero h1 {
+    margin: 0 0 12px;
 
-font-size:38px;
+    font-size: clamp(38px, 8vw, 62px);
 
+    line-height: 1.05;
+
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
 }
 
+.hero p {
+    margin: 0 auto;
 
+    max-width: 720px;
 
-/* Recipe cards */
+    font-size: clamp(18px, 4vw, 23px);
+
+    line-height: 1.5;
+}
+
+/* =========================================
+   TEXT
+========================================= */
+
+h1,
+h2,
+h3 {
+    line-height: 1.2;
+}
+
+h2 {
+    color: var(--primary-dark);
+}
+
+h3 {
+    color: var(--primary);
+}
+
+p {
+    line-height: 1.6;
+}
+
+/* =========================================
+   CARDS
+========================================= */
 
 .card {
+    width: min(900px, 100%);
 
-background:white;
+    margin: 18px auto;
+    padding: 24px;
 
-border-radius:25px;
+    background: var(--card);
 
-padding:20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
 
-margin:20px 0;
-
-box-shadow:0 5px 20px rgba(0,0,0,.15);
-
+    box-shadow: var(--shadow);
 }
 
+.card h2 {
+    margin-top: 0;
+}
 
+.card a {
+    text-decoration: none;
+}
+
+/* =========================================
+   IMAGES
+========================================= */
 
 .recipe-image {
+    width: 100%;
+    height: 260px;
 
-width:100%;
+    display: block;
 
-height:220px;
+    margin-bottom: 18px;
 
-object-fit:cover;
+    object-fit: cover;
 
-border-radius:20px;
+    border-radius: 18px;
 
+    background: #f3e5ef;
 }
 
-
-
-
-/* Buttons */
+/* =========================================
+   BUTTONS
+========================================= */
 
 button {
+    width: 100%;
+    min-height: 50px;
 
-background:#8e44ad;
+    padding: 14px 20px;
 
-color:white;
+    border: none;
+    border-radius: 14px;
 
-border:none;
+    background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-light)
+    );
 
-padding:14px;
+    color: white;
 
-border-radius:15px;
+    font-size: 17px;
+    font-weight: bold;
 
-font-size:17px;
+    cursor: pointer;
 
-width:100%;
+    box-shadow: 0 6px 16px rgba(142, 68, 173, 0.22);
 
+    -webkit-tap-highlight-color: transparent;
 }
 
-
-
-button:hover {
-
-background:#c77dff;
-
+button:active {
+    transform: scale(0.98);
 }
 
+/* =========================================
+   FORM CONTROLS
+========================================= */
 
+input,
+select,
+textarea {
+    width: 100%;
 
+    padding: 14px 16px;
 
-/* Search */
+    border: 2px solid var(--border);
+    border-radius: 14px;
 
-input {
+    background: white;
+    color: var(--text);
 
-width:90%;
+    font-size: 17px;
 
-padding:15px;
-
-border-radius:15px;
-
-border:2px solid #8e44ad;
-
-font-size:18px;
-
+    outline: none;
 }
 
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary-light);
 
+    box-shadow:
+        0 0 0 4px rgba(199, 125, 255, 0.16);
+}
 
-/* Bottom App Navigation */
+textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+/* =========================================
+   LISTS
+========================================= */
+
+ul,
+ol {
+    padding-left: 25px;
+}
+
+li {
+    margin: 9px 0;
+    line-height: 1.5;
+}
+
+/* =========================================
+   BOTTOM MOBILE NAVIGATION
+========================================= */
 
 .mobile-nav {
+    position: fixed;
 
-position:fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
-bottom:0;
+    min-height: calc(
+        72px + env(safe-area-inset-bottom)
+    );
 
-left:0;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
 
-right:0;
+    padding-top: 9px;
+    padding-left: max(6px, env(safe-area-inset-left));
+    padding-right: max(6px, env(safe-area-inset-right));
+    padding-bottom: env(safe-area-inset-bottom);
 
-height:70px;
+    background: rgba(142, 68, 173, 0.98);
 
-background:#8e44ad;
+    border-radius: 22px 22px 0 0;
 
-display:flex;
+    box-shadow: 0 -5px 22px rgba(70, 25, 65, 0.18);
 
-justify-content:space-around;
+    z-index: 2000;
 
-align-items:center;
-
-border-radius:20px 20px 0 0;
-
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
-
-
 
 .mobile-nav a {
+    min-width: 58px;
 
-color:white;
+    padding: 6px;
 
-text-decoration:none;
+    color: white;
 
-font-size:13px;
+    text-decoration: none;
+    text-align: center;
 
-text-align:center;
+    font-size: 21px;
 
+    border-radius: 12px;
+
+    -webkit-tap-highlight-color: transparent;
 }
-
-
 
 .mobile-nav span {
+    display: block;
 
-display:block;
+    margin-top: 3px;
 
+    font-size: 11px;
+    font-weight: bold;
 }
 
+/* =========================================
+   EMPTY MESSAGES
+========================================= */
 
+.empty-message {
+    width: min(700px, 100%);
 
+    margin: 30px auto;
+    padding: 30px;
 
-@media(max-width:600px){
+    text-align: center;
 
+    background: white;
 
-nav {
+    border-radius: var(--radius);
 
-display:none;
-
+    box-shadow: var(--shadow);
 }
 
+/* =========================================
+   PHONE
+========================================= */
 
-.card {
+@media screen and (max-width: 600px) {
+    nav {
+        display: none;
+    }
 
-margin:15px 0;
+    body {
+        padding-left: max(10px, env(safe-area-inset-left));
+        padding-right: max(10px, env(safe-area-inset-right));
+    }
 
+    .hero {
+        width: 100%;
+
+        margin-top: 4px;
+        padding: 42px 16px;
+
+        border-radius: 24px;
+    }
+
+    .hero h1 {
+        font-size: 39px;
+    }
+
+    .hero p {
+        font-size: 18px;
+    }
+
+    .card {
+        width: 100%;
+
+        margin: 14px 0;
+        padding: 18px;
+
+        border-radius: 20px;
+    }
+
+    .recipe-image {
+        height: 215px;
+    }
 }
 
+/* =========================================
+   LANDSCAPE IPHONE
+========================================= */
 
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        padding: 26px 18px;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .mobile-nav {
+        min-height: calc(
+            60px + env(safe-area-inset-bottom)
+        );
+    }
+
+    body {
+        padding-bottom: calc(
+            76px + env(safe-area-inset-bottom)
+        );
+    }
 }
