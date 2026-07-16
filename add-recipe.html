@@ -1,175 +1,374 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
 
-<title>Add Recipe 🍳</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
 
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#8e44ad">
+    <title>Add Recipe 🍳</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <meta name="theme-color" content="#8e44ad">
+
+    <meta
+        name="mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
+
+    <meta
+        name="apple-mobile-web-app-title"
+        content="Recipe Buddy"
+    >
 </head>
 
-<script>
-
-if("serviceWorker" in navigator){
-
-navigator.serviceWorker.register(
-"service-worker.js"
-);
-
-}
-
-</script>
 <body>
 
-
 <nav>
-
-<a href="index.html">🏠 Home</a>
-<a href="recipe.html">🍳 Recipes</a>
-<a href="grocery.html">🛒 Grocery</a>
-<a href="favorites.html">❤️ Favorites</a>
-
+    <a href="index.html">🏠 Home</a>
+    <a href="recipe.html">🍳 Recipes</a>
+    <a href="gallery.html">📸 Gallery</a>
+    <a href="grocery.html">🛒 Grocery</a>
+    <a href="favorites.html">❤️ Favorites</a>
+    <a href="add-recipe.html">➕ Add Recipe</a>
 </nav>
 
+<header class="hero">
+    <h1>➕ Add a Recipe</h1>
 
+    <p>
+        Save your own detailed recipe.
+    </p>
+</header>
 
-<div class="hero">
+<main>
 
-<h1>📸 Add Your Recipe</h1>
+    <section class="card">
 
-<p>Create your own cookbook</p>
+        <label for="name">
+            <strong>Recipe name</strong>
+        </label>
+
+        <input
+            id="name"
+            type="text"
+            placeholder="Example: Creamy Chicken Alfredo"
+        >
+
+        <br><br>
+
+        <label for="category">
+            <strong>Category</strong>
+        </label>
+
+        <select id="category">
+            <option value="">Choose a category</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Date Night">Date Night</option>
+            <option value="Snack">Snack</option>
+            <option value="Drink">Drink</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <br><br>
+
+        <label for="difficulty">
+            <strong>Difficulty</strong>
+        </label>
+
+        <select id="difficulty">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+
+        <br><br>
+
+        <label for="servings">
+            <strong>Servings</strong>
+        </label>
+
+        <input
+            id="servings"
+            type="number"
+            min="1"
+            value="2"
+        >
+
+        <br><br>
+
+        <label for="prepTime">
+            <strong>Prep time</strong>
+        </label>
+
+        <input
+            id="prepTime"
+            type="text"
+            placeholder="Example: 15 minutes"
+        >
+
+        <br><br>
+
+        <label for="cookTime">
+            <strong>Cook time</strong>
+        </label>
+
+        <input
+            id="cookTime"
+            type="text"
+            placeholder="Example: 30 minutes"
+        >
+
+        <br><br>
+
+        <label for="image">
+            <strong>Recipe image link</strong>
+        </label>
+
+        <input
+            id="image"
+            type="url"
+            placeholder="Paste an image URL or leave blank"
+        >
+
+        <br><br>
+
+        <label for="source">
+            <strong>Instagram, TikTok, YouTube, or website link</strong>
+        </label>
+
+        <input
+            id="source"
+            type="url"
+            placeholder="Paste the original recipe link"
+        >
+
+        <br><br>
+
+        <label for="ingredients">
+            <strong>Ingredients</strong>
+        </label>
+
+        <textarea
+            id="ingredients"
+            placeholder="Enter one ingredient per line"
+        ></textarea>
+
+        <br><br>
+
+        <label for="instructions">
+            <strong>Instructions</strong>
+        </label>
+
+        <textarea
+            id="instructions"
+            placeholder="Enter one cooking step per line"
+        ></textarea>
+
+        <br><br>
+
+        <label for="notes">
+            <strong>Personal notes</strong>
+        </label>
+
+        <textarea
+            id="notes"
+            placeholder="Example: Use extra garlic next time."
+        ></textarea>
+
+        <br><br>
+
+        <button
+            type="button"
+            onclick="saveRecipe()"
+        >
+            Save Recipe ❤️
+        </button>
+
+        <p
+            id="statusMessage"
+            style="text-align:center; font-weight:bold;"
+        ></p>
+
+    </section>
+
+</main>
+
+<div class="mobile-nav">
+
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="recipe.html">
+        🍳
+        <span>Recipes</span>
+    </a>
+
+    <a href="add-recipe.html">
+        ➕
+        <span>Add</span>
+    </a>
+
+    <a href="grocery.html">
+        🛒
+        <span>Grocery</span>
+    </a>
+
+    <a href="favorites.html">
+        ❤️
+        <span>Favorites</span>
+    </a>
 
 </div>
-
-
-
-<div class="card">
-
-
-<input id="name" placeholder="Recipe name">
-
-
-<br><br>
-
-
-<input id="category" placeholder="Category">
-
-
-<br><br>
-
-
-<input id="time" placeholder="Cooking time">
-
-
-<br><br>
-
-
-<textarea id="ingredients"
-placeholder="Ingredients (separate with commas)">
-</textarea>
-
-
-<br><br>
-
-
-<textarea id="instructions"
-placeholder="Cooking instructions">
-</textarea>
-
-
-<br><br>
-
-
-<button onclick="saveRecipe()">
-
-Save Recipe ❤️
-
-</button>
-
-
-
-</div>
-
-
-
-
 
 <script>
+    function cleanLines(value) {
+        return value
+            .split("\n")
+            .map(function (line) {
+                return line.trim();
+            })
+            .filter(function (line) {
+                return line.length > 0;
+            });
+    }
 
+    function saveRecipe() {
+        const name =
+            document.getElementById("name").value.trim();
 
-function saveRecipe(){
+        const category =
+            document.getElementById("category").value;
 
+        const difficulty =
+            document.getElementById("difficulty").value;
 
-let customRecipes =
-JSON.parse(
-localStorage.getItem("customRecipes")
-) || [];
+        const servings =
+            Number(document.getElementById("servings").value);
 
+        const prepTime =
+            document.getElementById("prepTime").value.trim();
 
+        const cookTime =
+            document.getElementById("cookTime").value.trim();
 
-let recipe={
+        const image =
+            document.getElementById("image").value.trim();
 
+        const source =
+            document.getElementById("source").value.trim();
 
-name:
-document.getElementById("name").value,
+        const ingredients =
+            cleanLines(
+                document.getElementById("ingredients").value
+            );
 
+        const instructions =
+            cleanLines(
+                document.getElementById("instructions").value
+            );
 
-category:
-document.getElementById("category").value,
+        const notes =
+            document.getElementById("notes").value.trim();
 
+        const statusMessage =
+            document.getElementById("statusMessage");
 
-time:
-document.getElementById("time").value,
+        if (!name) {
+            statusMessage.textContent =
+                "Please enter a recipe name.";
+            return;
+        }
 
+        if (!category) {
+            statusMessage.textContent =
+                "Please choose a category.";
+            return;
+        }
 
-difficulty:
-"Custom",
+        if (ingredients.length === 0) {
+            statusMessage.textContent =
+                "Please enter at least one ingredient.";
+            return;
+        }
 
+        if (instructions.length === 0) {
+            statusMessage.textContent =
+                "Please enter at least one cooking step.";
+            return;
+        }
 
-image:
-"food.jpg",
+        const customRecipes =
+            JSON.parse(
+                localStorage.getItem("customRecipes")
+            ) || [];
 
+        const recipe = {
+            id: Date.now(),
+            name: name,
+            category: category,
+            difficulty: difficulty,
+            servings: servings || 1,
+            prepTime: prepTime || "Not listed",
+            cookTime: cookTime || "Not listed",
+            image: image || "food.jpg",
+            source: source,
+            ingredients: ingredients,
+            instructions: instructions,
+            notes: notes,
+            createdAt: new Date().toISOString()
+        };
 
-ingredients:
-document.getElementById("ingredients")
-.value
-.split(","),
+        customRecipes.push(recipe);
 
+        localStorage.setItem(
+            "customRecipes",
+            JSON.stringify(customRecipes)
+        );
 
+        statusMessage.textContent =
+            "Recipe saved successfully! 🍳";
 
-instructions:
-document.getElementById("instructions")
-.value
+        clearForm();
+    }
 
-
-};
-
-
-
-customRecipes.push(recipe);
-
-
-
-localStorage.setItem(
-"customRecipes",
-JSON.stringify(customRecipes)
-);
-
-
-
-alert(
-"Recipe saved! 🍳"
-);
-
-
-
-}
-
-
+    function clearForm() {
+        document.getElementById("name").value = "";
+        document.getElementById("category").value = "";
+        document.getElementById("difficulty").value = "Easy";
+        document.getElementById("servings").value = "2";
+        document.getElementById("prepTime").value = "";
+        document.getElementById("cookTime").value = "";
+        document.getElementById("image").value = "";
+        document.getElementById("source").value = "";
+        document.getElementById("ingredients").value = "";
+        document.getElementById("instructions").value = "";
+        document.getElementById("notes").value = "";
+    }
 </script>
 
+<script src="update-app.js"></script>
 
 </body>
 
