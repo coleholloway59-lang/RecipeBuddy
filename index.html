@@ -1,232 +1,1797 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    >
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
 
-    <title>Recipe Buddy 🍳</title>
+  <meta
+    name="description"
+    content="Recipe Buddy helps you discover recipes, manage groceries, track pantry items, and automatically adjust meals for allergies and dietary preferences."
+  >
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon.png">
+  <meta name="theme-color" content="#153b3d">
 
-    <meta name="theme-color" content="#8e44ad">
+  <title>Recipe Buddy</title>
 
-    <meta
-        name="mobile-web-app-capable"
-        content="yes"
-    >
+  <!-- App icons will be added later -->
+  <link rel="icon" href="assets/icons/favicon.png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 
-    <meta
-        name="apple-mobile-web-app-capable"
-        content="yes"
-    >
+  <!-- PWA manifest will be added later -->
+  <link rel="manifest" href="manifest.json">
 
-    <meta
-        name="apple-mobile-web-app-status-bar-style"
-        content="black-translucent"
-    >
-
-    <meta
-        name="apple-mobile-web-app-title"
-        content="Recipe Buddy"
-    >
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <!-- Skip link for accessibility -->
+  <a class="skip-link" href="#mainContent">Skip to main content</a>
 
-<nav>
-    <a href="index.html">🏠 Home</a>
-    <a href="recipe.html">🍳 Recipes</a>
-    <a href="gallery.html">📸 Gallery</a>
-    <a href="grocery.html">🛒 Grocery</a>
-    <a href="favorites.html">❤️ Favorites</a>
-    <a href="add-recipe.html">➕ Add Recipe</a>
-    <a href="import-recipe.html">📲 Import</a>
-</nav>
+  <div class="app-shell">
+    <!-- =========================
+         DESKTOP SIDEBAR
+    ========================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a class="brand" href="#" aria-label="Recipe Buddy home">
+          <div class="brand-icon" aria-hidden="true">
+            <span>🌿</span>
+          </div>
 
-<header class="hero">
-
-    <h1>🍳 Recipe Buddy</h1>
-
-    <p>
-        Find meals, save recipes, and build grocery lists
-        for the people you love.
-    </p>
-
-</header>
-
-<main>
-
-    <section class="card">
-
-        <h2>🔎 Find a Recipe</h2>
-
-        <p>
-            Search by recipe name, ingredient, category,
-            or difficulty.
-        </p>
-
-        <a href="recipe.html">
-
-            <button type="button">
-                Search Recipes
-            </button>
-
+          <div class="brand-text">
+            <span class="brand-name">Recipe Buddy</span>
+            <span class="brand-tagline">Cook smarter</span>
+          </div>
         </a>
 
-    </section>
+        <button
+          class="sidebar-close"
+          id="sidebarCloseButton"
+          type="button"
+          aria-label="Close navigation"
+        >
+          ✕
+        </button>
+      </div>
 
-    <section class="card">
+      <nav class="sidebar-nav" aria-label="Main navigation">
+        <button class="nav-item active" type="button" data-page="home">
+          <span class="nav-icon">⌂</span>
+          <span>Home</span>
+        </button>
 
-        <h2>➕ Add Your Own Recipe</h2>
+        <button class="nav-item" type="button" data-page="recipes">
+          <span class="nav-icon">🍲</span>
+          <span>Recipes</span>
+        </button>
 
-        <p>
-            Save a detailed personal recipe with ingredients,
-            instructions, timing, and notes.
-        </p>
+        <button class="nav-item" type="button" data-page="favorites">
+          <span class="nav-icon">♡</span>
+          <span>Favorites</span>
+          <span class="nav-count" id="favoritesNavCount">0</span>
+        </button>
 
-        <a href="add-recipe.html">
+        <button class="nav-item" type="button" data-page="pantry">
+          <span class="nav-icon">🥫</span>
+          <span>My Pantry</span>
+        </button>
 
-            <button type="button">
-                Create Recipe
+        <button class="nav-item" type="button" data-page="groceries">
+          <span class="nav-icon">🛒</span>
+          <span>Grocery List</span>
+          <span class="nav-count" id="groceryNavCount">0</span>
+        </button>
+
+        <button class="nav-item" type="button" data-page="meal-planner">
+          <span class="nav-icon">▦</span>
+          <span>Meal Planner</span>
+        </button>
+
+        <button class="nav-item" type="button" data-page="ai-chef">
+          <span class="nav-icon">✦</span>
+          <span>AI Chef</span>
+        </button>
+
+        <button class="nav-item" type="button" data-page="import">
+          <span class="nav-icon">↧</span>
+          <span>Import Recipe</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-divider"></div>
+
+      <nav class="sidebar-nav sidebar-nav-secondary" aria-label="Account navigation">
+        <button class="nav-item" type="button" data-page="profile">
+          <span class="nav-icon">👤</span>
+          <span>Profile</span>
+        </button>
+
+        <button class="nav-item" type="button" data-page="settings">
+          <span class="nav-icon">⚙</span>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-upgrade-card">
+        <div class="upgrade-icon">✨</div>
+        <strong>Recipe Buddy 3.0</strong>
+        <p>Your personalized cooking companion.</p>
+      </div>
+
+      <div class="sidebar-profile">
+        <div class="profile-avatar" aria-hidden="true">C</div>
+
+        <div class="profile-details">
+          <strong id="sidebarProfileName">Cole</strong>
+          <span id="sidebarProfileDiet">Personal profile</span>
+        </div>
+
+        <button
+          class="icon-button"
+          type="button"
+          data-page="profile"
+          aria-label="Open profile"
+        >
+          ›
+        </button>
+      </div>
+    </aside>
+
+    <!-- Sidebar overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- =========================
+         MAIN APP
+    ========================== -->
+    <div class="main-wrapper">
+      <!-- TOP HEADER -->
+      <header class="top-header">
+        <button
+          class="mobile-menu-button"
+          id="mobileMenuButton"
+          type="button"
+          aria-label="Open navigation"
+        >
+          ☰
+        </button>
+
+        <div class="mobile-brand">
+          <span class="mobile-brand-icon">🌿</span>
+          <span>Recipe Buddy</span>
+        </div>
+
+        <div class="global-search">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+
+          <input
+            id="globalSearchInput"
+            type="search"
+            placeholder="Search recipes, ingredients, or categories..."
+            autocomplete="off"
+            aria-label="Search recipes"
+          >
+
+          <button
+            class="search-clear-button"
+            id="searchClearButton"
+            type="button"
+            aria-label="Clear search"
+            hidden
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="header-actions">
+          <button
+            class="icon-button notification-button"
+            id="notificationButton"
+            type="button"
+            aria-label="Notifications"
+          >
+            🔔
+            <span class="notification-dot"></span>
+          </button>
+
+          <button
+            class="profile-button"
+            type="button"
+            data-page="profile"
+            aria-label="Open profile"
+          >
+            <span class="profile-avatar small">C</span>
+            <span class="profile-button-name">Cole</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- MAIN CONTENT -->
+      <main id="mainContent" class="main-content">
+        <!-- =========================
+             HOME PAGE
+        ========================== -->
+        <section class="app-page active" id="homePage" data-page-section="home">
+          <!-- HERO -->
+          <section class="hero-section">
+            <div class="hero-content">
+              <span class="eyebrow">Your personal cooking assistant</span>
+
+              <h1>
+                What would you like
+                <span>to cook today?</span>
+              </h1>
+
+              <p>
+                Discover recipes, use ingredients from your pantry, and
+                automatically adjust meals for your allergies and preferences.
+              </p>
+
+              <div class="hero-actions">
+                <button
+                  class="primary-button"
+                  id="exploreRecipesButton"
+                  type="button"
+                  data-page="recipes"
+                >
+                  <span>Explore recipes</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+
+                <button
+                  class="secondary-button"
+                  id="surpriseMeButton"
+                  type="button"
+                >
+                  <span aria-hidden="true">🎲</span>
+                  <span>Surprise me</span>
+                </button>
+              </div>
+
+              <div class="hero-profile-badges" id="heroProfileBadges">
+                <span class="profile-badge safe">✓ Allergy profile active</span>
+                <span class="profile-badge">High protein</span>
+                <span class="profile-badge">US measurements</span>
+              </div>
+            </div>
+
+            <div class="hero-visual">
+              <div class="hero-image-card">
+                <div class="hero-image-placeholder">
+                  <span class="hero-food-emoji">🍝</span>
+                </div>
+
+                <div class="hero-floating-card hero-rating-card">
+                  <span class="floating-card-icon">⭐</span>
+                  <div>
+                    <strong>4.9</strong>
+                    <span>Top-rated recipes</span>
+                  </div>
+                </div>
+
+                <div class="hero-floating-card hero-safe-card">
+                  <span class="floating-card-icon">✓</span>
+                  <div>
+                    <strong>Smart adjustments</strong>
+                    <span>Personalized for you</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- QUICK ACTIONS -->
+          <section class="section-block">
+            <div class="section-heading">
+              <div>
+                <span class="section-eyebrow">Get started</span>
+                <h2>Quick actions</h2>
+              </div>
+            </div>
+
+            <div class="quick-action-grid">
+              <button class="quick-action-card" type="button" data-page="ai-chef">
+                <span class="quick-action-icon ai">✦</span>
+                <span class="quick-action-content">
+                  <strong>Ask AI Chef</strong>
+                  <small>Create a recipe from your ingredients</small>
+                </span>
+                <span class="quick-action-arrow">›</span>
+              </button>
+
+              <button class="quick-action-card" type="button" data-page="pantry">
+                <span class="quick-action-icon pantry">🥫</span>
+                <span class="quick-action-content">
+                  <strong>Cook with my pantry</strong>
+                  <small>Find meals using what you already have</small>
+                </span>
+                <span class="quick-action-arrow">›</span>
+              </button>
+
+              <button class="quick-action-card" type="button" data-page="import">
+                <span class="quick-action-icon import">↧</span>
+                <span class="quick-action-content">
+                  <strong>Import a recipe</strong>
+                  <small>Paste a recipe website address</small>
+                </span>
+                <span class="quick-action-arrow">›</span>
+              </button>
+
+              <button
+                class="quick-action-card"
+                type="button"
+                id="openBarcodeScannerButton"
+              >
+                <span class="quick-action-icon barcode">▥</span>
+                <span class="quick-action-content">
+                  <strong>Scan a barcode</strong>
+                  <small>Add an item directly to your pantry</small>
+                </span>
+                <span class="quick-action-arrow">›</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- CATEGORIES -->
+          <section class="section-block">
+            <div class="section-heading">
+              <div>
+                <span class="section-eyebrow">Browse by type</span>
+                <h2>Popular categories</h2>
+              </div>
+
+              <button
+                class="text-button"
+                type="button"
+                data-page="recipes"
+              >
+                View all
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+
+            <div class="category-scroll" id="categoryContainer">
+              <button class="category-card" type="button" data-category="Breakfast">
+                <span class="category-icon">🍳</span>
+                <span>Breakfast</span>
+              </button>
+
+              <button class="category-card" type="button" data-category="Lunch">
+                <span class="category-icon">🥪</span>
+                <span>Lunch</span>
+              </button>
+
+              <button class="category-card" type="button" data-category="Dinner">
+                <span class="category-icon">🍽️</span>
+                <span>Dinner</span>
+              </button>
+
+              <button class="category-card" type="button" data-category="Chicken">
+                <span class="category-icon">🍗</span>
+                <span>Chicken</span>
+              </button>
+
+              <button class="category-card" type="button" data-category="Pasta">
+                <span class="category-icon">🍝</span>
+                <span>Pasta</span>
+              </button>
+
+              <button class="category-card" type="button" data-category="Healthy">
+                <span class="category-icon">🥗</span>
+                <span>Healthy</span>
+              </button>
+
+              <button class="category-card" type="button" data-category="Dessert">
+                <span class="category-icon">🍰</span>
+                <span>Dessert</span>
+              </button>
+
+              <button class="category-card" type="button" data-category="Air Fryer">
+                <span class="category-icon">♨️</span>
+                <span>Air Fryer</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- FEATURED RECIPES -->
+          <section class="section-block">
+            <div class="section-heading">
+              <div>
+                <span class="section-eyebrow">Made for you</span>
+                <h2>Featured recipes</h2>
+              </div>
+
+              <button
+                class="text-button"
+                type="button"
+                data-page="recipes"
+              >
+                See all recipes
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+
+            <div class="recipe-grid" id="featuredRecipeGrid">
+              <!-- Recipes are inserted by app.js -->
+            </div>
+
+            <div class="empty-state" id="featuredEmptyState" hidden>
+              <span class="empty-state-icon">🍲</span>
+              <h3>No recipes found</h3>
+              <p>Try searching for something different.</p>
+            </div>
+          </section>
+
+          <!-- DASHBOARD GRID -->
+          <section class="dashboard-grid">
+            <!-- Pantry overview -->
+            <article class="dashboard-card pantry-overview-card">
+              <div class="dashboard-card-header">
+                <div>
+                  <span class="section-eyebrow">Inventory</span>
+                  <h2>Pantry overview</h2>
+                </div>
+
+                <button
+                  class="text-button"
+                  type="button"
+                  data-page="pantry"
+                >
+                  Manage
+                </button>
+              </div>
+
+              <div class="pantry-stat-row">
+                <div class="pantry-stat">
+                  <strong id="pantryItemCount">0</strong>
+                  <span>Items available</span>
+                </div>
+
+                <div class="pantry-stat warning">
+                  <strong id="pantryExpiringCount">0</strong>
+                  <span>Expiring soon</span>
+                </div>
+              </div>
+
+              <div class="pantry-preview-list" id="pantryPreviewList">
+                <div class="mini-empty-state">
+                  Add pantry items to see them here.
+                </div>
+              </div>
+
+              <button
+                class="full-width-button"
+                type="button"
+                data-page="pantry"
+              >
+                Find recipes I can make
+              </button>
+            </article>
+
+            <!-- Grocery overview -->
+            <article class="dashboard-card grocery-overview-card">
+              <div class="dashboard-card-header">
+                <div>
+                  <span class="section-eyebrow">Shopping</span>
+                  <h2>Grocery list</h2>
+                </div>
+
+                <button
+                  class="text-button"
+                  type="button"
+                  data-page="groceries"
+                >
+                  Open list
+                </button>
+              </div>
+
+              <div class="grocery-progress">
+                <div class="grocery-progress-label">
+                  <span>Shopping progress</span>
+                  <strong id="groceryProgressText">0 of 0</strong>
+                </div>
+
+                <div class="progress-track">
+                  <div
+                    class="progress-fill"
+                    id="groceryProgressFill"
+                    style="width: 0%"
+                  ></div>
+                </div>
+              </div>
+
+              <div class="grocery-preview-list" id="groceryPreviewList">
+                <div class="mini-empty-state">
+                  Your grocery list is currently empty.
+                </div>
+              </div>
+
+              <button
+                class="full-width-button outline"
+                id="quickAddGroceryButton"
+                type="button"
+              >
+                + Add grocery item
+              </button>
+            </article>
+
+            <!-- Allergy safety -->
+            <article class="dashboard-card allergy-card">
+              <div class="dashboard-card-header">
+                <div>
+                  <span class="section-eyebrow">Personalization</span>
+                  <h2>Recipe safety profile</h2>
+                </div>
+
+                <button
+                  class="text-button"
+                  type="button"
+                  data-page="profile"
+                >
+                  Edit
+                </button>
+              </div>
+
+              <div class="safety-status">
+                <div class="safety-shield">✓</div>
+
+                <div>
+                  <strong>Automatic adjustments are active</strong>
+                  <p>
+                    Recipes will be checked and modified using your saved
+                    allergies and dietary preferences.
+                  </p>
+                </div>
+              </div>
+
+              <div class="allergy-chip-list" id="allergyChipList">
+                <span class="allergy-chip muted">No allergies selected</span>
+              </div>
+
+              <div class="safety-notice">
+                <strong>Important:</strong>
+                Always verify food labels and ingredients. Recipe Buddy cannot
+                guarantee that products are free from cross-contamination.
+              </div>
+            </article>
+
+            <!-- AI Chef card -->
+            <article class="dashboard-card ai-chef-card">
+              <div class="ai-card-decoration ai-decoration-one"></div>
+              <div class="ai-card-decoration ai-decoration-two"></div>
+
+              <div class="ai-chef-content">
+                <span class="ai-chef-badge">✦ AI CHEF</span>
+
+                <h2>Your personal chef is ready</h2>
+
+                <p>
+                  Tell Recipe Buddy what ingredients you have, how much time
+                  you have, and what you feel like eating.
+                </p>
+
+                <button
+                  class="light-button"
+                  type="button"
+                  data-page="ai-chef"
+                >
+                  Start cooking with AI
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+
+              <div class="ai-chef-graphic" aria-hidden="true">
+                👨‍🍳
+              </div>
+            </article>
+          </section>
+        </section>
+
+        <!-- =========================
+             RECIPES PAGE
+        ========================== -->
+        <section
+          class="app-page"
+          id="recipesPage"
+          data-page-section="recipes"
+        >
+          <div class="page-header">
+            <div>
+              <span class="section-eyebrow">Discover</span>
+              <h1>All recipes</h1>
+              <p>Search and filter your complete recipe collection.</p>
+            </div>
+
+            <button class="primary-button" type="button" data-page="import">
+              + Add recipe
             </button>
+          </div>
 
-        </a>
+          <div class="filter-toolbar">
+            <div class="page-search">
+              <span aria-hidden="true">⌕</span>
+              <input
+                id="recipeSearchInput"
+                type="search"
+                placeholder="Search recipes or ingredients..."
+                aria-label="Search all recipes"
+              >
+            </div>
 
-    </section>
+            <select id="categoryFilter" aria-label="Filter by category">
+              <option value="all">All categories</option>
+              <option value="Breakfast">Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Dinner">Dinner</option>
+              <option value="Chicken">Chicken</option>
+              <option value="Beef">Beef</option>
+              <option value="Pasta">Pasta</option>
+              <option value="Healthy">Healthy</option>
+              <option value="Dessert">Dessert</option>
+              <option value="Air Fryer">Air Fryer</option>
+              <option value="Slow Cooker">Slow Cooker</option>
+            </select>
 
-    <section class="card">
+            <select id="timeFilter" aria-label="Filter by cooking time">
+              <option value="all">Any cooking time</option>
+              <option value="15">15 minutes or less</option>
+              <option value="30">30 minutes or less</option>
+              <option value="60">60 minutes or less</option>
+            </select>
 
-        <h2>📲 Import a Recipe Link</h2>
+            <select id="difficultyFilter" aria-label="Filter by difficulty">
+              <option value="all">Any difficulty</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
 
-        <p>
-            Save recipes from Instagram, TikTok, YouTube,
-            or cooking websites.
-        </p>
+          <div class="results-summary">
+            <span id="recipeResultsCount">0 recipes</span>
 
-        <a href="import-recipe.html">
-
-            <button type="button">
-                Import Recipe
+            <button
+              class="text-button"
+              id="clearRecipeFiltersButton"
+              type="button"
+            >
+              Clear filters
             </button>
+          </div>
 
-        </a>
+          <div class="recipe-grid full-grid" id="allRecipesGrid"></div>
 
-    </section>
+          <div class="empty-state" id="recipesEmptyState" hidden>
+            <span class="empty-state-icon">🔍</span>
+            <h3>No matching recipes</h3>
+            <p>Change your filters or try another search.</p>
+          </div>
+        </section>
 
-    <section class="card">
+        <!-- =========================
+             FAVORITES PAGE
+        ========================== -->
+        <section
+          class="app-page"
+          id="favoritesPage"
+          data-page-section="favorites"
+        >
+          <div class="page-header">
+            <div>
+              <span class="section-eyebrow">Saved recipes</span>
+              <h1>Your favorites</h1>
+              <p>All of your favorite recipes in one place.</p>
+            </div>
+          </div>
 
-        <h2>📸 Recipe Gallery</h2>
+          <div class="recipe-grid full-grid" id="favoritesRecipeGrid"></div>
 
-        <p>
-            Browse built-in and custom recipes with pictures.
-        </p>
+          <div class="empty-state" id="favoritesEmptyState">
+            <span class="empty-state-icon">♡</span>
+            <h3>No favorites yet</h3>
+            <p>Tap the heart on a recipe to save it here.</p>
 
-        <a href="gallery.html">
-
-            <button type="button">
-                Open Gallery
+            <button
+              class="primary-button"
+              type="button"
+              data-page="recipes"
+            >
+              Explore recipes
             </button>
+          </div>
+        </section>
 
-        </a>
+        <!-- =========================
+             PANTRY PAGE
+        ========================== -->
+        <section
+          class="app-page"
+          id="pantryPage"
+          data-page-section="pantry"
+        >
+          <div class="page-header">
+            <div>
+              <span class="section-eyebrow">Kitchen inventory</span>
+              <h1>My pantry</h1>
+              <p>
+                Track what you have and discover recipes you can make.
+              </p>
+            </div>
 
-    </section>
+            <div class="page-header-actions">
+              <button
+                class="secondary-button"
+                id="pantryBarcodeButton"
+                type="button"
+              >
+                ▥ Scan barcode
+              </button>
 
-    <section class="card">
+              <button
+                class="primary-button"
+                id="addPantryItemButton"
+                type="button"
+              >
+                + Add item
+              </button>
+            </div>
+          </div>
 
-        <h2>🛒 Grocery Shopping</h2>
+          <div class="pantry-toolbar">
+            <div class="page-search">
+              <span aria-hidden="true">⌕</span>
+              <input
+                id="pantrySearchInput"
+                type="search"
+                placeholder="Search pantry items..."
+                aria-label="Search pantry"
+              >
+            </div>
 
-        <p>
-            Organize ingredients and check them off
-            while shopping.
-        </p>
+            <select id="pantryCategoryFilter" aria-label="Pantry category">
+              <option value="all">All departments</option>
+              <option value="Produce">Produce</option>
+              <option value="Meat">Meat</option>
+              <option value="Dairy">Dairy</option>
+              <option value="Pantry">Pantry</option>
+              <option value="Frozen">Frozen</option>
+              <option value="Bakery">Bakery</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
 
-        <a href="grocery.html">
+          <div class="pantry-page-grid">
+            <div class="content-card">
+              <div class="content-card-header">
+                <h2>Available ingredients</h2>
+                <span id="pantryPageCount">0 items</span>
+              </div>
 
-            <button type="button">
-                Open Grocery List
+              <div class="pantry-item-grid" id="pantryItemGrid"></div>
+
+              <div class="empty-state compact" id="pantryEmptyState">
+                <span class="empty-state-icon">🥫</span>
+                <h3>Your pantry is empty</h3>
+                <p>Add ingredients manually or scan a product barcode.</p>
+              </div>
+            </div>
+
+            <aside class="content-card pantry-match-card">
+              <span class="match-icon">🍳</span>
+              <h2>What can I make?</h2>
+              <p>
+                Recipe Buddy compares your pantry with every recipe and shows
+                your closest matches.
+              </p>
+
+              <button
+                class="primary-button full-width"
+                id="findPantryRecipesButton"
+                type="button"
+              >
+                Find matching recipes
+              </button>
+            </aside>
+          </div>
+        </section>
+
+        <!-- =========================
+             GROCERY PAGE
+        ========================== -->
+        <section
+          class="app-page"
+          id="groceriesPage"
+          data-page-section="groceries"
+        >
+          <div class="page-header">
+            <div>
+              <span class="section-eyebrow">Shopping assistant</span>
+              <h1>Grocery list</h1>
+              <p>Keep your shopping list organized by store department.</p>
+            </div>
+
+            <button
+              class="primary-button"
+              id="addGroceryItemButton"
+              type="button"
+            >
+              + Add item
             </button>
+          </div>
 
-        </a>
+          <div class="grocery-layout">
+            <div class="content-card">
+              <div class="content-card-header">
+                <h2>Shopping list</h2>
 
-    </section>
+                <button
+                  class="text-button danger-text"
+                  id="clearCompletedGroceriesButton"
+                  type="button"
+                >
+                  Clear completed
+                </button>
+              </div>
 
-    <section class="card">
+              <div class="grocery-department-list" id="groceryDepartmentList">
+              </div>
 
-        <h2>❤️ Favorite Recipes</h2>
+              <div class="empty-state compact" id="groceryEmptyState">
+                <span class="empty-state-icon">🛒</span>
+                <h3>Your grocery list is empty</h3>
+                <p>Add items manually or from a recipe.</p>
+              </div>
+            </div>
 
-        <p>
-            Quickly return to meals you want to cook again.
-        </p>
+            <aside class="content-card grocery-summary-card">
+              <h2>Shopping summary</h2>
 
-        <a href="favorites.html">
+              <div class="summary-stat">
+                <span>Total items</span>
+                <strong id="groceryTotalCount">0</strong>
+              </div>
 
-            <button type="button">
-                View Favorites
+              <div class="summary-stat">
+                <span>Completed</span>
+                <strong id="groceryCompletedCount">0</strong>
+              </div>
+
+              <div class="summary-stat">
+                <span>Remaining</span>
+                <strong id="groceryRemainingCount">0</strong>
+              </div>
+
+              <div class="progress-track large">
+                <div
+                  class="progress-fill"
+                  id="groceryPageProgressFill"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- =========================
+             MEAL PLANNER PAGE
+        ========================== -->
+        <section
+          class="app-page"
+          id="mealPlannerPage"
+          data-page-section="meal-planner"
+        >
+          <div class="page-header">
+            <div>
+              <span class="section-eyebrow">Plan your week</span>
+              <h1>Meal planner</h1>
+              <p>Organize breakfast, lunch, and dinner for each day.</p>
+            </div>
+
+            <button
+              class="primary-button"
+              id="autoPlanMealsButton"
+              type="button"
+            >
+              ✦ Auto-plan meals
             </button>
+          </div>
 
-        </a>
+          <div class="meal-planner-grid" id="mealPlannerGrid">
+            <!-- Generated by app.js -->
+          </div>
+        </section>
 
-    </section>
+        <!-- =========================
+             AI CHEF PAGE
+        ========================== -->
+        <section
+          class="app-page"
+          id="aiChefPage"
+          data-page-section="ai-chef"
+        >
+          <div class="page-header">
+            <div>
+              <span class="section-eyebrow">Personal cooking assistant</span>
+              <h1>AI Chef</h1>
+              <p>
+                Generate recipes based on ingredients, time, diet, and mood.
+              </p>
+            </div>
+          </div>
 
-    <section class="card">
+          <div class="ai-page-layout">
+            <section class="content-card ai-generator-card">
+              <div class="form-group">
+                <label for="aiIngredientsInput">
+                  What ingredients do you have?
+                </label>
 
-        <h2>💕 Meals for Her</h2>
+                <textarea
+                  id="aiIngredientsInput"
+                  rows="4"
+                  placeholder="Example: chicken, rice, broccoli, garlic..."
+                ></textarea>
+              </div>
 
-        <p>
-            Save meals your girlfriend loves and notes
-            for next time.
-        </p>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="aiMealTypeSelect">Meal type</label>
 
-        <a href="her-favorites.html">
+                  <select id="aiMealTypeSelect">
+                    <option value="Any">Any meal</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Snack">Snack</option>
+                    <option value="Dessert">Dessert</option>
+                  </select>
+                </div>
 
-            <button type="button">
-                Open Her Meals
+                <div class="form-group">
+                  <label for="aiTimeSelect">Maximum time</label>
+
+                  <select id="aiTimeSelect">
+                    <option value="Any">Any time</option>
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="60">60 minutes</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="aiCuisineSelect">Cuisine</label>
+
+                  <select id="aiCuisineSelect">
+                    <option value="Any">Any cuisine</option>
+                    <option value="American">American</option>
+                    <option value="Italian">Italian</option>
+                    <option value="Mexican">Mexican</option>
+                    <option value="Asian">Asian</option>
+                    <option value="Mediterranean">Mediterranean</option>
+                    <option value="Southern">Southern</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="aiDifficultySelect">Difficulty</label>
+
+                  <select id="aiDifficultySelect">
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Any">Any difficulty</option>
+                  </select>
+                </div>
+              </div>
+
+              <label class="checkbox-card">
+                <input
+                  id="aiUseProfileCheckbox"
+                  type="checkbox"
+                  checked
+                >
+
+                <span>
+                  <strong>Use my allergy and dietary profile</strong>
+                  <small>
+                    Automatically avoid or replace incompatible ingredients.
+                  </small>
+                </span>
+              </label>
+
+              <button
+                class="primary-button full-width large-button"
+                id="generateRecipeButton"
+                type="button"
+              >
+                ✦ Generate my recipe
+              </button>
+            </section>
+
+            <aside class="content-card ai-tips-card">
+              <div class="ai-orb">✦</div>
+
+              <h2>Try asking for:</h2>
+
+              <button
+                class="prompt-suggestion"
+                type="button"
+                data-prompt="A high-protein dinner under 30 minutes"
+              >
+                A high-protein dinner under 30 minutes
+              </button>
+
+              <button
+                class="prompt-suggestion"
+                type="button"
+                data-prompt="A meal using chicken, rice, and cheese"
+              >
+                A meal using chicken, rice, and cheese
+              </button>
+
+              <button
+                class="prompt-suggestion"
+                type="button"
+                data-prompt="An easy dessert with five ingredients"
+              >
+                An easy dessert with five ingredients
+              </button>
+
+              <button
+                class="prompt-suggestion"
+                type="button"
+                data-prompt="A recipe using my leftover ingredients"
+              >
+                A recipe using my leftover ingredients
+              </button>
+            </aside>
+          </div>
+
+          <section
+            class="content-card generated-recipe-card"
+            id="generatedRecipeContainer"
+            hidden
+          >
+          </section>
+        </section>
+
+        <!-- =========================
+             IMPORT PAGE
+        ========================== -->
+        <section
+          class="app-page"
+          id="importPage"
+          data-page-section="import"
+        >
+          <div class="page-header">
+            <div>
+              <span class="section-eyebrow">Save recipes anywhere</span>
+              <h1>Import from a website</h1>
+              <p>
+                Paste the address of a recipe page and Recipe Buddy will
+                organize it for you.
+              </p>
+            </div>
+          </div>
+
+          <div class="import-layout">
+            <section class="content-card import-form-card">
+              <div class="import-icon">🌐</div>
+
+              <h2>Paste a recipe link</h2>
+
+              <p>
+                Import the recipe title, ingredients, instructions, cooking
+                time, servings, and available image.
+              </p>
+
+              <div class="url-input-row">
+                <input
+                  id="recipeUrlInput"
+                  type="url"
+                  placeholder="https://example.com/recipe"
+                  aria-label="Recipe website address"
+                >
+
+                <button
+                  class="primary-button"
+                  id="importRecipeButton"
+                  type="button"
+                >
+                  Import
+                </button>
+              </div>
+
+              <div class="import-status" id="importStatus" hidden></div>
+            </section>
+
+            <aside class="content-card import-information-card">
+              <h2>After importing</h2>
+
+              <ul class="feature-check-list">
+                <li>✓ Save it to your personal cookbook</li>
+                <li>✓ Adjust servings and measurements</li>
+                <li>✓ Apply allergy-safe substitutions</li>
+                <li>✓ Add ingredients to your grocery list</li>
+                <li>✓ Use distraction-free cooking mode</li>
+              </ul>
+
+              <div class="safety-notice">
+                Some websites may prevent automatic importing. When that
+                happens, Recipe Buddy will let you enter the recipe manually.
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- =========================
+             PROFILE PAGE
+        ========================== -->
+        <section
+          class="app-page"
+          id="profilePage"
+          data-page-section="profile"
+        >
+          <div class="page-header">
+            <div>
+              <span class="section-eyebrow">Personalization</span>
+              <h1>Your cooking profile</h1>
+              <p>
+                These settings automatically personalize every recipe.
+              </p>
+            </div>
+
+            <button
+              class="primary-button"
+              id="saveProfileButton"
+              type="button"
+            >
+              Save profile
             </button>
+          </div>
 
-        </a>
+          <form class="profile-form" id="profileForm">
+            <section class="content-card">
+              <div class="content-card-header">
+                <div>
+                  <h2>Basic preferences</h2>
+                  <p>Set your default cooking preferences.</p>
+                </div>
+              </div>
 
-    </section>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="profileNameInput">Profile name</label>
+                  <input
+                    id="profileNameInput"
+                    type="text"
+                    value="Cole"
+                    maxlength="40"
+                  >
+                </div>
 
-</main>
+                <div class="form-group">
+                  <label for="defaultServingsSelect">Default servings</label>
+                  <select id="defaultServingsSelect">
+                    <option value="1">1 serving</option>
+                    <option value="2">2 servings</option>
+                    <option value="4" selected>4 servings</option>
+                    <option value="6">6 servings</option>
+                    <option value="8">8 servings</option>
+                  </select>
+                </div>
+              </div>
 
-<div class="mobile-nav">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="measurementSelect">Measurements</label>
+                  <select id="measurementSelect">
+                    <option value="us" selected>US measurements</option>
+                    <option value="metric">Metric measurements</option>
+                  </select>
+                </div>
 
-    <a href="index.html">
-        🏠
-        <span>Home</span>
-    </a>
+                <div class="form-group">
+                  <label for="spiceLevelSelect">Spice level</label>
+                  <select id="spiceLevelSelect">
+                    <option value="Mild">Mild</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="Hot">Hot</option>
+                    <option value="Extra Hot">Extra hot</option>
+                  </select>
+                </div>
+              </div>
+            </section>
 
-    <a href="recipe.html">
-        🍳
-        <span>Recipes</span>
-    </a>
+            <section class="content-card">
+              <div class="content-card-header">
+                <div>
+                  <h2>Food allergies</h2>
+                  <p>
+                    Selected allergens will be flagged or automatically
+                    replaced when possible.
+                  </p>
+                </div>
+              </div>
 
-    <a href="import-recipe.html">
-        📲
-        <span>Import</span>
-    </a>
+              <div class="selection-grid">
+                <label class="selection-option">
+                  <input type="checkbox" name="allergy" value="Peanuts">
+                  <span>🥜 Peanuts</span>
+                </label>
 
-    <a href="grocery.html">
-        🛒
-        <span>Grocery</span>
-    </a>
+                <label class="selection-option">
+                  <input type="checkbox" name="allergy" value="Tree Nuts">
+                  <span>🌰 Tree nuts</span>
+                </label>
 
-    <a href="favorites.html">
-        ❤️
-        <span>Favorites</span>
-    </a>
+                <label class="selection-option">
+                  <input type="checkbox" name="allergy" value="Dairy">
+                  <span>🥛 Dairy</span>
+                </label>
 
-</div>
+                <label class="selection-option">
+                  <input type="checkbox" name="allergy" value="Eggs">
+                  <span>🥚 Eggs</span>
+                </label>
 
-<script src="update-app.js"></script>
+                <label class="selection-option">
+                  <input type="checkbox" name="allergy" value="Gluten">
+                  <span>🌾 Gluten</span>
+                </label>
 
+                <label class="selection-option">
+                  <input type="checkbox" name="allergy" value="Shellfish">
+                  <span>🦐 Shellfish</span>
+                </label>
+
+                <label class="selection-option">
+                  <input type="checkbox" name="allergy" value="Fish">
+                  <span>🐟 Fish</span>
+                </label>
+
+                <label class="selection-option">
+                  <input type="checkbox" name="allergy" value="Soy">
+                  <span>🌱 Soy</span>
+                </label>
+
+                <label class="selection-option">
+                  <input type="checkbox" name="allergy" value="Sesame">
+                  <span>🌿 Sesame</span>
+                </label>
+              </div>
+            </section>
+
+            <section class="content-card">
+              <div class="content-card-header">
+                <div>
+                  <h2>Dietary preferences</h2>
+                  <p>Recipes will be adjusted to match your selections.</p>
+                </div>
+              </div>
+
+              <div class="selection-grid">
+                <label class="selection-option">
+                  <input type="checkbox" name="diet" value="High Protein">
+                  <span>High protein</span>
+                </label>
+
+                <label class="selection-option">
+                  <input type="checkbox" name="diet" value="Low Sodium">
+                  <span>Low sodium</span>
+                </label>
+
+                <label class="selection-option">
+                  <input type="checkbox" name="diet" value="Low Carb">
+                  <span>Low carb</span>
+                </label>
+
+                <label class="selection-option">
+                  <input type="checkbox" name="diet" value="Keto">
+                  <span>Keto</span>
+                </label>
+
+                <label class="selection-option">
+                  <input type="checkbox" name="diet" value="Vegetarian">
+                  <span>Vegetarian</span>
+                </label>
+
+                <label class="selection-option">
+                  <input type="checkbox" name="diet" value="Vegan">
+                  <span>Vegan</span>
+                </label>
+
+                <label class="selection-option">
+                  <input type="checkbox" name="diet" value="Dairy Free">
+                  <span>Dairy-free</span>
+                </label>
+
+                <label class="selection-option">
+                  <input type="checkbox" name="diet" value="Gluten Free">
+                  <span>Gluten-free</span>
+                </label>
+
+                <label class="selection-option">
+                  <input type="checkbox" name="diet" value="Nut Free">
+                  <span>Nut-free</span>
+                </label>
+              </div>
+            </section>
+
+            <section class="content-card">
+              <div class="content-card-header">
+                <div>
+                  <h2>Foods you dislike</h2>
+                  <p>
+                    Recipe Buddy will avoid these foods when recommending or
+                    generating recipes.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tag-input-container">
+                <input
+                  id="dislikedFoodInput"
+                  type="text"
+                  placeholder="Example: mushrooms"
+                >
+
+                <button
+                  class="secondary-button"
+                  id="addDislikedFoodButton"
+                  type="button"
+                >
+                  Add
+                </button>
+              </div>
+
+              <div class="tag-list" id="dislikedFoodList"></div>
+            </section>
+
+            <section class="content-card">
+              <label class="settings-switch-row">
+                <span>
+                  <strong>Automatically adjust recipes</strong>
+                  <small>
+                    Replace incompatible ingredients and update directions
+                    whenever a safe substitution is available.
+                  </small>
+                </span>
+
+                <span class="switch">
+                  <input
+                    id="automaticAdjustmentToggle"
+                    type="checkbox"
+                    checked
+                  >
+                  <span class="switch-slider"></span>
+                </span>
+              </label>
+            </section>
+          </form>
+        </section>
+
+        <!-- =========================
+             SETTINGS PAGE
+        ========================== -->
+        <section
+          class="app-page"
+          id="settingsPage"
+          data-page-section="settings"
+        >
+          <div class="page-header">
+            <div>
+              <span class="section-eyebrow">App preferences</span>
+              <h1>Settings</h1>
+              <p>Control appearance, notifications, and stored information.</p>
+            </div>
+          </div>
+
+          <div class="settings-list">
+            <section class="content-card">
+              <label class="settings-switch-row">
+                <span>
+                  <strong>Dark mode</strong>
+                  <small>Use a darker color theme throughout the app.</small>
+                </span>
+
+                <span class="switch">
+                  <input id="darkModeToggle" type="checkbox">
+                  <span class="switch-slider"></span>
+                </span>
+              </label>
+            </section>
+
+            <section class="content-card">
+              <label class="settings-switch-row">
+                <span>
+                  <strong>Cooking timer notifications</strong>
+                  <small>Receive an alert when a cooking timer ends.</small>
+                </span>
+
+                <span class="switch">
+                  <input id="timerNotificationToggle" type="checkbox" checked>
+                  <span class="switch-slider"></span>
+                </span>
+              </label>
+            </section>
+
+            <section class="content-card">
+              <label class="settings-switch-row">
+                <span>
+                  <strong>Recipe of the day</strong>
+                  <small>Show a new recommended recipe each day.</small>
+                </span>
+
+                <span class="switch">
+                  <input id="dailyRecipeToggle" type="checkbox" checked>
+                  <span class="switch-slider"></span>
+                </span>
+              </label>
+            </section>
+
+            <section class="content-card danger-zone">
+              <div>
+                <strong>Reset app data</strong>
+                <p>
+                  Delete favorites, pantry items, grocery items, notes, ratings,
+                  and saved preferences from this device.
+                </p>
+              </div>
+
+              <button
+                class="danger-button"
+                id="resetAppDataButton"
+                type="button"
+              >
+                Reset data
+              </button>
+            </section>
+          </div>
+        </section>
+      </main>
+
+      <!-- =========================
+           MOBILE BOTTOM NAVIGATION
+      ========================== -->
+      <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+        <button class="mobile-nav-item active" type="button" data-page="home">
+          <span>⌂</span>
+          <small>Home</small>
+        </button>
+
+        <button class="mobile-nav-item" type="button" data-page="recipes">
+          <span>🍲</span>
+          <small>Recipes</small>
+        </button>
+
+        <button class="mobile-nav-item" type="button" data-page="pantry">
+          <span>🥫</span>
+          <small>Pantry</small>
+        </button>
+
+        <button class="mobile-nav-item" type="button" data-page="groceries">
+          <span>🛒</span>
+          <small>Groceries</small>
+        </button>
+
+        <button class="mobile-nav-item" type="button" data-page="profile">
+          <span>👤</span>
+          <small>Profile</small>
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- =========================
+       RECIPE DETAIL MODAL
+  ========================== -->
+  <div
+    class="modal"
+    id="recipeModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="recipeModalTitle"
+    hidden
+  >
+    <div class="modal-backdrop" data-close-modal="recipeModal"></div>
+
+    <div class="modal-panel recipe-modal-panel">
+      <button
+        class="modal-close-button"
+        type="button"
+        data-close-modal="recipeModal"
+        aria-label="Close recipe"
+      >
+        ✕
+      </button>
+
+      <div id="recipeModalContent"></div>
+    </div>
+  </div>
+
+  <!-- =========================
+       ADD PANTRY ITEM MODAL
+  ========================== -->
+  <div
+    class="modal"
+    id="pantryItemModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="pantryItemModalTitle"
+    hidden
+  >
+    <div class="modal-backdrop" data-close-modal="pantryItemModal"></div>
+
+    <div class="modal-panel small-modal-panel">
+      <div class="modal-header">
+        <div>
+          <span class="section-eyebrow">Pantry</span>
+          <h2 id="pantryItemModalTitle">Add pantry item</h2>
+        </div>
+
+        <button
+          class="modal-close-button inline"
+          type="button"
+          data-close-modal="pantryItemModal"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+      </div>
+
+      <form id="pantryItemForm">
+        <div class="form-group">
+          <label for="pantryItemNameInput">Item name</label>
+          <input
+            id="pantryItemNameInput"
+            type="text"
+            placeholder="Example: Chicken breast"
+            required
+          >
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pantryItemQuantityInput">Quantity</label>
+            <input
+              id="pantryItemQuantityInput"
+              type="text"
+              placeholder="Example: 2 lbs"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="pantryItemCategorySelect">Department</label>
+            <select id="pantryItemCategorySelect">
+              <option value="Produce">Produce</option>
+              <option value="Meat">Meat</option>
+              <option value="Dairy">Dairy</option>
+              <option value="Pantry" selected>Pantry</option>
+              <option value="Frozen">Frozen</option>
+              <option value="Bakery">Bakery</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="pantryExpirationInput">Expiration date</label>
+          <input id="pantryExpirationInput" type="date">
+        </div>
+
+        <button
+          class="primary-button full-width"
+          type="submit"
+        >
+          Save pantry item
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================
+       ADD GROCERY ITEM MODAL
+  ========================== -->
+  <div
+    class="modal"
+    id="groceryItemModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="groceryItemModalTitle"
+    hidden
+  >
+    <div class="modal-backdrop" data-close-modal="groceryItemModal"></div>
+
+    <div class="modal-panel small-modal-panel">
+      <div class="modal-header">
+        <div>
+          <span class="section-eyebrow">Grocery list</span>
+          <h2 id="groceryItemModalTitle">Add grocery item</h2>
+        </div>
+
+        <button
+          class="modal-close-button inline"
+          type="button"
+          data-close-modal="groceryItemModal"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+      </div>
+
+      <form id="groceryItemForm">
+        <div class="form-group">
+          <label for="groceryItemNameInput">Item name</label>
+          <input
+            id="groceryItemNameInput"
+            type="text"
+            placeholder="Example: Milk"
+            required
+          >
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="groceryItemQuantityInput">Quantity</label>
+            <input
+              id="groceryItemQuantityInput"
+              type="text"
+              placeholder="Example: 1 gallon"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="groceryItemCategorySelect">Department</label>
+            <select id="groceryItemCategorySelect">
+              <option value="Produce">Produce</option>
+              <option value="Meat">Meat</option>
+              <option value="Dairy">Dairy</option>
+              <option value="Pantry" selected>Pantry</option>
+              <option value="Frozen">Frozen</option>
+              <option value="Bakery">Bakery</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <button
+          class="primary-button full-width"
+          type="submit"
+        >
+          Add to grocery list
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================
+       BARCODE SCANNER MODAL
+  ========================== -->
+  <div
+    class="modal"
+    id="barcodeScannerModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="barcodeScannerTitle"
+    hidden
+  >
+    <div class="modal-backdrop" data-close-modal="barcodeScannerModal"></div>
+
+    <div class="modal-panel scanner-modal-panel">
+      <div class="modal-header">
+        <div>
+          <span class="section-eyebrow">Pantry scanner</span>
+          <h2 id="barcodeScannerTitle">Scan a barcode</h2>
+        </div>
+
+        <button
+          class="modal-close-button inline"
+          type="button"
+          data-close-modal="barcodeScannerModal"
+          aria-label="Close scanner"
+        >
+          ✕
+        </button>
+      </div>
+
+      <div class="scanner-view">
+        <video
+          id="barcodeVideo"
+          autoplay
+          muted
+          playsinline
+        ></video>
+
+        <div class="scanner-frame">
+          <div class="scanner-line"></div>
+        </div>
+
+        <div class="scanner-placeholder" id="scannerPlaceholder">
+          <span>▥</span>
+          <p>Camera preview will appear here.</p>
+        </div>
+      </div>
+
+      <div class="scanner-status" id="scannerStatus">
+        Position the product barcode inside the frame.
+      </div>
+
+      <div class="scanner-actions">
+        <button
+          class="primary-button"
+          id="startScannerButton"
+          type="button"
+        >
+          Start camera
+        </button>
+
+        <button
+          class="secondary-button"
+          id="manualBarcodeButton"
+          type="button"
+        >
+          Enter barcode manually
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       TIMER PANEL
+  ========================== -->
+  <aside class="timer-drawer" id="timerDrawer" aria-label="Cooking timers">
+    <div class="timer-drawer-header">
+      <div>
+        <span class="section-eyebrow">Cooking mode</span>
+        <h2>Timers</h2>
+      </div>
+
+      <button
+        class="icon-button"
+        id="closeTimerDrawerButton"
+        type="button"
+        aria-label="Close timers"
+      >
+        ✕
+      </button>
+    </div>
+
+    <div class="timer-list" id="timerList">
+      <div class="mini-empty-state">
+        No active timers.
+      </div>
+    </div>
+  </aside>
+
+  <!-- Floating timer button -->
+  <button
+    class="floating-timer-button"
+    id="floatingTimerButton"
+    type="button"
+    aria-label="Open cooking timers"
+    hidden
+  >
+    ⏱
+    <span id="activeTimerCount">0</span>
+  </button>
+
+  <!-- Toast notifications -->
+  <div
+    class="toast-container"
+    id="toastContainer"
+    aria-live="polite"
+    aria-atomic="true"
+  ></div>
+
+  <!-- Recipe data and main app logic -->
+  <script src="recipes.js"></script>
+  <script src="app.js"></script>
 </body>
-
 </html>
