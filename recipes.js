@@ -431,3 +431,5 @@ const recipes = recipeNames.map(function (recipe, index) {
 console.log(
     recipes.length + " recipes loaded."
 );
+
+window.recipes = recipes;
