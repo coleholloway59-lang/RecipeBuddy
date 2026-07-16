@@ -1,148 +1,432 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-<head<link rel="icon" href="icon.png">>
+<head>
+    <meta charset="UTF-8">
 
-<title>❤️ Favorite Recipes</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
 
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#8e44ad">
+    <title>Favorite Recipes ❤️</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <meta name="theme-color" content="#8e44ad">
+
+    <meta
+        name="mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
+
+    <meta
+        name="apple-mobile-web-app-title"
+        content="Recipe Buddy"
+    >
 </head>
 
-<script>
-
-if("serviceWorker" in navigator){
-
-navigator.serviceWorker.register(
-"service-worker.js"
-);
-
-}
-
-</script>
 <body>
 
-
 <nav>
-
-<a href="index.html">🏠 Home</a>
-<a href="recipe.html">🍽 Recipes</a>
-<a href="grocery.html">🛒 Grocery</a>
-<a href="favorites.html">❤️ Favorites</a>
-
+    <a href="index.html">🏠 Home</a>
+    <a href="recipe.html">🍳 Recipes</a>
+    <a href="gallery.html">📸 Gallery</a>
+    <a href="grocery.html">🛒 Grocery</a>
+    <a href="favorites.html">❤️ Favorites</a>
+    <a href="add-recipe.html">➕ Add Recipe</a>
 </nav>
 
+<header class="hero">
+    <h1>❤️ Favorite Recipes</h1>
 
+    <p>
+        Keep the meals you love in one place.
+    </p>
+</header>
 
-<h1>❤️ My Favorite Recipes</h1>
+<main>
 
+    <section class="card">
 
-<div id="favorites"></div>
+        <h2>Your Saved Recipes</h2>
 
+        <p id="favoriteCount">
+            Loading favorites...
+        </p>
 
+        <button
+            type="button"
+            onclick="clearFavorites()"
+        >
+            🗑️ Clear All Favorites
+        </button>
+
+    </section>
+
+    <section id="favoritesContainer"></section>
+
+</main>
+
+<div class="mobile-nav">
+
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="recipe.html">
+        🍳
+        <span>Recipes</span>
+    </a>
+
+    <a href="add-recipe.html">
+        ➕
+        <span>Add</span>
+    </a>
+
+    <a href="grocery.html">
+        🛒
+        <span>Grocery</span>
+    </a>
+
+    <a href="favorites.html">
+        ❤️
+        <span>Favorites</span>
+    </a>
+
+</div>
 
 <script src="recipes.js"></script>
 
-
 <script>
+    const builtInRecipes =
+        typeof recipes !== "undefined" ? recipes : [];
 
+    const customRecipes =
+        JSON.parse(
+            localStorage.getItem("customRecipes")
+        ) || [];
 
-let favorites = JSON.parse(
-localStorage.getItem("favorites")
-) || [];
+    const allRecipes = [
+        ...builtInRecipes,
+        ...customRecipes
+    ];
 
+    function getFavorites() {
+        return JSON.parse(
+            localStorage.getItem("favorites")
+        ) || [];
+    }
 
+    function findRecipeByName(name) {
+        return allRecipes.find(function (recipe) {
+            return recipe.name === name;
+        });
+    }
 
-let output="";
+    function normalizeInstructions(recipe) {
+        if (Array.isArray(recipe.instructions)) {
+            return recipe.instructions;
+        }
 
+        if (typeof recipe.instructions === "string") {
+            return recipe.instructions
+                .split("\n")
+                .map(function (step) {
+                    return step.trim();
+                })
+                .filter(function (step) {
+                    return step.length > 0;
+                });
+        }
 
+        return [];
+    }
 
-recipes.forEach(recipe=>{
+    function escapeForButton(value) {
+        return String(value)
+            .replace(/\\/g, "\\\\")
+            .replace(/'/g, "\\'");
+    }
 
+    function displayFavorites() {
+        const favorites = getFavorites();
 
-if(favorites.includes(recipe.name)){
+        const container =
+            document.getElementById("favoritesContainer");
 
+        const favoriteCount =
+            document.getElementById("favoriteCount");
 
-output += `
+        favoriteCount.textContent =
+            favorites.length +
+            (favorites.length === 1
+                ? " favorite recipe"
+                : " favorite recipes");
 
+        if (favorites.length === 0) {
+            container.innerHTML = `
+                <div class="empty-message">
 
-<div class="card">
+                    <h2>No favorites saved yet ❤️</h2>
 
+                    <p>
+                        Open the Recipes page and save
+                        a meal you like.
+                    </p>
 
-<img 
-src="${recipe.image}"
-class="recipe-image"
->
+                    <a href="recipe.html">
 
+                        <button type="button">
+                            Browse Recipes
+                        </button>
 
-<h2>${recipe.name}</h2>
+                    </a>
 
+                </div>
+            `;
 
-<p>
-${recipe.category}
-</p>
+            return;
+        }
 
+        const favoriteRecipes =
+            favorites
+                .map(function (name) {
+                    return findRecipeByName(name);
+                })
+                .filter(function (recipe) {
+                    return recipe;
+                });
 
-<p>
-${recipe.instructions}
-</p>
+        if (favoriteRecipes.length === 0) {
+            container.innerHTML = `
+                <div class="empty-message">
 
+                    <h2>Recipes could not be found</h2>
 
-</div>
+                    <p>
+                        A saved recipe may have been deleted
+                        or renamed.
+                    </p>
 
+                </div>
+            `;
 
-`;
+            return;
+        }
 
+        container.innerHTML =
+            favoriteRecipes
+                .map(function (recipe) {
+                    const ingredients =
+                        Array.isArray(recipe.ingredients)
+                            ? recipe.ingredients
+                            : [];
 
-}
+                    const instructions =
+                        normalizeInstructions(recipe);
 
+                    const safeName =
+                        escapeForButton(recipe.name);
 
-});
+                    return `
+                        <article class="card">
 
+                            <img
+                                class="recipe-image"
+                                src="${recipe.image || "food.jpg"}"
+                                alt="${recipe.name}"
+                                onerror="this.src='food.jpg'"
+                            >
 
+                            <h2>${recipe.name}</h2>
 
-if(output==""){
+                            <p>
+                                <strong>Category:</strong>
+                                ${recipe.category || "Other"}
+                            </p>
 
-output="<h2>No favorite recipes yet ❤️</h2>";
+                            <p>
+                                <strong>Difficulty:</strong>
+                                ${recipe.difficulty || "Not listed"}
+                            </p>
 
-}
+                            <p>
+                                <strong>Servings:</strong>
+                                ${recipe.servings || "Not listed"}
+                            </p>
 
+                            <p>
+                                <strong>Prep time:</strong>
+                                ${recipe.prepTime || recipe.time || "Not listed"}
+                            </p>
 
+                            <p>
+                                <strong>Cook time:</strong>
+                                ${recipe.cookTime || "Not listed"}
+                            </p>
 
-document.getElementById("favorites").innerHTML=output;
+                            <h3>Ingredients</h3>
 
+                            <ul>
+                                ${ingredients
+                                    .map(function (ingredient) {
+                                        return `<li>${ingredient}</li>`;
+                                    })
+                                    .join("")}
+                            </ul>
 
+                            <h3>Instructions</h3>
 
+                            <ol>
+                                ${instructions
+                                    .map(function (step) {
+                                        return `<li>${step}</li>`;
+                                    })
+                                    .join("")}
+                            </ol>
+
+                            ${
+                                recipe.notes
+                                    ? `
+                                        <h3>Personal Notes</h3>
+                                        <p>${recipe.notes}</p>
+                                    `
+                                    : ""
+                            }
+
+                            <button
+                                type="button"
+                                onclick="addToGrocery('${safeName}')"
+                            >
+                                🛒 Add Ingredients
+                            </button>
+
+                            <br><br>
+
+                            <button
+                                type="button"
+                                onclick="removeFavorite('${safeName}')"
+                            >
+                                💔 Remove Favorite
+                            </button>
+
+                        </article>
+                    `;
+                })
+                .join("");
+    }
+
+    function addToGrocery(recipeName) {
+        const recipe =
+            findRecipeByName(recipeName);
+
+        if (!recipe) {
+            alert("Recipe could not be found.");
+            return;
+        }
+
+        const shoppingList =
+            JSON.parse(
+                localStorage.getItem("shoppingList")
+            ) || [];
+
+        const ingredients =
+            Array.isArray(recipe.ingredients)
+                ? recipe.ingredients
+                : [];
+
+        ingredients.forEach(function (ingredient) {
+            const alreadyExists =
+                shoppingList.some(function (item) {
+                    const itemName =
+                        typeof item === "string"
+                            ? item
+                            : item.name;
+
+                    return itemName === ingredient;
+                });
+
+            if (!alreadyExists) {
+                shoppingList.push({
+                    name: ingredient,
+                    done: false
+                });
+            }
+        });
+
+        localStorage.setItem(
+            "shoppingList",
+            JSON.stringify(shoppingList)
+        );
+
+        alert(
+            recipe.name +
+            " ingredients were added to the grocery list."
+        );
+    }
+
+    function removeFavorite(recipeName) {
+        const favorites = getFavorites();
+
+        const updatedFavorites =
+            favorites.filter(function (name) {
+                return name !== recipeName;
+            });
+
+        localStorage.setItem(
+            "favorites",
+            JSON.stringify(updatedFavorites)
+        );
+
+        displayFavorites();
+    }
+
+    function clearFavorites() {
+        const favorites = getFavorites();
+
+        if (favorites.length === 0) {
+            alert(
+                "You do not have any favorites to clear."
+            );
+
+            return;
+        }
+
+        const shouldClear =
+            confirm(
+                "Are you sure you want to remove every favorite?"
+            );
+
+        if (!shouldClear) {
+            return;
+        }
+
+        localStorage.setItem(
+            "favorites",
+            JSON.stringify([])
+        );
+
+        displayFavorites();
+    }
+
+    displayFavorites();
 </script>
-<div class="mobile-nav">
 
-<a href="index.html">
-🏠
-<span>Home</span>
-</a>
-
-
-<a href="recipe.html">
-🍳
-<span>Recipes</span>
-</a>
-
-
-<a href="grocery.html">
-🛒
-<span>Grocery</span>
-</a>
-
-
-<a href="favorites.html">
-❤️
-<span>Favorites</span>
-</a>
-
-
-</div>
-
+<script src="update-app.js"></script>
 
 </body>
 
