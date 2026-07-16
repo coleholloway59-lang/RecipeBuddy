@@ -6,7 +6,7 @@
 "use strict";
 
 /* =========================================================
-   SAVED DATA
+   STORAGE
 ========================================================= */
 
 const STORAGE = {
@@ -38,18 +38,22 @@ const DEFAULT_SETTINGS = {
   dailyRecipe: true
 };
 
+function cloneValue(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
 function loadData(key, fallback) {
   try {
     const saved = localStorage.getItem(key);
 
     if (!saved) {
-      return JSON.parse(JSON.stringify(fallback));
+      return cloneValue(fallback);
     }
 
     return JSON.parse(saved);
   } catch (error) {
     console.error("Could not load saved data:", error);
-    return JSON.parse(JSON.stringify(fallback));
+    return cloneValue(fallback);
   }
 }
 
@@ -57,7 +61,7 @@ function saveData(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
-    console.error("Could not save data:", error);
+    console.error("Could not save app data:", error);
   }
 }
 
@@ -333,13 +337,11 @@ function getAllRecipes() {
 }
 
 /* =========================================================
-   PAGE NAVIGATION
+   NAVIGATION
 ========================================================= */
 
 function goToPage(pageName) {
-  const pages = document.querySelectorAll("[data-page-section]");
-
-  pages.forEach(function (page) {
+  document.querySelectorAll("[data-page-section]").forEach(function (page) {
     page.classList.remove("active");
   });
 
@@ -393,23 +395,15 @@ function goToPage(pageName) {
 }
 
 function openSidebar() {
-  const sidebar = getElement("sidebar");
-
-  if (sidebar) {
-    sidebar.classList.add("open");
-  }
+  getElement("sidebar")?.classList.add("open");
 }
 
 function closeSidebar() {
-  const sidebar = getElement("sidebar");
-
-  if (sidebar) {
-    sidebar.classList.remove("open");
-  }
+  getElement("sidebar")?.classList.remove("open");
 }
 
 /* =========================================================
-   AUTOMATIC ALLERGY ADJUSTMENTS
+   ALLERGY SUBSTITUTIONS
 ========================================================= */
 
 const SUBSTITUTIONS = {
@@ -634,8 +628,7 @@ function recipeMatches(
 
   const difficultyMatches =
     difficulty === "all" ||
-    recipe.difficulty.toLowerCase() ===
-      difficulty.toLowerCase();
+    recipe.difficulty.toLowerCase() === difficulty.toLowerCase();
 
   return (
     searchMatches &&
@@ -1007,10 +1000,7 @@ function openRecipe(recipeId) {
         </section>
       </div>
 
-      <div
-        class="content-card"
-        style="margin-top: 24px;"
-      >
+      <div class="content-card" style="margin-top: 24px;">
         <div class="form-group">
           <label for="recipeNoteInput">
             Personal note
@@ -1032,10 +1022,7 @@ function openRecipe(recipeId) {
         </button>
       </div>
 
-      <div
-        class="content-card"
-        style="margin-top: 16px;"
-      >
+      <div class="content-card" style="margin-top: 16px;">
         <h2>Your rating</h2>
 
         <div class="hero-actions">
@@ -2557,8 +2544,7 @@ function renderTimers() {
           <strong>${escapeHTML(timer.label)}</strong>
 
           <span class="timer-countdown">
-            ${String(minutes).padStart(2, "0")}:
-            ${String(seconds).padStart(2, "0")}
+            ${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}
           </span>
 
           <button
@@ -2704,7 +2690,7 @@ function resetAppData() {
 }
 
 /* =========================================================
-   GLOBAL SEARCH
+   HEADER SEARCH
 ========================================================= */
 
 function searchFromHeader() {
@@ -2731,7 +2717,7 @@ function searchFromHeader() {
 }
 
 /* =========================================================
-   CLICK EVENTS
+   GLOBAL CLICK EVENTS
 ========================================================= */
 
 document.addEventListener("click", function (event) {
@@ -2739,6 +2725,7 @@ document.addEventListener("click", function (event) {
     event.target.closest("[data-page]");
 
   if (pageButton) {
+    event.preventDefault();
     goToPage(pageButton.dataset.page);
     return;
   }
@@ -3028,7 +3015,7 @@ document.addEventListener("click", function (event) {
 });
 
 /* =========================================================
-   CHANGE EVENTS
+   CHECKBOX EVENTS
 ========================================================= */
 
 document.addEventListener("change", function (event) {
@@ -3066,7 +3053,7 @@ document.addEventListener("change", function (event) {
 });
 
 /* =========================================================
-   CONNECT BUTTONS
+   CONNECT PAGE BUTTONS
 ========================================================= */
 
 function connectButtons() {
