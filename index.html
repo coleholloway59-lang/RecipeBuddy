@@ -2980,6 +2980,60 @@
   </div>
 
   <!-- =====================================================
+       SCANNED PRODUCT DETAILS MODAL
+  ====================================================== -->
+
+  <div
+    class="modal"
+    id="productDetailsModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="productDetailsTitle"
+    hidden
+  >
+
+    <div
+      class="modal-backdrop"
+      data-close-modal="productDetailsModal"
+    ></div>
+
+    <div class="modal-panel product-details-modal-panel">
+
+      <button
+        class="modal-close-button"
+        type="button"
+        data-close-modal="productDetailsModal"
+        aria-label="Close product details"
+      >
+        ✕
+      </button>
+
+      <div id="productDetailsContent">
+
+        <div class="product-loading-state">
+
+          <div class="product-loading-icon">
+            ▥
+          </div>
+
+          <h2 id="productDetailsTitle">
+            Loading product details
+          </h2>
+
+          <p>
+            Recipe Buddy is checking nutrition, ingredients,
+            allergens, and dietary information.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- =====================================================
        TIMER DRAWER
   ====================================================== -->
 
