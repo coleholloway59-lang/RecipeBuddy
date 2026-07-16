@@ -10,10 +10,10 @@
 
   <meta
     name="description"
-    content="Recipe Buddy helps you discover recipes, manage groceries, track pantry items, and automatically adjust meals for allergies and dietary preferences."
+    content="Recipe Buddy helps you discover recipes, manage groceries, track pantry items, plan meals, and automatically adjust recipes for allergies and dietary preferences."
   >
 
-  <meta name="theme-color" content="#153b3d">
+  <meta name="theme-color" content="#153f45">
 
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -30,22 +30,34 @@
 
   <title>Recipe Buddy</title>
 
+  <!-- Browser tab icon -->
   <link
     rel="icon"
+    type="image/png"
+    sizes="192x192"
+    href="assets/icons/icon-192.png"
+  >
+
+  <link
+    rel="shortcut icon"
     type="image/png"
     href="assets/icons/favicon.png"
   >
 
+  <!-- iPhone and iPad home-screen icon -->
   <link
     rel="apple-touch-icon"
+    sizes="180x180"
     href="assets/icons/apple-touch-icon.png"
   >
 
+  <!-- Installable web app -->
   <link
     rel="manifest"
     href="manifest.json"
   >
 
+  <!-- Main design -->
   <link
     rel="stylesheet"
     href="style.css"
@@ -60,9 +72,9 @@
 
   <div class="app-shell">
 
-    <!-- =========================================
+    <!-- =====================================================
          DESKTOP SIDEBAR
-    ========================================== -->
+    ====================================================== -->
 
     <aside class="sidebar" id="sidebar">
 
@@ -110,7 +122,6 @@
 
       </div>
 
-
       <nav
         class="sidebar-nav"
         aria-label="Main navigation"
@@ -125,7 +136,6 @@
           <span>Home</span>
         </button>
 
-
         <button
           class="nav-item"
           type="button"
@@ -134,7 +144,6 @@
           <span class="nav-icon">🍲</span>
           <span>Recipes</span>
         </button>
-
 
         <button
           class="nav-item"
@@ -152,7 +161,6 @@
           </span>
         </button>
 
-
         <button
           class="nav-item"
           type="button"
@@ -161,7 +169,6 @@
           <span class="nav-icon">🥫</span>
           <span>My Pantry</span>
         </button>
-
 
         <button
           class="nav-item"
@@ -179,7 +186,6 @@
           </span>
         </button>
 
-
         <button
           class="nav-item"
           type="button"
@@ -189,7 +195,6 @@
           <span>Meal Planner</span>
         </button>
 
-
         <button
           class="nav-item"
           type="button"
@@ -198,7 +203,6 @@
           <span class="nav-icon">✦</span>
           <span>AI Chef</span>
         </button>
-
 
         <button
           class="nav-item"
@@ -211,9 +215,7 @@
 
       </nav>
 
-
       <div class="sidebar-divider"></div>
-
 
       <nav
         class="sidebar-nav sidebar-nav-secondary"
@@ -229,7 +231,6 @@
           <span>Profile</span>
         </button>
 
-
         <button
           class="nav-item"
           type="button"
@@ -241,7 +242,6 @@
 
       </nav>
 
-
       <div class="sidebar-upgrade-card">
 
         <div class="upgrade-icon">
@@ -249,7 +249,7 @@
         </div>
 
         <strong>
-          Recipe Buddy 3.0
+          Recipe Buddy 4.0
         </strong>
 
         <p>
@@ -257,7 +257,6 @@
         </p>
 
       </div>
-
 
       <div class="sidebar-profile">
 
@@ -293,22 +292,20 @@
 
     </aside>
 
-
     <div
       class="sidebar-overlay"
       id="sidebarOverlay"
     ></div>
 
-
-    <!-- =========================================
+    <!-- =====================================================
          MAIN APP
-    ========================================== -->
+    ====================================================== -->
 
     <div class="main-wrapper">
 
-      <!-- =========================================
+      <!-- ===================================================
            TOP HEADER
-      ========================================== -->
+      ==================================================== -->
 
       <header class="top-header">
 
@@ -321,7 +318,6 @@
           ☰
         </button>
 
-
         <div class="mobile-brand">
 
           <img
@@ -331,7 +327,6 @@
           >
 
         </div>
-
 
         <div class="global-search">
 
@@ -362,7 +357,6 @@
 
         </div>
 
-
         <div class="header-actions">
 
           <button
@@ -375,7 +369,6 @@
 
             <span class="notification-dot"></span>
           </button>
-
 
           <button
             class="profile-button"
@@ -398,19 +391,18 @@
 
       </header>
 
-
-      <!-- =========================================
+      <!-- ===================================================
            MAIN CONTENT
-      ========================================== -->
+      ==================================================== -->
 
       <main
         id="mainContent"
         class="main-content"
       >
 
-        <!-- =========================================
+        <!-- =================================================
              HOME PAGE
-        ========================================== -->
+        ================================================== -->
 
         <section
           class="app-page active"
@@ -436,9 +428,8 @@
               <p>
                 Discover recipes, use ingredients from your pantry,
                 and automatically adjust meals for your allergies
-                and preferences.
+                and dietary preferences.
               </p>
-
 
               <div class="hero-actions">
 
@@ -452,7 +443,6 @@
                   <span aria-hidden="true">→</span>
                 </button>
 
-
                 <button
                   class="secondary-button"
                   id="surpriseMeButton"
@@ -463,7 +453,6 @@
                 </button>
 
               </div>
-
 
               <div
                 class="hero-profile-badges"
@@ -486,19 +475,19 @@
 
             </div>
 
-
             <div class="hero-visual">
 
               <div class="hero-image-card">
 
                 <div class="hero-image-placeholder">
 
-                  <span class="hero-food-emoji">
-                    🍝
-                  </span>
+                  <img
+                    src="assets/icons/icon-512.png"
+                    alt="Recipe Buddy app icon"
+                    class="hero-app-icon"
+                  >
 
                 </div>
-
 
                 <div
                   class="hero-floating-card hero-rating-card"
@@ -519,7 +508,6 @@
                   </div>
 
                 </div>
-
 
                 <div
                   class="hero-floating-card hero-safe-card"
@@ -549,7 +537,6 @@
 
           </section>
 
-
           <!-- QUICK ACTIONS -->
 
           <section class="section-block">
@@ -569,7 +556,6 @@
               </div>
 
             </div>
-
 
             <div class="quick-action-grid">
 
@@ -601,7 +587,6 @@
 
               </button>
 
-
               <button
                 class="quick-action-card"
                 type="button"
@@ -630,7 +615,6 @@
 
               </button>
 
-
               <button
                 class="quick-action-card"
                 type="button"
@@ -658,7 +642,6 @@
                 </span>
 
               </button>
-
 
               <button
                 class="quick-action-card"
@@ -692,7 +675,6 @@
 
           </section>
 
-
           <!-- CATEGORIES -->
 
           <section class="section-block">
@@ -711,7 +693,6 @@
 
               </div>
 
-
               <button
                 class="text-button"
                 type="button"
@@ -722,7 +703,6 @@
               </button>
 
             </div>
-
 
             <div
               class="category-scroll"
@@ -738,7 +718,6 @@
                 <span>Breakfast</span>
               </button>
 
-
               <button
                 class="category-card"
                 type="button"
@@ -747,7 +726,6 @@
                 <span class="category-icon">🥪</span>
                 <span>Lunch</span>
               </button>
-
 
               <button
                 class="category-card"
@@ -758,7 +736,6 @@
                 <span>Dinner</span>
               </button>
 
-
               <button
                 class="category-card"
                 type="button"
@@ -767,7 +744,6 @@
                 <span class="category-icon">🍗</span>
                 <span>Chicken</span>
               </button>
-
 
               <button
                 class="category-card"
@@ -778,7 +754,6 @@
                 <span>Pasta</span>
               </button>
 
-
               <button
                 class="category-card"
                 type="button"
@@ -788,7 +763,6 @@
                 <span>Healthy</span>
               </button>
 
-
               <button
                 class="category-card"
                 type="button"
@@ -797,7 +771,6 @@
                 <span class="category-icon">🍰</span>
                 <span>Dessert</span>
               </button>
-
 
               <button
                 class="category-card"
@@ -811,7 +784,6 @@
             </div>
 
           </section>
-
 
           <!-- FEATURED RECIPES -->
 
@@ -831,7 +803,6 @@
 
               </div>
 
-
               <button
                 class="text-button"
                 type="button"
@@ -843,12 +814,10 @@
 
             </div>
 
-
             <div
               class="recipe-grid"
               id="featuredRecipeGrid"
             ></div>
-
 
             <div
               class="empty-state"
@@ -871,7 +840,6 @@
             </div>
 
           </section>
-
 
           <!-- DASHBOARD -->
 
@@ -897,7 +865,6 @@
 
                 </div>
 
-
                 <button
                   class="text-button"
                   type="button"
@@ -907,7 +874,6 @@
                 </button>
 
               </div>
-
 
               <div class="pantry-stat-row">
 
@@ -923,7 +889,6 @@
 
                 </div>
 
-
                 <div class="pantry-stat warning">
 
                   <strong id="pantryExpiringCount">
@@ -938,7 +903,6 @@
 
               </div>
 
-
               <div
                 class="pantry-preview-list"
                 id="pantryPreviewList"
@@ -950,7 +914,6 @@
 
               </div>
 
-
               <button
                 class="full-width-button"
                 type="button"
@@ -960,7 +923,6 @@
               </button>
 
             </article>
-
 
             <!-- GROCERY OVERVIEW -->
 
@@ -982,7 +944,6 @@
 
                 </div>
 
-
                 <button
                   class="text-button"
                   type="button"
@@ -992,7 +953,6 @@
                 </button>
 
               </div>
-
 
               <div class="grocery-progress">
 
@@ -1008,7 +968,6 @@
 
                 </div>
 
-
                 <div class="progress-track">
 
                   <div
@@ -1021,7 +980,6 @@
 
               </div>
 
-
               <div
                 class="grocery-preview-list"
                 id="groceryPreviewList"
@@ -1033,7 +991,6 @@
 
               </div>
 
-
               <button
                 class="full-width-button outline"
                 id="quickAddGroceryButton"
@@ -1043,7 +1000,6 @@
               </button>
 
             </article>
-
 
             <!-- ALLERGY PROFILE -->
 
@@ -1065,7 +1021,6 @@
 
                 </div>
 
-
                 <button
                   class="text-button"
                   type="button"
@@ -1075,7 +1030,6 @@
                 </button>
 
               </div>
-
 
               <div class="safety-status">
 
@@ -1098,7 +1052,6 @@
 
               </div>
 
-
               <div
                 class="allergy-chip-list"
                 id="allergyChipList"
@@ -1109,7 +1062,6 @@
                 </span>
 
               </div>
-
 
               <div class="safety-notice">
 
@@ -1125,7 +1077,6 @@
 
             </article>
 
-
             <!-- AI CHEF CARD -->
 
             <article
@@ -1139,7 +1090,6 @@
               <div
                 class="ai-card-decoration ai-decoration-two"
               ></div>
-
 
               <div class="ai-chef-content">
 
@@ -1156,7 +1106,6 @@
                   how much time you have, and what you feel like eating.
                 </p>
 
-
                 <button
                   class="light-button"
                   type="button"
@@ -1167,7 +1116,6 @@
                 </button>
 
               </div>
-
 
               <div
                 class="ai-chef-graphic"
@@ -1182,10 +1130,9 @@
 
         </section>
 
-
-        <!-- =========================================
+        <!-- =================================================
              RECIPES PAGE
-        ========================================== -->
+        ================================================== -->
 
         <section
           class="app-page"
@@ -1211,7 +1158,6 @@
 
             </div>
 
-
             <button
               class="primary-button"
               type="button"
@@ -1221,7 +1167,6 @@
             </button>
 
           </div>
-
 
           <div class="filter-toolbar">
 
@@ -1240,108 +1185,55 @@
 
             </div>
 
-
             <select
               id="categoryFilter"
               aria-label="Filter by category"
             >
 
-              <option value="all">
-                All categories
-              </option>
-
-              <option value="Breakfast">
-                Breakfast
-              </option>
-
-              <option value="Lunch">
-                Lunch
-              </option>
-
-              <option value="Dinner">
-                Dinner
-              </option>
-
-              <option value="Chicken">
-                Chicken
-              </option>
-
-              <option value="Beef">
-                Beef
-              </option>
-
-              <option value="Pasta">
-                Pasta
-              </option>
-
-              <option value="Healthy">
-                Healthy
-              </option>
-
-              <option value="Dessert">
-                Dessert
-              </option>
-
-              <option value="Air Fryer">
-                Air Fryer
-              </option>
-
-              <option value="Slow Cooker">
-                Slow Cooker
-              </option>
+              <option value="all">All categories</option>
+              <option value="Breakfast">Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Dinner">Dinner</option>
+              <option value="Chicken">Chicken</option>
+              <option value="Beef">Beef</option>
+              <option value="Pasta">Pasta</option>
+              <option value="Healthy">Healthy</option>
+              <option value="Dessert">Dessert</option>
+              <option value="Air Fryer">Air Fryer</option>
+              <option value="Slow Cooker">Slow Cooker</option>
+              <option value="Seafood">Seafood</option>
+              <option value="Vegetarian">Vegetarian</option>
+              <option value="Snacks">Snacks</option>
+              <option value="Drinks">Drinks</option>
+              <option value="Southern">Southern</option>
 
             </select>
-
 
             <select
               id="timeFilter"
               aria-label="Filter by cooking time"
             >
 
-              <option value="all">
-                Any cooking time
-              </option>
-
-              <option value="15">
-                15 minutes or less
-              </option>
-
-              <option value="30">
-                30 minutes or less
-              </option>
-
-              <option value="60">
-                60 minutes or less
-              </option>
+              <option value="all">Any cooking time</option>
+              <option value="15">15 minutes or less</option>
+              <option value="30">30 minutes or less</option>
+              <option value="60">60 minutes or less</option>
 
             </select>
-
 
             <select
               id="difficultyFilter"
               aria-label="Filter by difficulty"
             >
 
-              <option value="all">
-                Any difficulty
-              </option>
-
-              <option value="Easy">
-                Easy
-              </option>
-
-              <option value="Medium">
-                Medium
-              </option>
-
-              <option value="Hard">
-                Hard
-              </option>
+              <option value="all">Any difficulty</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
 
             </select>
 
           </div>
-
 
           <div class="results-summary">
 
@@ -1359,12 +1251,10 @@
 
           </div>
 
-
           <div
             class="recipe-grid full-grid"
             id="allRecipesGrid"
           ></div>
-
 
           <div
             class="empty-state"
@@ -1388,10 +1278,9 @@
 
         </section>
 
-
-        <!-- =========================================
+        <!-- =================================================
              FAVORITES PAGE
-        ========================================== -->
+        ================================================== -->
 
         <section
           class="app-page"
@@ -1419,12 +1308,10 @@
 
           </div>
 
-
           <div
             class="recipe-grid full-grid"
             id="favoritesRecipeGrid"
           ></div>
-
 
           <div
             class="empty-state"
@@ -1454,11 +1341,9 @@
           </div>
 
         </section>
-
-
-        <!-- =========================================
+        <!-- =================================================
              PANTRY PAGE
-        ========================================== -->
+        ================================================== -->
 
         <section
           class="app-page"
@@ -1484,7 +1369,6 @@
 
             </div>
 
-
             <div class="page-header-actions">
 
               <button
@@ -1507,7 +1391,6 @@
 
           </div>
 
-
           <div class="pantry-toolbar">
 
             <div class="page-search">
@@ -1525,48 +1408,23 @@
 
             </div>
 
-
             <select
               id="pantryCategoryFilter"
               aria-label="Pantry category"
             >
 
-              <option value="all">
-                All departments
-              </option>
-
-              <option value="Produce">
-                Produce
-              </option>
-
-              <option value="Meat">
-                Meat
-              </option>
-
-              <option value="Dairy">
-                Dairy
-              </option>
-
-              <option value="Pantry">
-                Pantry
-              </option>
-
-              <option value="Frozen">
-                Frozen
-              </option>
-
-              <option value="Bakery">
-                Bakery
-              </option>
-
-              <option value="Other">
-                Other
-              </option>
+              <option value="all">All departments</option>
+              <option value="Produce">Produce</option>
+              <option value="Meat">Meat</option>
+              <option value="Dairy">Dairy</option>
+              <option value="Pantry">Pantry</option>
+              <option value="Frozen">Frozen</option>
+              <option value="Bakery">Bakery</option>
+              <option value="Other">Other</option>
 
             </select>
 
           </div>
-
 
           <div class="pantry-page-grid">
 
@@ -1584,12 +1442,10 @@
 
               </div>
 
-
               <div
                 class="pantry-item-grid"
                 id="pantryItemGrid"
               ></div>
-
 
               <div
                 class="empty-state compact"
@@ -1611,7 +1467,6 @@
               </div>
 
             </div>
-
 
             <aside
               class="content-card pantry-match-card"
@@ -1644,10 +1499,9 @@
 
         </section>
 
-
-        <!-- =========================================
+        <!-- =================================================
              GROCERY PAGE
-        ========================================== -->
+        ================================================== -->
 
         <section
           class="app-page"
@@ -1673,7 +1527,6 @@
 
             </div>
 
-
             <button
               class="primary-button"
               id="addGroceryItemButton"
@@ -1683,7 +1536,6 @@
             </button>
 
           </div>
-
 
           <div class="grocery-layout">
 
@@ -1705,12 +1557,10 @@
 
               </div>
 
-
               <div
                 class="grocery-department-list"
                 id="groceryDepartmentList"
               ></div>
-
 
               <div
                 class="empty-state compact"
@@ -1733,7 +1583,6 @@
 
             </div>
 
-
             <aside
               class="content-card grocery-summary-card"
             >
@@ -1741,7 +1590,6 @@
               <h2>
                 Shopping summary
               </h2>
-
 
               <div class="summary-stat">
 
@@ -1755,7 +1603,6 @@
 
               </div>
 
-
               <div class="summary-stat">
 
                 <span>
@@ -1768,7 +1615,6 @@
 
               </div>
 
-
               <div class="summary-stat">
 
                 <span>
@@ -1780,7 +1626,6 @@
                 </strong>
 
               </div>
-
 
               <div class="progress-track large">
 
@@ -1798,10 +1643,9 @@
 
         </section>
 
-
-        <!-- =========================================
+        <!-- =================================================
              MEAL PLANNER PAGE
-        ========================================== -->
+        ================================================== -->
 
         <section
           class="app-page"
@@ -1827,7 +1671,6 @@
 
             </div>
 
-
             <button
               class="primary-button"
               id="autoPlanMealsButton"
@@ -1838,7 +1681,6 @@
 
           </div>
 
-
           <div
             class="meal-planner-grid"
             id="mealPlannerGrid"
@@ -1846,10 +1688,9 @@
 
         </section>
 
-
-        <!-- =========================================
+        <!-- =================================================
              AI CHEF PAGE
-        ========================================== -->
+        ================================================== -->
 
         <section
           class="app-page"
@@ -1878,7 +1719,6 @@
 
           </div>
 
-
           <div class="ai-page-layout">
 
             <section
@@ -1899,7 +1739,6 @@
 
               </div>
 
-
               <div class="form-row">
 
                 <div class="form-group">
@@ -1910,34 +1749,16 @@
 
                   <select id="aiMealTypeSelect">
 
-                    <option value="Any">
-                      Any meal
-                    </option>
-
-                    <option value="Breakfast">
-                      Breakfast
-                    </option>
-
-                    <option value="Lunch">
-                      Lunch
-                    </option>
-
-                    <option value="Dinner">
-                      Dinner
-                    </option>
-
-                    <option value="Snack">
-                      Snack
-                    </option>
-
-                    <option value="Dessert">
-                      Dessert
-                    </option>
+                    <option value="Any">Any meal</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Snack">Snack</option>
+                    <option value="Dessert">Dessert</option>
 
                   </select>
 
                 </div>
-
 
                 <div class="form-group">
 
@@ -1947,32 +1768,17 @@
 
                   <select id="aiTimeSelect">
 
-                    <option value="Any">
-                      Any time
-                    </option>
-
-                    <option value="15">
-                      15 minutes
-                    </option>
-
-                    <option value="30">
-                      30 minutes
-                    </option>
-
-                    <option value="45">
-                      45 minutes
-                    </option>
-
-                    <option value="60">
-                      60 minutes
-                    </option>
+                    <option value="Any">Any time</option>
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="60">60 minutes</option>
 
                   </select>
 
                 </div>
 
               </div>
-
 
               <div class="form-row">
 
@@ -1984,38 +1790,17 @@
 
                   <select id="aiCuisineSelect">
 
-                    <option value="Any">
-                      Any cuisine
-                    </option>
-
-                    <option value="American">
-                      American
-                    </option>
-
-                    <option value="Italian">
-                      Italian
-                    </option>
-
-                    <option value="Mexican">
-                      Mexican
-                    </option>
-
-                    <option value="Asian">
-                      Asian
-                    </option>
-
-                    <option value="Mediterranean">
-                      Mediterranean
-                    </option>
-
-                    <option value="Southern">
-                      Southern
-                    </option>
+                    <option value="Any">Any cuisine</option>
+                    <option value="American">American</option>
+                    <option value="Italian">Italian</option>
+                    <option value="Mexican">Mexican</option>
+                    <option value="Asian">Asian</option>
+                    <option value="Mediterranean">Mediterranean</option>
+                    <option value="Southern">Southern</option>
 
                   </select>
 
                 </div>
-
 
                 <div class="form-group">
 
@@ -2025,24 +1810,15 @@
 
                   <select id="aiDifficultySelect">
 
-                    <option value="Easy">
-                      Easy
-                    </option>
-
-                    <option value="Medium">
-                      Medium
-                    </option>
-
-                    <option value="Any">
-                      Any difficulty
-                    </option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Any">Any difficulty</option>
 
                   </select>
 
                 </div>
 
               </div>
-
 
               <label class="checkbox-card">
 
@@ -2066,7 +1842,6 @@
 
               </label>
 
-
               <button
                 class="primary-button full-width large-button"
                 id="generateRecipeButton"
@@ -2076,7 +1851,6 @@
               </button>
 
             </section>
-
 
             <aside
               class="content-card ai-tips-card"
@@ -2090,7 +1864,6 @@
                 Try asking for:
               </h2>
 
-
               <button
                 class="prompt-suggestion"
                 type="button"
@@ -2098,7 +1871,6 @@
               >
                 A high-protein dinner under 30 minutes
               </button>
-
 
               <button
                 class="prompt-suggestion"
@@ -2108,7 +1880,6 @@
                 A meal using chicken, rice, and cheese
               </button>
 
-
               <button
                 class="prompt-suggestion"
                 type="button"
@@ -2116,7 +1887,6 @@
               >
                 An easy dessert with five ingredients
               </button>
-
 
               <button
                 class="prompt-suggestion"
@@ -2130,7 +1900,6 @@
 
           </div>
 
-
           <section
             class="content-card generated-recipe-card"
             id="generatedRecipeContainer"
@@ -2139,10 +1908,9 @@
 
         </section>
 
-
-        <!-- =========================================
+        <!-- =================================================
              IMPORT PAGE
-        ========================================== -->
+        ================================================== -->
 
         <section
           class="app-page"
@@ -2171,7 +1939,6 @@
 
           </div>
 
-
           <div class="import-layout">
 
             <section
@@ -2190,7 +1957,6 @@
                 Import the recipe title, ingredients, instructions,
                 cooking time, servings, and available image.
               </p>
-
 
               <div class="url-input-row">
 
@@ -2211,7 +1977,6 @@
 
               </div>
 
-
               <div
                 class="import-status"
                 id="importStatus"
@@ -2219,7 +1984,6 @@
               ></div>
 
             </section>
-
 
             <aside
               class="content-card import-information-card"
@@ -2229,31 +1993,15 @@
                 After importing
               </h2>
 
-
               <ul class="feature-check-list">
 
-                <li>
-                  ✓ Save it to your personal cookbook
-                </li>
-
-                <li>
-                  ✓ Adjust servings and measurements
-                </li>
-
-                <li>
-                  ✓ Apply allergy-safe substitutions
-                </li>
-
-                <li>
-                  ✓ Add ingredients to your grocery list
-                </li>
-
-                <li>
-                  ✓ Use distraction-free cooking mode
-                </li>
+                <li>✓ Save it to your personal cookbook</li>
+                <li>✓ Adjust servings and measurements</li>
+                <li>✓ Apply allergy-safe substitutions</li>
+                <li>✓ Add ingredients to your grocery list</li>
+                <li>✓ Use distraction-free cooking mode</li>
 
               </ul>
-
 
               <div class="safety-notice">
 
@@ -2269,10 +2017,9 @@
 
         </section>
 
-
-        <!-- =========================================
+        <!-- =================================================
              PROFILE PAGE
-        ========================================== -->
+        ================================================== -->
 
         <section
           class="app-page"
@@ -2298,7 +2045,6 @@
 
             </div>
 
-
             <button
               class="primary-button"
               id="saveProfileButton"
@@ -2309,13 +2055,10 @@
 
           </div>
 
-
           <form
             class="profile-form"
             id="profileForm"
           >
-
-            <!-- BASIC PREFERENCES -->
 
             <section class="content-card">
 
@@ -2335,7 +2078,6 @@
 
               </div>
 
-
               <div class="form-row">
 
                 <div class="form-group">
@@ -2353,7 +2095,6 @@
 
                 </div>
 
-
                 <div class="form-group">
 
                   <label for="defaultServingsSelect">
@@ -2362,35 +2103,17 @@
 
                   <select id="defaultServingsSelect">
 
-                    <option value="1">
-                      1 serving
-                    </option>
-
-                    <option value="2">
-                      2 servings
-                    </option>
-
-                    <option
-                      value="4"
-                      selected
-                    >
-                      4 servings
-                    </option>
-
-                    <option value="6">
-                      6 servings
-                    </option>
-
-                    <option value="8">
-                      8 servings
-                    </option>
+                    <option value="1">1 serving</option>
+                    <option value="2">2 servings</option>
+                    <option value="4" selected>4 servings</option>
+                    <option value="6">6 servings</option>
+                    <option value="8">8 servings</option>
 
                   </select>
 
                 </div>
 
               </div>
-
 
               <div class="form-row">
 
@@ -2402,10 +2125,7 @@
 
                   <select id="measurementSelect">
 
-                    <option
-                      value="us"
-                      selected
-                    >
+                    <option value="us" selected>
                       US measurements
                     </option>
 
@@ -2417,7 +2137,6 @@
 
                 </div>
 
-
                 <div class="form-group">
 
                   <label for="spiceLevelSelect">
@@ -2426,24 +2145,10 @@
 
                   <select id="spiceLevelSelect">
 
-                    <option value="Mild">
-                      Mild
-                    </option>
-
-                    <option
-                      value="Medium"
-                      selected
-                    >
-                      Medium
-                    </option>
-
-                    <option value="Hot">
-                      Hot
-                    </option>
-
-                    <option value="Extra Hot">
-                      Extra hot
-                    </option>
+                    <option value="Mild">Mild</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="Hot">Hot</option>
+                    <option value="Extra Hot">Extra hot</option>
 
                   </select>
 
@@ -2452,9 +2157,6 @@
               </div>
 
             </section>
-
-
-            <!-- ALLERGIES -->
 
             <section class="content-card">
 
@@ -2475,149 +2177,56 @@
 
               </div>
 
-
               <div class="selection-grid">
 
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="allergy"
-                    value="Peanuts"
-                  >
-
-                  <span>
-                    🥜 Peanuts
-                  </span>
-
+                  <input type="checkbox" name="allergy" value="Peanuts">
+                  <span>🥜 Peanuts</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="allergy"
-                    value="Tree Nuts"
-                  >
-
-                  <span>
-                    🌰 Tree nuts
-                  </span>
-
+                  <input type="checkbox" name="allergy" value="Tree Nuts">
+                  <span>🌰 Tree nuts</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="allergy"
-                    value="Dairy"
-                  >
-
-                  <span>
-                    🥛 Dairy
-                  </span>
-
+                  <input type="checkbox" name="allergy" value="Dairy">
+                  <span>🥛 Dairy</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="allergy"
-                    value="Eggs"
-                  >
-
-                  <span>
-                    🥚 Eggs
-                  </span>
-
+                  <input type="checkbox" name="allergy" value="Eggs">
+                  <span>🥚 Eggs</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="allergy"
-                    value="Gluten"
-                  >
-
-                  <span>
-                    🌾 Gluten
-                  </span>
-
+                  <input type="checkbox" name="allergy" value="Gluten">
+                  <span>🌾 Gluten</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="allergy"
-                    value="Shellfish"
-                  >
-
-                  <span>
-                    🦐 Shellfish
-                  </span>
-
+                  <input type="checkbox" name="allergy" value="Shellfish">
+                  <span>🦐 Shellfish</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="allergy"
-                    value="Fish"
-                  >
-
-                  <span>
-                    🐟 Fish
-                  </span>
-
+                  <input type="checkbox" name="allergy" value="Fish">
+                  <span>🐟 Fish</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="allergy"
-                    value="Soy"
-                  >
-
-                  <span>
-                    🌱 Soy
-                  </span>
-
+                  <input type="checkbox" name="allergy" value="Soy">
+                  <span>🌱 Soy</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="allergy"
-                    value="Sesame"
-                  >
-
-                  <span>
-                    🌿 Sesame
-                  </span>
-
+                  <input type="checkbox" name="allergy" value="Sesame">
+                  <span>🌿 Sesame</span>
                 </label>
 
               </div>
 
             </section>
-
-
-            <!-- DIET -->
 
             <section class="content-card">
 
@@ -2637,149 +2246,56 @@
 
               </div>
 
-
               <div class="selection-grid">
 
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="diet"
-                    value="High Protein"
-                  >
-
-                  <span>
-                    High protein
-                  </span>
-
+                  <input type="checkbox" name="diet" value="High Protein">
+                  <span>High protein</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="diet"
-                    value="Low Sodium"
-                  >
-
-                  <span>
-                    Low sodium
-                  </span>
-
+                  <input type="checkbox" name="diet" value="Low Sodium">
+                  <span>Low sodium</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="diet"
-                    value="Low Carb"
-                  >
-
-                  <span>
-                    Low carb
-                  </span>
-
+                  <input type="checkbox" name="diet" value="Low Carb">
+                  <span>Low carb</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="diet"
-                    value="Keto"
-                  >
-
-                  <span>
-                    Keto
-                  </span>
-
+                  <input type="checkbox" name="diet" value="Keto">
+                  <span>Keto</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="diet"
-                    value="Vegetarian"
-                  >
-
-                  <span>
-                    Vegetarian
-                  </span>
-
+                  <input type="checkbox" name="diet" value="Vegetarian">
+                  <span>Vegetarian</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="diet"
-                    value="Vegan"
-                  >
-
-                  <span>
-                    Vegan
-                  </span>
-
+                  <input type="checkbox" name="diet" value="Vegan">
+                  <span>Vegan</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="diet"
-                    value="Dairy Free"
-                  >
-
-                  <span>
-                    Dairy-free
-                  </span>
-
+                  <input type="checkbox" name="diet" value="Dairy Free">
+                  <span>Dairy-free</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="diet"
-                    value="Gluten Free"
-                  >
-
-                  <span>
-                    Gluten-free
-                  </span>
-
+                  <input type="checkbox" name="diet" value="Gluten Free">
+                  <span>Gluten-free</span>
                 </label>
 
-
                 <label class="selection-option">
-
-                  <input
-                    type="checkbox"
-                    name="diet"
-                    value="Nut Free"
-                  >
-
-                  <span>
-                    Nut-free
-                  </span>
-
+                  <input type="checkbox" name="diet" value="Nut Free">
+                  <span>Nut-free</span>
                 </label>
 
               </div>
 
             </section>
-
-
-            <!-- DISLIKED FOODS -->
 
             <section class="content-card">
 
@@ -2800,7 +2316,6 @@
 
               </div>
 
-
               <div class="tag-input-container">
 
                 <input
@@ -2819,16 +2334,12 @@
 
               </div>
 
-
               <div
                 class="tag-list"
                 id="dislikedFoodList"
               ></div>
 
             </section>
-
-
-            <!-- AUTOMATIC ADJUSTMENTS -->
 
             <section class="content-card">
 
@@ -2846,7 +2357,6 @@
                   </small>
 
                 </span>
-
 
                 <span class="switch">
 
@@ -2868,10 +2378,9 @@
 
         </section>
 
-
-        <!-- =========================================
+        <!-- =================================================
              SETTINGS PAGE
-        ========================================== -->
+        ================================================== -->
 
         <section
           class="app-page"
@@ -2899,7 +2408,6 @@
 
           </div>
 
-
           <div class="settings-list">
 
             <section class="content-card">
@@ -2918,7 +2426,6 @@
 
                 </span>
 
-
                 <span class="switch">
 
                   <input
@@ -2933,7 +2440,6 @@
               </label>
 
             </section>
-
 
             <section class="content-card">
 
@@ -2951,7 +2457,6 @@
 
                 </span>
 
-
                 <span class="switch">
 
                   <input
@@ -2967,7 +2472,6 @@
               </label>
 
             </section>
-
 
             <section class="content-card">
 
@@ -2985,7 +2489,6 @@
 
                 </span>
 
-
                 <span class="switch">
 
                   <input
@@ -3001,7 +2504,6 @@
               </label>
 
             </section>
-
 
             <section class="content-card danger-zone">
 
@@ -3019,7 +2521,6 @@
 
               </div>
 
-
               <button
                 class="danger-button"
                 id="resetAppDataButton"
@@ -3036,10 +2537,9 @@
 
       </main>
 
-
-      <!-- =========================================
+      <!-- ===================================================
            MOBILE BOTTOM NAVIGATION
-      ========================================== -->
+      ==================================================== -->
 
       <nav
         class="mobile-bottom-nav"
@@ -3055,7 +2555,6 @@
           <small>Home</small>
         </button>
 
-
         <button
           class="mobile-nav-item"
           type="button"
@@ -3064,7 +2563,6 @@
           <span>🍲</span>
           <small>Recipes</small>
         </button>
-
 
         <button
           class="mobile-nav-item"
@@ -3075,7 +2573,6 @@
           <small>Pantry</small>
         </button>
 
-
         <button
           class="mobile-nav-item"
           type="button"
@@ -3084,7 +2581,6 @@
           <span>🛒</span>
           <small>Groceries</small>
         </button>
-
 
         <button
           class="mobile-nav-item"
@@ -3101,10 +2597,9 @@
 
   </div>
 
-
-  <!-- =========================================
+  <!-- =====================================================
        RECIPE DETAIL MODAL
-  ========================================== -->
+  ====================================================== -->
 
   <div
     class="modal"
@@ -3120,7 +2615,6 @@
       data-close-modal="recipeModal"
     ></div>
 
-
     <div class="modal-panel recipe-modal-panel">
 
       <button
@@ -3132,17 +2626,15 @@
         ✕
       </button>
 
-
       <div id="recipeModalContent"></div>
 
     </div>
 
   </div>
 
-
-  <!-- =========================================
+  <!-- =====================================================
        PANTRY ITEM MODAL
-  ========================================== -->
+  ====================================================== -->
 
   <div
     class="modal"
@@ -3157,7 +2649,6 @@
       class="modal-backdrop"
       data-close-modal="pantryItemModal"
     ></div>
-
 
     <div class="modal-panel small-modal-panel">
 
@@ -3175,7 +2666,6 @@
 
         </div>
 
-
         <button
           class="modal-close-button inline"
           type="button"
@@ -3186,7 +2676,6 @@
         </button>
 
       </div>
-
 
       <form id="pantryItemForm">
 
@@ -3205,7 +2694,6 @@
 
         </div>
 
-
         <div class="form-row">
 
           <div class="form-group">
@@ -3222,7 +2710,6 @@
 
           </div>
 
-
           <div class="form-group">
 
             <label for="pantryItemCategorySelect">
@@ -3231,43 +2718,19 @@
 
             <select id="pantryItemCategorySelect">
 
-              <option value="Produce">
-                Produce
-              </option>
-
-              <option value="Meat">
-                Meat
-              </option>
-
-              <option value="Dairy">
-                Dairy
-              </option>
-
-              <option
-                value="Pantry"
-                selected
-              >
-                Pantry
-              </option>
-
-              <option value="Frozen">
-                Frozen
-              </option>
-
-              <option value="Bakery">
-                Bakery
-              </option>
-
-              <option value="Other">
-                Other
-              </option>
+              <option value="Produce">Produce</option>
+              <option value="Meat">Meat</option>
+              <option value="Dairy">Dairy</option>
+              <option value="Pantry" selected>Pantry</option>
+              <option value="Frozen">Frozen</option>
+              <option value="Bakery">Bakery</option>
+              <option value="Other">Other</option>
 
             </select>
 
           </div>
 
         </div>
-
 
         <div class="form-group">
 
@@ -3282,7 +2745,6 @@
 
         </div>
 
-
         <button
           class="primary-button full-width"
           type="submit"
@@ -3296,10 +2758,9 @@
 
   </div>
 
-
-  <!-- =========================================
+  <!-- =====================================================
        GROCERY ITEM MODAL
-  ========================================== -->
+  ====================================================== -->
 
   <div
     class="modal"
@@ -3314,7 +2775,6 @@
       class="modal-backdrop"
       data-close-modal="groceryItemModal"
     ></div>
-
 
     <div class="modal-panel small-modal-panel">
 
@@ -3332,7 +2792,6 @@
 
         </div>
 
-
         <button
           class="modal-close-button inline"
           type="button"
@@ -3343,7 +2802,6 @@
         </button>
 
       </div>
-
 
       <form id="groceryItemForm">
 
@@ -3362,7 +2820,6 @@
 
         </div>
 
-
         <div class="form-row">
 
           <div class="form-group">
@@ -3379,7 +2836,6 @@
 
           </div>
 
-
           <div class="form-group">
 
             <label for="groceryItemCategorySelect">
@@ -3388,43 +2844,19 @@
 
             <select id="groceryItemCategorySelect">
 
-              <option value="Produce">
-                Produce
-              </option>
-
-              <option value="Meat">
-                Meat
-              </option>
-
-              <option value="Dairy">
-                Dairy
-              </option>
-
-              <option
-                value="Pantry"
-                selected
-              >
-                Pantry
-              </option>
-
-              <option value="Frozen">
-                Frozen
-              </option>
-
-              <option value="Bakery">
-                Bakery
-              </option>
-
-              <option value="Other">
-                Other
-              </option>
+              <option value="Produce">Produce</option>
+              <option value="Meat">Meat</option>
+              <option value="Dairy">Dairy</option>
+              <option value="Pantry" selected>Pantry</option>
+              <option value="Frozen">Frozen</option>
+              <option value="Bakery">Bakery</option>
+              <option value="Other">Other</option>
 
             </select>
 
           </div>
 
         </div>
-
 
         <button
           class="primary-button full-width"
@@ -3439,10 +2871,9 @@
 
   </div>
 
-
-  <!-- =========================================
+  <!-- =====================================================
        BARCODE SCANNER MODAL
-  ========================================== -->
+  ====================================================== -->
 
   <div
     class="modal"
@@ -3457,7 +2888,6 @@
       class="modal-backdrop"
       data-close-modal="barcodeScannerModal"
     ></div>
-
 
     <div class="modal-panel scanner-modal-panel">
 
@@ -3475,7 +2905,6 @@
 
         </div>
 
-
         <button
           class="modal-close-button inline"
           type="button"
@@ -3487,7 +2916,6 @@
 
       </div>
 
-
       <div class="scanner-view">
 
         <video
@@ -3497,13 +2925,11 @@
           playsinline
         ></video>
 
-
         <div class="scanner-frame">
 
           <div class="scanner-line"></div>
 
         </div>
-
 
         <div
           class="scanner-placeholder"
@@ -3522,14 +2948,12 @@
 
       </div>
 
-
       <div
         class="scanner-status"
         id="scannerStatus"
       >
         Position the product barcode inside the frame.
       </div>
-
 
       <div class="scanner-actions">
 
@@ -3540,7 +2964,6 @@
         >
           Start camera
         </button>
-
 
         <button
           class="secondary-button"
@@ -3556,10 +2979,9 @@
 
   </div>
 
-
-  <!-- =========================================
+  <!-- =====================================================
        TIMER DRAWER
-  ========================================== -->
+  ====================================================== -->
 
   <aside
     class="timer-drawer"
@@ -3581,7 +3003,6 @@
 
       </div>
 
-
       <button
         class="icon-button"
         id="closeTimerDrawerButton"
@@ -3592,7 +3013,6 @@
       </button>
 
     </div>
-
 
     <div
       class="timer-list"
@@ -3607,7 +3027,6 @@
 
   </aside>
 
-
   <button
     class="floating-timer-button"
     id="floatingTimerButton"
@@ -3620,8 +3039,8 @@
     <span id="activeTimerCount">
       0
     </span>
-  </button>
 
+  </button>
 
   <div
     class="toast-container"
@@ -3629,7 +3048,6 @@
     aria-live="polite"
     aria-atomic="true"
   ></div>
-
 
   <script src="recipes.js"></script>
   <script src="app.js"></script>
