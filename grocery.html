@@ -1,296 +1,406 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
 
-<title>Grocery List 🛒</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#8e44ad">
+    <title>Grocery List 🛒</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#8e44ad">
 </head>
 
-<script>
-
-if("serviceWorker" in navigator){
-
-navigator.serviceWorker.register(
-"service-worker.js"
-);
-
-}
-
-</script>
 <body>
 
-
 <nav>
-
-<a href="index.html">🏠 Home</a>
-<a href="recipe.html">🍳 Recipes</a>
-<a href="grocery.html">🛒 Grocery</a>
-<a href="favorites.html">❤️ Favorites</a>
-
+    <a href="index.html">🏠 Home</a>
+    <a href="recipe.html">🍳 Recipes</a>
+    <a href="gallery.html">📸 Gallery</a>
+    <a href="grocery.html">🛒 Grocery</a>
+    <a href="favorites.html">❤️ Favorites</a>
+    <a href="add-recipe.html">➕ Add Recipe</a>
 </nav>
 
+<header class="hero">
+    <h1>🛒 Grocery List</h1>
 
+    <p>
+        Add ingredients, check them off, and stay organized while shopping.
+    </p>
+</header>
 
-<div class="hero">
+<main>
 
-<h1>🛒 Grocery Shopping</h1>
+    <section class="card">
 
-<p>Your cooking shopping list</p>
+        <label for="newItem">
+            <strong>Add a grocery item</strong>
+        </label>
+
+        <input
+            id="newItem"
+            type="text"
+            placeholder="Example: Milk"
+        >
+
+        <br><br>
+
+        <button
+            type="button"
+            onclick="addItem()"
+        >
+            ➕ Add Item
+        </button>
+
+        <p
+            id="groceryCount"
+            style="text-align:center; font-weight:bold;"
+        ></p>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Shopping List</h2>
+
+        <div id="groceryList"></div>
+
+        <br>
+
+        <button
+            type="button"
+            onclick="clearCheckedItems()"
+        >
+            ✅ Remove Checked Items
+        </button>
+
+        <br><br>
+
+        <button
+            type="button"
+            onclick="clearEntireList()"
+        >
+            🗑️ Clear Entire List
+        </button>
+
+    </section>
+
+</main>
+
+<div class="mobile-nav">
+
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="recipe.html">
+        🍳
+        <span>Recipes</span>
+    </a>
+
+    <a href="add-recipe.html">
+        ➕
+        <span>Add</span>
+    </a>
+
+    <a href="grocery.html">
+        🛒
+        <span>Grocery</span>
+    </a>
+
+    <a href="favorites.html">
+        ❤️
+        <span>Favorites</span>
+    </a>
 
 </div>
-
-
-
-
-<div class="card">
-
-
-<input 
-id="item"
-placeholder="Add grocery item..."
->
-
-
-<button onclick="addItem()">
-
-➕ Add
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-<div class="card">
-
-
-<h2>🛍️ Shopping List</h2>
-
-
-<ul id="list"></ul>
-
-
-</div>
-
-
-
-
-<button onclick="clearList()">
-
-🗑️ Clear All
-
-</button>
-
-
-
-
 
 <script>
-
-
-
-let groceries =
-JSON.parse(
-localStorage.getItem("shoppingList")
-) || [];
-
-
-
-
-
-function save(){
-
-localStorage.setItem(
-"shoppingList",
-JSON.stringify(groceries)
-);
-
-}
-
-
-
-
-
-function showList(){
-
-
-let output="";
-
-
-groceries.sort(
-(a,b)=>a.done-b.done
-);
-
-
-
-groceries.forEach((item,index)=>{
-
-
-output+=`
-
-
-<li>
-
-
-<input 
-type="checkbox"
-
-${item.done ? "checked":""}
-
-onclick="checkItem(${index})"
-
->
-
-
-${item.name}
-
-
-
-<button onclick="removeItem(${index})">
-
-❌
-
-</button>
-
-
-
-</li>
-
-
-`;
-
-
-
-});
-
-
-
-document.getElementById("list").innerHTML=output;
-
-
-}
-
-
-
-
-
-
-
-
-function addItem(){
-
-
-let text=
-document
-.getElementById("item")
-.value;
-
-
-
-if(text!=""){
-
-
-groceries.push({
-
-name:text,
-
-done:false
-
-});
-
-
-save();
-
-
-document.getElementById("item").value="";
-
-
-showList();
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-function checkItem(index){
-
-
-groceries[index].done =
-!groceries[index].done;
-
-
-save();
-
-
-showList();
-
-
-}
-
-
-
-
-
-
-
-function removeItem(index){
-
-
-groceries.splice(index,1);
-
-
-save();
-
-
-showList();
-
-
-}
-
-
-
-
-
-
-
-function clearList(){
-
-
-groceries=[];
-
-
-save();
-
-
-showList();
-
-
-}
-
-
-
-
-showList();
-
-
-
+    function getShoppingList() {
+        const storedList =
+            JSON.parse(
+                localStorage.getItem("shoppingList")
+            ) || [];
+
+        return storedList.map(function (item) {
+            if (typeof item === "string") {
+                return {
+                    name: item,
+                    done: false
+                };
+            }
+
+            return {
+                name: item.name || "Unnamed item",
+                done: Boolean(item.done)
+            };
+        });
+    }
+
+    function saveShoppingList(list) {
+        localStorage.setItem(
+            "shoppingList",
+            JSON.stringify(list)
+        );
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function displayShoppingList() {
+        const shoppingList = getShoppingList();
+
+        const groceryList =
+            document.getElementById("groceryList");
+
+        const groceryCount =
+            document.getElementById("groceryCount");
+
+        const remainingCount =
+            shoppingList.filter(function (item) {
+                return !item.done;
+            }).length;
+
+        groceryCount.textContent =
+            remainingCount +
+            (remainingCount === 1
+                ? " item left to buy"
+                : " items left to buy");
+
+        if (shoppingList.length === 0) {
+            groceryList.innerHTML = `
+                <div class="empty-message">
+                    <h3>Your grocery list is empty</h3>
+
+                    <p>
+                        Add something above or add ingredients
+                        from a recipe.
+                    </p>
+                </div>
+            `;
+
+            return;
+        }
+
+        const sortedList =
+            shoppingList
+                .map(function (item, originalIndex) {
+                    return {
+                        name: item.name,
+                        done: item.done,
+                        originalIndex: originalIndex
+                    };
+                })
+                .sort(function (first, second) {
+                    return Number(first.done) - Number(second.done);
+                });
+
+        groceryList.innerHTML =
+            sortedList
+                .map(function (item) {
+                    return `
+                        <div
+                            style="
+                                display:flex;
+                                align-items:center;
+                                gap:12px;
+                                padding:14px 8px;
+                                border-bottom:1px solid #ead5e5;
+                            "
+                        >
+
+                            <input
+                                type="checkbox"
+                                ${item.done ? "checked" : ""}
+                                onchange="toggleItem(${item.originalIndex})"
+                                style="
+                                    width:22px;
+                                    height:22px;
+                                    flex:0 0 auto;
+                                "
+                            >
+
+                            <span
+                                style="
+                                    flex:1;
+                                    font-size:17px;
+                                    ${
+                                        item.done
+                                            ? "text-decoration:line-through; opacity:0.55;"
+                                            : ""
+                                    }
+                                "
+                            >
+                                ${escapeHtml(item.name)}
+                            </span>
+
+                            <button
+                                type="button"
+                                onclick="removeItem(${item.originalIndex})"
+                                style="
+                                    width:auto;
+                                    padding:9px 12px;
+                                "
+                            >
+                                ❌
+                            </button>
+
+                        </div>
+                    `;
+                })
+                .join("");
+    }
+
+    function addItem() {
+        const itemInput =
+            document.getElementById("newItem");
+
+        const itemName =
+            itemInput.value.trim();
+
+        if (!itemName) {
+            alert("Please enter a grocery item.");
+            return;
+        }
+
+        const shoppingList = getShoppingList();
+
+        const alreadyExists =
+            shoppingList.some(function (item) {
+                return (
+                    item.name.toLowerCase() ===
+                    itemName.toLowerCase()
+                );
+            });
+
+        if (alreadyExists) {
+            alert("That item is already on the list.");
+            return;
+        }
+
+        shoppingList.push({
+            name: itemName,
+            done: false
+        });
+
+        saveShoppingList(shoppingList);
+
+        itemInput.value = "";
+
+        displayShoppingList();
+    }
+
+    function toggleItem(index) {
+        const shoppingList = getShoppingList();
+
+        if (!shoppingList[index]) {
+            return;
+        }
+
+        shoppingList[index].done =
+            !shoppingList[index].done;
+
+        saveShoppingList(shoppingList);
+
+        displayShoppingList();
+    }
+
+    function removeItem(index) {
+        const shoppingList = getShoppingList();
+
+        if (!shoppingList[index]) {
+            return;
+        }
+
+        shoppingList.splice(index, 1);
+
+        saveShoppingList(shoppingList);
+
+        displayShoppingList();
+    }
+
+    function clearCheckedItems() {
+        const shoppingList = getShoppingList();
+
+        const checkedItems =
+            shoppingList.filter(function (item) {
+                return item.done;
+            });
+
+        if (checkedItems.length === 0) {
+            alert("No checked items to remove.");
+            return;
+        }
+
+        const updatedList =
+            shoppingList.filter(function (item) {
+                return !item.done;
+            });
+
+        saveShoppingList(updatedList);
+
+        displayShoppingList();
+    }
+
+    function clearEntireList() {
+        const shoppingList = getShoppingList();
+
+        if (shoppingList.length === 0) {
+            alert("Your grocery list is already empty.");
+            return;
+        }
+
+        const shouldClear =
+            confirm(
+                "Are you sure you want to clear the entire grocery list?"
+            );
+
+        if (!shouldClear) {
+            return;
+        }
+
+        saveShoppingList([]);
+
+        displayShoppingList();
+    }
+
+    document
+        .getElementById("newItem")
+        .addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                addItem();
+            }
+        });
+
+    displayShoppingList();
+
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker
+                .register("service-worker.js")
+                .catch(function (error) {
+                    console.log(
+                        "Service worker registration failed:",
+                        error
+                    );
+                });
+        });
+    }
 </script>
-
 
 </body>
 

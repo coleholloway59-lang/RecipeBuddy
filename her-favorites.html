@@ -1,247 +1,423 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
 
-<title>💕 Her Favorite Meals</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#8e44ad">
+    <title>Her Favorite Meals 💕</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#8e44ad">
 </head>
 
-<script>
-
-if("serviceWorker" in navigator){
-
-navigator.serviceWorker.register(
-"service-worker.js"
-);
-
-}
-
-</script>
 <body>
 
-
 <nav>
-
-<a href="index.html">🏠 Home</a>
-<a href="recipe.html">🍳 Recipes</a>
-<a href="grocery.html">🛒 Grocery</a>
-<a href="favorites.html">❤️ Favorites</a>
-<a href="her-favorites.html">💕 Her Meals</a>
-
+    <a href="index.html">🏠 Home</a>
+    <a href="recipe.html">🍳 Recipes</a>
+    <a href="gallery.html">📸 Gallery</a>
+    <a href="grocery.html">🛒 Grocery</a>
+    <a href="favorites.html">❤️ Favorites</a>
+    <a href="add-recipe.html">➕ Add Recipe</a>
 </nav>
 
+<header class="hero">
+    <h1>💕 Her Favorite Meals</h1>
 
+    <p>
+        Save meals she loves and notes for next time.
+    </p>
+</header>
 
-<div class="hero">
+<main>
 
-<h1>💕 Her Favorite Meals</h1>
+    <section class="card">
 
-<p>
-Meals she loves the most ❤️
-</p>
+        <label for="mealName">
+            <strong>Meal name</strong>
+        </label>
+
+        <input
+            id="mealName"
+            type="text"
+            placeholder="Example: Chicken Alfredo"
+        >
+
+        <br><br>
+
+        <label for="mealRating">
+            <strong>Her rating</strong>
+        </label>
+
+        <select id="mealRating">
+            <option value="❤️ Loved It">❤️ Loved It</option>
+            <option value="🔥 Make Again">🔥 Make Again</option>
+            <option value="👍 Good">👍 Good</option>
+            <option value="😐 It Was Okay">😐 It Was Okay</option>
+        </select>
+
+        <br><br>
+
+        <label for="mealNote">
+            <strong>Notes</strong>
+        </label>
+
+        <textarea
+            id="mealNote"
+            placeholder="Example: She loved the sauce. Add extra garlic next time."
+        ></textarea>
+
+        <br><br>
+
+        <button
+            type="button"
+            onclick="saveMeal()"
+        >
+            💕 Save Meal
+        </button>
+
+        <p
+            id="statusMessage"
+            style="text-align:center; font-weight:bold;"
+        ></p>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Saved Meals</h2>
+
+        <p id="mealCount">
+            Loading meals...
+        </p>
+
+        <button
+            type="button"
+            onclick="clearAllMeals()"
+        >
+            🗑️ Clear All Saved Meals
+        </button>
+
+    </section>
+
+    <section id="mealContainer"></section>
+
+</main>
+
+<div class="mobile-nav">
+
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="recipe.html">
+        🍳
+        <span>Recipes</span>
+    </a>
+
+    <a href="add-recipe.html">
+        ➕
+        <span>Add</span>
+    </a>
+
+    <a href="grocery.html">
+        🛒
+        <span>Grocery</span>
+    </a>
+
+    <a href="favorites.html">
+        ❤️
+        <span>Favorites</span>
+    </a>
 
 </div>
-
-
-
-
-<div class="card">
-
-
-<input 
-id="meal"
-placeholder="Favorite meal..."
->
-
-
-<br><br>
-
-
-<textarea 
-id="note"
-placeholder="Why she loves it..."
-></textarea>
-
-
-<br><br>
-
-
-<button onclick="addMeal()">
-
-❤️ Save Meal
-
-</button>
-
-
-</div>
-
-
-
-
-
-<div id="meals"></div>
-
-
-
-
 
 <script>
-
-
-let meals =
-JSON.parse(
-localStorage.getItem("herMeals")
-) || [];
-
-
-
-
-function showMeals(){
-
-
-let output="";
-
-
-
-meals.forEach((meal,index)=>{
-
-
-output+=`
-
-
-<div class="card">
-
-
-<h2>❤️ ${meal.name}</h2>
-
-
-<p>
-
-${meal.note}
-
-</p>
-
-
-<button onclick="removeMeal(${index})">
-
-❌ Remove
-
-</button>
-
-
-</div>
-
-
-`;
-
-
-});
-
-
-
-document.getElementById("meals").innerHTML =
-
-output || "<h2>No meals saved yet ❤️</h2>";
-
-
-
-}
-
-
-
-
-
-function addMeal(){
-
-
-let name =
-document
-.getElementById("meal")
-.value;
-
-
-
-let note =
-document
-.getElementById("note")
-.value;
-
-
-
-
-if(name!=""){
-
-
-meals.push({
-
-name:name,
-
-note:note
-
-});
-
-
-
-localStorage.setItem(
-
-"herMeals",
-
-JSON.stringify(meals)
-
-);
-
-
-
-document.getElementById("meal").value="";
-
-document.getElementById("note").value="";
-
-
-
-showMeals();
-
-
-}
-
-
-}
-
-
-
-
-
-function removeMeal(index){
-
-
-meals.splice(index,1);
-
-
-localStorage.setItem(
-
-"herMeals",
-
-JSON.stringify(meals)
-
-);
-
-
-
-showMeals();
-
-
-}
-
-
-
-showMeals();
-
-
+    function getSavedMeals() {
+        return JSON.parse(
+            localStorage.getItem("herMeals")
+        ) || [];
+    }
+
+    function saveMeals(meals) {
+        localStorage.setItem(
+            "herMeals",
+            JSON.stringify(meals)
+        );
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function saveMeal() {
+        const name =
+            document
+                .getElementById("mealName")
+                .value
+                .trim();
+
+        const rating =
+            document
+                .getElementById("mealRating")
+                .value;
+
+        const note =
+            document
+                .getElementById("mealNote")
+                .value
+                .trim();
+
+        const statusMessage =
+            document.getElementById("statusMessage");
+
+        if (!name) {
+            statusMessage.textContent =
+                "Please enter a meal name.";
+
+            return;
+        }
+
+        const meals = getSavedMeals();
+
+        const existingMeal =
+            meals.find(function (meal) {
+                return (
+                    meal.name.toLowerCase() ===
+                    name.toLowerCase()
+                );
+            });
+
+        if (existingMeal) {
+            existingMeal.rating = rating;
+            existingMeal.note = note;
+            existingMeal.updatedAt =
+                new Date().toISOString();
+
+            statusMessage.textContent =
+                "Meal updated successfully 💕";
+        } else {
+            meals.push({
+                id: Date.now(),
+                name: name,
+                rating: rating,
+                note: note,
+                createdAt: new Date().toISOString()
+            });
+
+            statusMessage.textContent =
+                "Meal saved successfully 💕";
+        }
+
+        saveMeals(meals);
+
+        document.getElementById("mealName").value = "";
+        document.getElementById("mealRating").value =
+            "❤️ Loved It";
+        document.getElementById("mealNote").value = "";
+
+        displayMeals();
+    }
+
+    function displayMeals() {
+        const meals = getSavedMeals();
+
+        const container =
+            document.getElementById("mealContainer");
+
+        const mealCount =
+            document.getElementById("mealCount");
+
+        mealCount.textContent =
+            meals.length +
+            (meals.length === 1
+                ? " saved meal"
+                : " saved meals");
+
+        if (meals.length === 0) {
+            container.innerHTML = `
+                <div class="empty-message">
+                    <h2>No meals saved yet 💕</h2>
+
+                    <p>
+                        Add a meal she likes using the form above.
+                    </p>
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML =
+            meals
+                .slice()
+                .reverse()
+                .map(function (meal) {
+                    return `
+                        <article class="card">
+
+                            <h2>
+                                💕 ${escapeHtml(meal.name)}
+                            </h2>
+
+                            <p>
+                                <strong>Rating:</strong>
+                                ${escapeHtml(meal.rating)}
+                            </p>
+
+                            ${
+                                meal.note
+                                    ? `
+                                        <h3>Notes</h3>
+
+                                        <p>
+                                            ${escapeHtml(meal.note)}
+                                        </p>
+                                    `
+                                    : ""
+                            }
+
+                            <button
+                                type="button"
+                                onclick="findRecipe('${encodeURIComponent(meal.name)}')"
+                            >
+                                🍳 Find This Recipe
+                            </button>
+
+                            <br><br>
+
+                            <button
+                                type="button"
+                                onclick="editMeal(${meal.id})"
+                            >
+                                ✏️ Edit Meal
+                            </button>
+
+                            <br><br>
+
+                            <button
+                                type="button"
+                                onclick="removeMeal(${meal.id})"
+                            >
+                                ❌ Remove Meal
+                            </button>
+
+                        </article>
+                    `;
+                })
+                .join("");
+    }
+
+    function findRecipe(encodedName) {
+        const mealName =
+            decodeURIComponent(encodedName);
+
+        localStorage.setItem(
+            "recipeSearchRequest",
+            mealName
+        );
+
+        window.location.href = "recipe.html";
+    }
+
+    function editMeal(id) {
+        const meals = getSavedMeals();
+
+        const meal =
+            meals.find(function (savedMeal) {
+                return savedMeal.id === id;
+            });
+
+        if (!meal) {
+            alert("Meal could not be found.");
+            return;
+        }
+
+        document.getElementById("mealName").value =
+            meal.name;
+
+        document.getElementById("mealRating").value =
+            meal.rating;
+
+        document.getElementById("mealNote").value =
+            meal.note || "";
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+    function removeMeal(id) {
+        const shouldRemove =
+            confirm(
+                "Are you sure you want to remove this meal?"
+            );
+
+        if (!shouldRemove) {
+            return;
+        }
+
+        const meals =
+            getSavedMeals().filter(function (meal) {
+                return meal.id !== id;
+            });
+
+        saveMeals(meals);
+
+        displayMeals();
+    }
+
+    function clearAllMeals() {
+        const meals = getSavedMeals();
+
+        if (meals.length === 0) {
+            alert("There are no saved meals to clear.");
+            return;
+        }
+
+        const shouldClear =
+            confirm(
+                "Are you sure you want to remove every saved meal?"
+            );
+
+        if (!shouldClear) {
+            return;
+        }
+
+        saveMeals([]);
+
+        displayMeals();
+    }
+
+    displayMeals();
+
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker
+                .register("service-worker.js")
+                .catch(function (error) {
+                    console.log(
+                        "Service worker registration failed:",
+                        error
+                    );
+                });
+        });
+    }
 </script>
-
 
 </body>
 

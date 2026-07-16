@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Add Instagram Recipe</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<h1>📸 Save Instagram Recipe</h1>
+
+
+<div class="card">
+
+
+<input id="name" placeholder="Recipe name">
+
+
+<textarea id="ingredients"
+placeholder="Ingredients">
+</textarea>
+
+
+<textarea id="instructions"
+placeholder="Instructions">
+</textarea>
+
+
+<input id="link"
+placeholder="Instagram link">
+</input>
+
+
+
+<button onclick="saveInstagramRecipe()">
+
+Save Recipe
+
+</button>
+
+
+</div>
+
+
+
+
+<script>
+
+
+function saveInstagramRecipe(){
+
+
+let recipes =
+JSON.parse(
+localStorage.getItem("customRecipes")
+)||[];
+
+
+
+recipes.push({
+
+name:
+document.getElementById("name").value,
+
+category:
+"Instagram",
+
+time:
+"Unknown",
+
+difficulty:
+"Custom",
+
+ingredients:
+document.getElementById("ingredients")
+.value
+.split(","),
+
+instructions:
+document.getElementById("instructions")
+.value,
+
+instagram:
+document.getElementById("link").value
+
+
+});
+
+
+
+localStorage.setItem(
+
+"customRecipes",
+
+JSON.stringify(recipes)
+
+);
+
+
+
+alert("Recipe saved ❤️");
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

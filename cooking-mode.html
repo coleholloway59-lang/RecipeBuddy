@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <title>Cooking Mode 👨‍🍳</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <meta name="theme-color" content="#8e44ad">
+
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
+
+    <meta
+        name="apple-mobile-web-app-title"
+        content="Recipe Buddy"
+    >
+</head>
+
+<body>
+
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="recipe.html">🍳 Recipes</a>
+    <a href="cooking-mode.html">👨‍🍳 Cooking Mode</a>
+    <a href="grocery.html">🛒 Grocery</a>
+    <a href="favorites.html">❤️ Favorites</a>
+</nav>
+
+<header class="hero">
+    <h1>👨‍🍳 Cooking Mode</h1>
+
+    <p>
+        Follow one step at a time while you cook.
+    </p>
+</header>
+
+<main>
+
+    <section
+        id="emptyState"
+        class="card"
+        hidden
+    >
+        <h2>No recipe selected</h2>
+
+        <p>
+            Open the Recipes page and tap
+            “Start Cooking” on a recipe.
+        </p>
+
+        <a href="recipe.html">
+            <button type="button">
+                Browse Recipes
+            </button>
+        </a>
+    </section>
+
+    <section
+        id="cookingCard"
+        class="card"
+        hidden
+    >
+
+        <h2 id="recipeName">
+            Loading recipe...
+        </h2>
+
+        <p id="recipeInfo"></p>
+
+        <div
+            style="
+                width:100%;
+                height:14px;
+                margin:20px 0;
+                background:#ead5e5;
+                border-radius:999px;
+                overflow:hidden;
+            "
+        >
+            <div
+                id="progressBar"
+                style="
+                    width:0%;
+                    height:100%;
+                    background:linear-gradient(
+                        135deg,
+                        #8e44ad,
+                        #c77dff
+                    );
+                    transition:width .25s ease;
+                "
+            ></div>
+        </div>
+
+        <p
+            id="progressText"
+            style="
+                text-align:center;
+                font-weight:bold;
+            "
+        ></p>
+
+        <div
+            style="
+                margin:24px 0;
+                padding:26px 20px;
+                min-height:220px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                text-align:center;
+                background:#fff8fc;
+                border:2px solid #ead5e5;
+                border-radius:20px;
+            "
+        >
+            <p
+                id="currentStep"
+                style="
+                    margin:0;
+                    font-size:clamp(22px, 6vw, 34px);
+                    font-weight:bold;
+                    line-height:1.5;
+                "
+            ></p>
+        </div>
+
+        <div
+            style="
+                display:grid;
+                grid-template-columns:1fr 1fr;
+                gap:12px;
+            "
+        >
+            <button
+                id="previousButton"
+                type="button"
+                onclick="previousStep()"
+            >
+                ⬅️ Previous
+            </button>
+
+            <button
+                id="nextButton"
+                type="button"
+                onclick="nextStep()"
+            >
+                Next ➡️
+            </button>
+        </div>
+
+        <br>
+
+        <button
+            type="button"
+            onclick="repeatStep()"
+        >
+            🔁 Repeat Step
+        </button>
+
+        <br><br>
+
+        <button
+            type="button"
+            onclick="restartCooking()"
+        >
+            🔄 Restart Recipe
+        </button>
+
+        <br><br>
+
+        <button
+            type="button"
+            onclick="showIngredients()"
+        >
+            🥕 Show Ingredients
+        </button>
+
+        <br><br>
+
+        <button
+            type="button"
+            onclick="finishCooking()"
+        >
+            ✅ Finish Cooking
+        </button>
+
+    </section>
+
+    <section
+        id="ingredientsCard"
+        class="card"
+        hidden
+    >
+        <h2>🥕 Ingredients</h2>
+
+        <ul id="ingredientList"></ul>
+
+        <button
+            type="button"
+            onclick="hideIngredients()"
+        >
+            Close Ingredients
+        </button>
+    </section>
+
+</main>
+
+<div class="mobile-nav">
+
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="recipe.html">
+        🍳
+        <span>Recipes</span>
+    </a>
+
+    <a href="cooking-mode.html">
+        👨‍🍳
+        <span>Cook</span>
+    </a>
+
+    <a href="grocery.html">
+        🛒
+        <span>Grocery</span>
+    </a>
+
+    <a href="favorites.html">
+        ❤️
+        <span>Favorites</span>
+    </a>
+
+</div>
+
+<script src="recipes.js"></script>
+
+<script>
+    const builtInRecipes =
+        typeof recipes !== "undefined"
+            ? recipes
+            : [];
+
+    const customRecipes =
+        JSON.parse(
+            localStorage.getItem("customRecipes")
+        ) || [];
+
+    const allRecipes = [
+        ...builtInRecipes,
+        ...customRecipes
+    ];
+
+    const selectedRecipeId =
+        localStorage.getItem("cookingRecipeId");
+
+    let selectedRecipe = null;
+    let currentStepIndex = 0;
+    let wakeLock = null;
+
+    function normalizeInstructions(recipe) {
+        if (Array.isArray(recipe.instructions)) {
+            return recipe.instructions.filter(Boolean);
+        }
+
+        if (typeof recipe.instructions === "string") {
+            return recipe.instructions
+                .split("\n")
+                .map(function (step) {
+                    return step.trim();
+                })
+                .filter(Boolean);
+        }
+
+        return [];
+    }
+
+    function findSelectedRecipe() {
+        return allRecipes.find(
+            function (recipe, index) {
+                const recipeId =
+                    recipe.id ||
+                    "recipe-" + index;
+
+                return (
+                    String(recipeId) ===
+                    String(selectedRecipeId)
+                );
+            }
+        );
+    }
+
+    function loadCookingMode() {
+        selectedRecipe =
+            findSelectedRecipe();
+
+        if (!selectedRecipe) {
+            document
+                .getElementById("emptyState")
+                .hidden = false;
+
+            return;
+        }
+
+        document
+            .getElementById("cookingCard")
+            .hidden = false;
+
+        document
+            .getElementById("recipeName")
+            .textContent =
+            selectedRecipe.name;
+
+        document
+            .getElementById("recipeInfo")
+            .textContent =
+            [
+                selectedRecipe.category || "Recipe",
+                selectedRecipe.servings
+                    ? selectedRecipe.servings +
+                      " servings"
+                    : "",
+                selectedRecipe.cookTime ||
+                selectedRecipe.time ||
+                ""
+            ]
+                .filter(Boolean)
+                .join(" • ");
+
+        const savedStep =
+            Number(
+                localStorage.getItem(
+                    "cookingStepIndex"
+                )
+            );
+
+        if (
+            Number.isInteger(savedStep) &&
+            savedStep >= 0
+        ) {
+            currentStepIndex = savedStep;
+        }
+
+        displayStep();
+        requestWakeLock();
+    }
+
+    function displayStep() {
+        const steps =
+            normalizeInstructions(
+                selectedRecipe
+            );
+
+        if (steps.length === 0) {
+            document
+                .getElementById("currentStep")
+                .textContent =
+                "No cooking instructions were found.";
+
+            document
+                .getElementById("progressText")
+                .textContent = "";
+
+            return;
+        }
+
+        if (
+            currentStepIndex >= steps.length
+        ) {
+            currentStepIndex =
+                steps.length - 1;
+        }
+
+        if (currentStepIndex < 0) {
+            currentStepIndex = 0;
+        }
+
+        document
+            .getElementById("currentStep")
+            .textContent =
+            steps[currentStepIndex];
+
+        document
+            .getElementById("progressText")
+            .textContent =
+            "Step " +
+            (currentStepIndex + 1) +
+            " of " +
+            steps.length;
+
+        const progress =
+            ((currentStepIndex + 1) /
+                steps.length) *
+            100;
+
+        document
+            .getElementById("progressBar")
+            .style.width =
+            progress + "%";
+
+        document
+            .getElementById("previousButton")
+            .disabled =
+            currentStepIndex === 0;
+
+        document
+            .getElementById("nextButton")
+            .textContent =
+            currentStepIndex ===
+            steps.length - 1
+                ? "Finish ✅"
+                : "Next ➡️";
+
+        localStorage.setItem(
+            "cookingStepIndex",
+            String(currentStepIndex)
+        );
+    }
+
+    function nextStep() {
+        const steps =
+            normalizeInstructions(
+                selectedRecipe
+            );
+
+        if (
+            currentStepIndex <
+            steps.length - 1
+        ) {
+            currentStepIndex += 1;
+            displayStep();
+        } else {
+            finishCooking();
+        }
+    }
+
+    function previousStep() {
+        if (currentStepIndex > 0) {
+            currentStepIndex -= 1;
+            displayStep();
+        }
+    }
+
+    function restartCooking() {
+        currentStepIndex = 0;
+        displayStep();
+    }
+
+    function repeatStep() {
+        const step =
+            document
+                .getElementById("currentStep")
+                .textContent;
+
+        if (
+            "speechSynthesis" in window &&
+            step
+        ) {
+            window.speechSynthesis.cancel();
+
+            const message =
+                new SpeechSynthesisUtterance(
+                    step
+                );
+
+            window.speechSynthesis.speak(
+                message
+            );
+        } else {
+            alert(step);
+        }
+    }
+
+    function showIngredients() {
+        const ingredients =
+            Array.isArray(
+                selectedRecipe.ingredients
+            )
+                ? selectedRecipe.ingredients
+                : [];
+
+        document
+            .getElementById("ingredientList")
+            .innerHTML =
+            ingredients
+                .map(function (ingredient) {
+                    return `
+                        <li>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    style="
+                                        width:auto;
+                                        margin-right:8px;
+                                    "
+                                >
+                                ${ingredient}
+                            </label>
+                        </li>
+                    `;
+                })
+                .join("");
+
+        document
+            .getElementById("ingredientsCard")
+            .hidden = false;
+
+        window.scrollTo({
+            top:
+                document
+                    .getElementById(
+                        "ingredientsCard"
+                    )
+                    .offsetTop -
+                15,
+            behavior: "smooth"
+        });
+    }
+
+    function hideIngredients() {
+        document
+            .getElementById("ingredientsCard")
+            .hidden = true;
+    }
+
+    function finishCooking() {
+        localStorage.removeItem(
+            "cookingStepIndex"
+        );
+
+        alert(
+            "Cooking complete! Great job 👨‍🍳"
+        );
+
+        window.location.href =
+            "recipe.html";
+    }
+
+    async function requestWakeLock() {
+        try {
+            if (
+                "wakeLock" in navigator &&
+                document.visibilityState ===
+                    "visible"
+            ) {
+                wakeLock =
+                    await navigator.wakeLock.request(
+                        "screen"
+                    );
+            }
+        } catch (error) {
+            console.log(
+                "Wake Lock was unavailable:",
+                error
+            );
+        }
+    }
+
+    document.addEventListener(
+        "visibilitychange",
+        function () {
+            if (
+                document.visibilityState ===
+                "visible"
+            ) {
+                requestWakeLock();
+            }
+        }
+    );
+
+    loadCookingMode();
+</script>
+
+<script src="update-app.js"></script>
+
+</body>
+
+</html>

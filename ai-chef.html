@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <title>AI Chef 🤖🍳</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <meta name="theme-color" content="#8e44ad">
+
+    <meta
+        name="mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
+
+    <meta
+        name="apple-mobile-web-app-title"
+        content="Recipe Buddy"
+    >
+</head>
+
+<body>
+
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="recipe.html">🍳 Recipes</a>
+    <a href="ai-chef.html">🤖 AI Chef</a>
+    <a href="gallery.html">📸 Gallery</a>
+    <a href="meal-planner.html">📅 Planner</a>
+    <a href="grocery.html">🛒 Grocery</a>
+    <a href="favorites.html">❤️ Favorites</a>
+</nav>
+
+<header class="hero">
+
+    <h1>🤖 AI Chef</h1>
+
+    <p>
+        Tell AI Chef what ingredients you have,
+        who you are cooking for, and what kind of meal you want.
+    </p>
+
+</header>
+
+<main>
+
+    <section class="card">
+
+        <h2>What should we cook?</h2>
+
+        <label for="ingredients">
+            <strong>Ingredients you already have</strong>
+        </label>
+
+        <textarea
+            id="ingredients"
+            placeholder="Example: chicken, rice, broccoli, butter, garlic"
+        ></textarea>
+
+        <br><br>
+
+        <label for="request">
+            <strong>What would you like?</strong>
+        </label>
+
+        <textarea
+            id="request"
+            placeholder="Example: Make an easy dinner for my girlfriend and her roommate in under 45 minutes."
+        ></textarea>
+
+        <br><br>
+
+        <label for="servings">
+            <strong>Number of servings</strong>
+        </label>
+
+        <input
+            id="servings"
+            type="number"
+            min="1"
+            max="20"
+            value="3"
+        >
+
+        <br><br>
+
+        <label for="skillLevel">
+            <strong>Cooking skill level</strong>
+        </label>
+
+        <select id="skillLevel">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+
+        <br><br>
+
+        <label for="mealType">
+            <strong>Meal type</strong>
+        </label>
+
+        <select id="mealType">
+            <option value="Any meal">Any meal</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Date night">Date night</option>
+            <option value="Snack">Snack</option>
+        </select>
+
+        <br><br>
+
+        <label for="dietNotes">
+            <strong>Foods to avoid or dietary notes</strong>
+        </label>
+
+        <input
+            id="dietNotes"
+            type="text"
+            placeholder="Example: no mushrooms, low sodium, no turkey"
+        >
+
+        <br><br>
+
+        <button
+            id="askButton"
+            type="button"
+            onclick="askAIChef()"
+        >
+            ✨ Create My Recipe
+        </button>
+
+        <p
+            id="statusMessage"
+            style="text-align:center; font-weight:bold;"
+        ></p>
+
+    </section>
+
+    <section
+        id="answerCard"
+        class="card"
+        hidden
+    >
+
+        <h2>🍽️ AI Chef’s Suggestion</h2>
+
+        <div id="answer"></div>
+
+        <br>
+
+        <button
+            id="saveButton"
+            type="button"
+            onclick="saveAIRecipe()"
+            hidden
+        >
+            ❤️ Save to My Recipes
+        </button>
+
+        <br><br>
+
+        <button
+            id="groceryButton"
+            type="button"
+            onclick="addAIRecipeToGrocery()"
+            hidden
+        >
+            🛒 Add Ingredients to Grocery List
+        </button>
+
+    </section>
+
+</main>
+
+<div class="mobile-nav">
+
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="recipe.html">
+        🍳
+        <span>Recipes</span>
+    </a>
+
+    <a href="ai-chef.html">
+        🤖
+        <span>AI Chef</span>
+    </a>
+
+    <a href="grocery.html">
+        🛒
+        <span>Grocery</span>
+    </a>
+
+    <a href="favorites.html">
+        ❤️
+        <span>Favorites</span>
+    </a>
+
+</div>
+
+<script>
+    /*
+    The next step will connect this page to a secure backend.
+
+    Do not put your OpenAI API key in this file.
+    */
+
+    const AI_BACKEND_URL = "/api/ai-chef";
+
+    let latestAIRecipe = null;
+
+    function setLoading(isLoading) {
+        const button =
+            document.getElementById("askButton");
+
+        button.disabled = isLoading;
+
+        button.textContent =
+            isLoading
+                ? "👨‍🍳 AI Chef is cooking..."
+                : "✨ Create My Recipe";
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function getFormData() {
+        return {
+            ingredients:
+                document
+                    .getElementById("ingredients")
+                    .value
+                    .trim(),
+
+            request:
+                document
+                    .getElementById("request")
+                    .value
+                    .trim(),
+
+            servings:
+                Number(
+                    document
+                        .getElementById("servings")
+                        .value
+                ) || 1,
+
+            skillLevel:
+                document
+                    .getElementById("skillLevel")
+                    .value,
+
+            mealType:
+                document
+                    .getElementById("mealType")
+                    .value,
+
+            dietNotes:
+                document
+                    .getElementById("dietNotes")
+                    .value
+                    .trim()
+        };
+    }
+
+    function validateForm(formData) {
+        const statusMessage =
+            document.getElementById("statusMessage");
+
+        if (
+            !formData.ingredients &&
+            !formData.request
+        ) {
+            statusMessage.textContent =
+                "Tell AI Chef what ingredients you have or what meal you want.";
+
+            return false;
+        }
+
+        statusMessage.textContent = "";
+
+        return true;
+    }
+
+    async function askAIChef() {
+        const formData = getFormData();
+
+        if (!validateForm(formData)) {
+            return;
+        }
+
+        const statusMessage =
+            document.getElementById("statusMessage");
+
+        const answerCard =
+            document.getElementById("answerCard");
+
+        const answer =
+            document.getElementById("answer");
+
+        setLoading(true);
+
+        statusMessage.textContent =
+            "Creating a recipe for you...";
+
+        answerCard.hidden = true;
+
+        try {
+            const response =
+                await fetch(AI_BACKEND_URL, {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify(formData)
+                });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error ||
+                    "AI Chef could not create a recipe."
+                );
+            }
+
+            latestAIRecipe =
+                data.recipe || data;
+
+            displayAIRecipe(latestAIRecipe);
+
+            statusMessage.textContent =
+                "Your recipe is ready! 🍳";
+        }
+
+        catch (error) {
+            console.error(error);
+
+            answerCard.hidden = false;
+
+            answer.innerHTML = `
+                <div class="empty-message">
+
+                    <h3>
+                        AI Chef is not connected yet
+                    </h3>
+
+                    <p>
+                        The page is working, but the secure
+                        AI backend still needs to be created.
+                    </p>
+
+                    <p>
+                        We will connect it in the next step.
+                    </p>
+
+                </div>
+            `;
+
+            statusMessage.textContent =
+                "Secure AI backend not connected yet.";
+        }
+
+        finally {
+            setLoading(false);
+        }
+    }
+
+    function displayAIRecipe(recipe) {
+        const answerCard =
+            document.getElementById("answerCard");
+
+        const answer =
+            document.getElementById("answer");
+
+        const saveButton =
+            document.getElementById("saveButton");
+
+        const groceryButton =
+            document.getElementById("groceryButton");
+
+        const ingredients =
+            Array.isArray(recipe.ingredients)
+                ? recipe.ingredients
+                : [];
+
+        const instructions =
+            Array.isArray(recipe.instructions)
+                ? recipe.instructions
+                : [];
+
+        answer.innerHTML = `
+
+            <h2>
+                ${escapeHtml(
+                    recipe.name ||
+                    "AI Chef Recipe"
+                )}
+            </h2>
+
+            ${
+                recipe.description
+                    ? `
+                        <p>
+                            ${escapeHtml(
+                                recipe.description
+                            )}
+                        </p>
+                    `
+                    : ""
+            }
+
+            <p>
+                <strong>Servings:</strong>
+                ${escapeHtml(
+                    recipe.servings || "Not listed"
+                )}
+            </p>
+
+            <p>
+                <strong>Prep time:</strong>
+                ${escapeHtml(
+                    recipe.prepTime || "Not listed"
+                )}
+            </p>
+
+            <p>
+                <strong>Cook time:</strong>
+                ${escapeHtml(
+                    recipe.cookTime || "Not listed"
+                )}
+            </p>
+
+            <p>
+                <strong>Difficulty:</strong>
+                ${escapeHtml(
+                    recipe.difficulty || "Not listed"
+                )}
+            </p>
+
+            <h3>Ingredients</h3>
+
+            <ul>
+                ${ingredients
+                    .map(function (ingredient) {
+                        return `
+                            <li>
+                                ${escapeHtml(ingredient)}
+                            </li>
+                        `;
+                    })
+                    .join("")}
+            </ul>
+
+            <h3>Instructions</h3>
+
+            <ol>
+                ${instructions
+                    .map(function (step) {
+                        return `
+                            <li>
+                                ${escapeHtml(step)}
+                            </li>
+                        `;
+                    })
+                    .join("")}
+            </ol>
+
+            ${
+                recipe.tips
+                    ? `
+                        <h3>Chef Tips</h3>
+
+                        <p>
+                            ${escapeHtml(recipe.tips)}
+                        </p>
+                    `
+                    : ""
+            }
+        `;
+
+        answerCard.hidden = false;
+        saveButton.hidden = false;
+        groceryButton.hidden = false;
+    }
+
+    function saveAIRecipe() {
+        if (!latestAIRecipe) {
+            alert(
+                "Create an AI recipe first."
+            );
+
+            return;
+        }
+
+        const customRecipes =
+            JSON.parse(
+                localStorage.getItem(
+                    "customRecipes"
+                )
+            ) || [];
+
+        customRecipes.push({
+            id: Date.now(),
+
+            name:
+                latestAIRecipe.name ||
+                "AI Chef Recipe",
+
+            category:
+                latestAIRecipe.category ||
+                "AI Recipe",
+
+            difficulty:
+                latestAIRecipe.difficulty ||
+                "Custom",
+
+            servings:
+                latestAIRecipe.servings ||
+                1,
+
+            prepTime:
+                latestAIRecipe.prepTime ||
+                "Not listed",
+
+            cookTime:
+                latestAIRecipe.cookTime ||
+                "Not listed",
+
+            image: "food.jpg",
+
+            source: "AI Chef",
+
+            ingredients:
+                latestAIRecipe.ingredients ||
+                [],
+
+            instructions:
+                latestAIRecipe.instructions ||
+                [],
+
+            notes:
+                latestAIRecipe.tips ||
+                "",
+
+            createdByAI: true,
+
+            createdAt:
+                new Date().toISOString()
+        });
+
+        localStorage.setItem(
+            "customRecipes",
+            JSON.stringify(customRecipes)
+        );
+
+        alert(
+            "AI recipe saved to your cookbook! ❤️"
+        );
+    }
+
+    function addAIRecipeToGrocery() {
+        if (!latestAIRecipe) {
+            alert(
+                "Create an AI recipe first."
+            );
+
+            return;
+        }
+
+        const shoppingList =
+            JSON.parse(
+                localStorage.getItem(
+                    "shoppingList"
+                )
+            ) || [];
+
+        const ingredients =
+            Array.isArray(
+                latestAIRecipe.ingredients
+            )
+                ? latestAIRecipe.ingredients
+                : [];
+
+        ingredients.forEach(
+            function (ingredient) {
+                const alreadyExists =
+                    shoppingList.some(
+                        function (item) {
+                            const itemName =
+                                typeof item === "string"
+                                    ? item
+                                    : item.name;
+
+                            return (
+                                itemName
+                                    .toLowerCase() ===
+                                ingredient
+                                    .toLowerCase()
+                            );
+                        }
+                    );
+
+                if (!alreadyExists) {
+                    shoppingList.push({
+                        name: ingredient,
+                        done: false
+                    });
+                }
+            }
+        );
+
+        localStorage.setItem(
+            "shoppingList",
+            JSON.stringify(shoppingList)
+        );
+
+        alert(
+            "AI recipe ingredients added to your grocery list! 🛒"
+        );
+    }
+</script>
+
+<script src="update-app.js"></script>
+
+</body>
+
+</html>

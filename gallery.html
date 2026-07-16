@@ -1,162 +1,319 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
 
-<title>Recipe Gallery 🍽️</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#8e44ad">
+    <title>Recipe Gallery 📸</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#8e44ad">
 </head>
 
-<script>
-
-if("serviceWorker" in navigator){
-
-navigator.serviceWorker.register(
-"service-worker.js"
-);
-
-}
-
-</script>
 <body>
 
-
 <nav>
-
-<a href="index.html">🏠 Home</a>
-<a href="recipe.html">🍳 Recipes</a>
-<a href="gallery.html">📸 Gallery</a>
-<a href="grocery.html">🛒 Grocery</a>
-<a href="favorites.html">❤️ Favorites</a>
-
+    <a href="index.html">🏠 Home</a>
+    <a href="recipe.html">🍳 Recipes</a>
+    <a href="gallery.html">📸 Gallery</a>
+    <a href="grocery.html">🛒 Grocery</a>
+    <a href="favorites.html">❤️ Favorites</a>
+    <a href="add-recipe.html">➕ Add Recipe</a>
 </nav>
 
+<header class="hero">
+    <h1>📸 Recipe Gallery</h1>
 
+    <p>
+        Browse every meal and choose what to cook next.
+    </p>
+</header>
 
+<main>
 
-<div class="hero">
+    <section class="card">
 
-<h1>📸 Recipe Gallery</h1>
+        <label for="gallerySearch">
+            <strong>Search the gallery</strong>
+        </label>
 
-<p>
-Choose your next meal
-</p>
+        <input
+            id="gallerySearch"
+            type="search"
+            placeholder="Search by name or category..."
+        >
+
+        <br><br>
+
+        <label for="galleryCategory">
+            <strong>Category</strong>
+        </label>
+
+        <select id="galleryCategory">
+            <option value="all">All categories</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Date Night">Date Night</option>
+            <option value="Snack">Snack</option>
+            <option value="Drink">Drink</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <p
+            id="galleryCount"
+            style="text-align:center; font-weight:bold;"
+        ></p>
+
+    </section>
+
+    <section id="galleryContainer"></section>
+
+</main>
+
+<div class="mobile-nav">
+
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="recipe.html">
+        🍳
+        <span>Recipes</span>
+    </a>
+
+    <a href="add-recipe.html">
+        ➕
+        <span>Add</span>
+    </a>
+
+    <a href="grocery.html">
+        🛒
+        <span>Grocery</span>
+    </a>
+
+    <a href="favorites.html">
+        ❤️
+        <span>Favorites</span>
+    </a>
 
 </div>
-
-
-
-
-
-<div id="gallery"></div>
-
-
-
-
 
 <script src="recipes.js"></script>
 
-
-
 <script>
+    const builtInRecipes =
+        typeof recipes !== "undefined" ? recipes : [];
 
+    const customRecipes =
+        JSON.parse(
+            localStorage.getItem("customRecipes")
+        ) || [];
 
-let customRecipes =
-JSON.parse(
-localStorage.getItem("customRecipes")
-) || [];
+    const allRecipes = [
+        ...builtInRecipes,
+        ...customRecipes
+    ];
 
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 
+    function displayGallery() {
+        const search =
+            document
+                .getElementById("gallerySearch")
+                .value
+                .toLowerCase()
+                .trim();
 
-let allRecipes=[
+        const category =
+            document
+                .getElementById("galleryCategory")
+                .value;
 
-...recipes,
+        const matchingRecipes =
+            allRecipes.filter(function (recipe) {
+                const searchableText = [
+                    recipe.name || "",
+                    recipe.category || "",
+                    recipe.difficulty || "",
+                    recipe.notes || ""
+                ]
+                    .join(" ")
+                    .toLowerCase();
 
-...customRecipes
+                const matchesSearch =
+                    searchableText.includes(search);
 
-];
+                const matchesCategory =
+                    category === "all" ||
+                    recipe.category === category;
 
+                return (
+                    matchesSearch &&
+                    matchesCategory
+                );
+            });
 
+        renderGallery(matchingRecipes);
+    }
 
+    function renderGallery(recipeList) {
+        const container =
+            document.getElementById("galleryContainer");
 
-let output="";
+        const count =
+            document.getElementById("galleryCount");
 
+        count.textContent =
+            recipeList.length +
+            (recipeList.length === 1
+                ? " recipe shown"
+                : " recipes shown");
 
+        if (recipeList.length === 0) {
+            container.innerHTML = `
+                <div class="empty-message">
+                    <h2>No recipes found</h2>
 
+                    <p>
+                        Try another name or category.
+                    </p>
+                </div>
+            `;
 
-allRecipes.forEach(recipe=>{
+            return;
+        }
 
+        container.innerHTML = `
+            <div
+                style="
+                    max-width:1100px;
+                    margin:20px auto;
+                    display:grid;
+                    grid-template-columns:
+                        repeat(auto-fit, minmax(250px, 1fr));
+                    gap:20px;
+                "
+            >
+                ${recipeList
+                    .map(function (recipe) {
+                        const name =
+                            escapeHtml(recipe.name);
 
-output+=`
+                        const category =
+                            escapeHtml(
+                                recipe.category || "Other"
+                            );
 
+                        const difficulty =
+                            escapeHtml(
+                                recipe.difficulty ||
+                                "Not listed"
+                            );
 
-<div class="card">
+                        const time =
+                            escapeHtml(
+                                recipe.time ||
+                                recipe.prepTime ||
+                                "Time not listed"
+                            );
 
+                        const encodedName =
+                            encodeURIComponent(recipe.name);
 
-<img
+                        return `
+                            <article class="card">
 
-src="${recipe.image}"
+                                <img
+                                    class="recipe-image"
+                                    src="${recipe.image || "food.jpg"}"
+                                    alt="${name}"
+                                    onerror="this.src='food.jpg'"
+                                >
 
-class="recipe-image"
+                                <h2>${name}</h2>
 
->
+                                <p>
+                                    <strong>Category:</strong>
+                                    ${category}
+                                </p>
 
+                                <p>
+                                    <strong>Difficulty:</strong>
+                                    ${difficulty}
+                                </p>
 
+                                <p>
+                                    <strong>Time:</strong>
+                                    ${time}
+                                </p>
 
-<h2>
+                                <button
+                                    type="button"
+                                    onclick="openRecipe('${encodedName}')"
+                                >
+                                    View Recipe
+                                </button>
 
-${recipe.name}
+                            </article>
+                        `;
+                    })
+                    .join("")}
+            </div>
+        `;
+    }
 
-</h2>
+    function openRecipe(encodedRecipeName) {
+        const recipeName =
+            decodeURIComponent(encodedRecipeName);
 
+        localStorage.setItem(
+            "recipeSearchRequest",
+            recipeName
+        );
 
+        window.location.href = "recipe.html";
+    }
 
-<p>
+    document
+        .getElementById("gallerySearch")
+        .addEventListener("input", displayGallery);
 
-🍽 ${recipe.category}
+    document
+        .getElementById("galleryCategory")
+        .addEventListener("change", displayGallery);
 
-</p>
+    displayGallery();
 
-
-<p>
-
-⏱ ${recipe.time}
-
-</p>
-
-
-
-<a href="recipe.html">
-
-<button>
-
-View Recipe
-
-</button>
-
-</a>
-
-
-</div>
-
-
-`;
-
-
-});
-
-
-
-document.getElementById("gallery").innerHTML=output;
-
-
-
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker
+                .register("service-worker.js")
+                .catch(function (error) {
+                    console.log(
+                        "Service worker registration failed:",
+                        error
+                    );
+                });
+        });
+    }
 </script>
-
-
 
 </body>
 

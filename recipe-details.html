@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <title>Recipe Details 🍳</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <meta name="theme-color" content="#8e44ad">
+
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
+
+    <meta
+        name="apple-mobile-web-app-title"
+        content="Recipe Buddy"
+    >
+</head>
+
+<body>
+
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="recipe.html">🍳 Recipes</a>
+    <a href="gallery.html">📸 Gallery</a>
+    <a href="grocery.html">🛒 Grocery</a>
+    <a href="favorites.html">❤️ Favorites</a>
+</nav>
+
+<main>
+
+    <section
+        id="loadingCard"
+        class="card"
+    >
+        <h2>Loading recipe...</h2>
+    </section>
+
+    <section
+        id="errorCard"
+        class="card"
+        hidden
+    >
+        <h2>Recipe not found</h2>
+
+        <p>
+            Go back to the Recipes page and choose another recipe.
+        </p>
+
+        <a href="recipe.html">
+            <button type="button">
+                ← Back to Recipes
+            </button>
+        </a>
+    </section>
+
+    <article
+        id="recipeCard"
+        class="card"
+        hidden
+    >
+
+        <img
+            id="recipeImage"
+            class="recipe-image"
+            src="food.jpg"
+            alt="Recipe image"
+            onerror="this.src='food.jpg'"
+        >
+
+        <h1 id="recipeName"></h1>
+
+        <p id="recipeDescription"></p>
+
+        <p>
+            <strong>Category:</strong>
+            <span id="recipeCategory"></span>
+        </p>
+
+        <p>
+            <strong>Difficulty:</strong>
+            <span id="recipeDifficulty"></span>
+        </p>
+
+        <p>
+            <strong>Prep time:</strong>
+            <span id="recipePrepTime"></span>
+        </p>
+
+        <p>
+            <strong>Cook time:</strong>
+            <span id="recipeCookTime"></span>
+        </p>
+
+        <div
+            style="
+                margin:22px 0;
+                padding:18px;
+                border:2px solid #ead5e5;
+                border-radius:16px;
+                background:#fff8fc;
+            "
+        >
+
+            <h2>🍽️ Serving Calculator</h2>
+
+            <p>
+                Original servings:
+                <strong id="originalServings"></strong>
+            </p>
+
+            <label for="servingInput">
+                <strong>Choose servings</strong>
+            </label>
+
+            <input
+                id="servingInput"
+                type="number"
+                min="1"
+                max="20"
+                value="4"
+            >
+
+            <br><br>
+
+            <button
+                type="button"
+                onclick="resetServings()"
+            >
+                Reset Servings
+            </button>
+
+        </div>
+
+        <h2>🥕 Ingredients</h2>
+
+        <ul id="ingredientList"></ul>
+
+        <h2>👨‍🍳 Instructions</h2>
+
+        <ol id="instructionList"></ol>
+
+        <section
+            id="notesSection"
+            hidden
+        >
+            <h2>📝 Notes</h2>
+
+            <p id="recipeNotes"></p>
+        </section>
+
+        <section
+            id="sourceSection"
+            hidden
+        >
+            <h2>🔗 Original Recipe</h2>
+
+            <a
+                id="sourceLink"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <button type="button">
+                    Open Original Link
+                </button>
+            </a>
+        </section>
+
+        <br>
+
+        <button
+            type="button"
+            onclick="startCooking()"
+        >
+            👨‍🍳 Start Cooking
+        </button>
+
+        <br><br>
+
+        <button
+            type="button"
+            onclick="addToGrocery()"
+        >
+            🛒 Add Adjusted Ingredients
+        </button>
+
+        <br><br>
+
+        <button
+            type="button"
+            onclick="saveFavorite()"
+        >
+            ❤️ Save Favorite
+        </button>
+
+        <div id="customButtons" hidden>
+
+            <br>
+
+            <button
+                type="button"
+                onclick="editRecipe()"
+            >
+                ✏️ Edit Recipe
+            </button>
+
+        </div>
+
+    </article>
+
+</main>
+
+<div class="mobile-nav">
+
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="recipe.html">
+        🍳
+        <span>Recipes</span>
+    </a>
+
+    <a href="cooking-mode.html">
+        👨‍🍳
+        <span>Cook</span>
+    </a>
+
+    <a href="grocery.html">
+        🛒
+        <span>Grocery</span>
+    </a>
+
+    <a href="favorites.html">
+        ❤️
+        <span>Favorites</span>
+    </a>
+
+</div>
+
+<script src="recipes.js"></script>
+
+<script>
+    const builtInRecipes =
+        typeof recipes !== "undefined"
+            ? recipes.map(function (recipe) {
+                return {
+                    ...recipe,
+                    isCustom: false
+                };
+            })
+            : [];
+
+    const customRecipes =
+        (
+            JSON.parse(
+                localStorage.getItem("customRecipes")
+            ) || []
+        ).map(function (recipe) {
+            return {
+                ...recipe,
+                isCustom: true
+            };
+        });
+
+    const allRecipes = [
+        ...builtInRecipes,
+        ...customRecipes
+    ];
+
+    const selectedRecipeId =
+        localStorage.getItem("selectedRecipeId");
+
+    let selectedRecipe = null;
+    let originalServings = 4;
+
+    function normalizeInstructions(recipe) {
+        if (Array.isArray(recipe.instructions)) {
+            return recipe.instructions.filter(Boolean);
+        }
+
+        if (typeof recipe.instructions === "string") {
+            return recipe.instructions
+                .split("\n")
+                .map(function (step) {
+                    return step.trim();
+                })
+                .filter(Boolean);
+        }
+
+        return [];
+    }
+
+    function findSelectedRecipe() {
+        return allRecipes.find(
+            function (recipe, index) {
+                const recipeId =
+                    recipe.id ||
+                    "recipe-" + index;
+
+                return (
+                    String(recipeId) ===
+                    String(selectedRecipeId)
+                );
+            }
+        );
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function parseFraction(value) {
+        const fractions = {
+            "¼": 0.25,
+            "½": 0.5,
+            "¾": 0.75,
+            "⅓": 1 / 3,
+            "⅔": 2 / 3,
+            "⅛": 0.125,
+            "⅜": 0.375,
+            "⅝": 0.625,
+            "⅞": 0.875
+        };
+
+        if (fractions[value] !== undefined) {
+            return fractions[value];
+        }
+
+        if (value.includes("/")) {
+            const pieces = value.split("/");
+
+            const top = Number(pieces[0]);
+            const bottom = Number(pieces[1]);
+
+            if (
+                !Number.isNaN(top) &&
+                !Number.isNaN(bottom) &&
+                bottom !== 0
+            ) {
+                return top / bottom;
+            }
+        }
+
+        const number = Number(value);
+
+        return Number.isNaN(number)
+            ? null
+            : number;
+    }
+
+    function formatAmount(value) {
+        const rounded =
+            Math.round(value * 100) / 100;
+
+        const whole =
+            Math.floor(rounded);
+
+        const decimal =
+            rounded - whole;
+
+        const fractions = [
+            [0.125, "⅛"],
+            [0.25, "¼"],
+            [0.333, "⅓"],
+            [0.375, "⅜"],
+            [0.5, "½"],
+            [0.625, "⅝"],
+            [0.667, "⅔"],
+            [0.75, "¾"],
+            [0.875, "⅞"]
+        ];
+
+        let closest = null;
+
+        fractions.forEach(function (fraction) {
+            const difference =
+                Math.abs(decimal - fraction[0]);
+
+            if (
+                !closest ||
+                difference < closest.difference
+            ) {
+                closest = {
+                    label: fraction[1],
+                    difference: difference
+                };
+            }
+        });
+
+        if (
+            closest &&
+            closest.difference < 0.04
+        ) {
+            return whole > 0
+                ? whole + " " + closest.label
+                : closest.label;
+        }
+
+        return Number.isInteger(rounded)
+            ? String(rounded)
+            : String(rounded);
+    }
+
+    function scaleIngredient(
+        ingredient,
+        chosenServings
+    ) {
+        const multiplier =
+            chosenServings /
+            originalServings;
+
+        const pattern =
+            /^(\d+\s+\d+\/\d+|\d+\/\d+|\d+(?:\.\d+)?|[¼½¾⅓⅔⅛⅜⅝⅞])\b/;
+
+        const match =
+            ingredient.match(pattern);
+
+        if (!match) {
+            return ingredient;
+        }
+
+        const amountText = match[1];
+
+        let amount = null;
+
+        if (
+            amountText.includes(" ") &&
+            amountText.includes("/")
+        ) {
+            const pieces =
+                amountText.split(" ");
+
+            amount =
+                Number(pieces[0]) +
+                parseFraction(pieces[1]);
+        } else {
+            amount =
+                parseFraction(amountText);
+        }
+
+        if (amount === null) {
+            return ingredient;
+        }
+
+        return ingredient.replace(
+            amountText,
+            formatAmount(
+                amount * multiplier
+            )
+        );
+    }
+
+    function displayIngredients() {
+        const chosenServings =
+            Number(
+                document
+                    .getElementById("servingInput")
+                    .value
+            ) || originalServings;
+
+        const ingredients =
+            Array.isArray(selectedRecipe.ingredients)
+                ? selectedRecipe.ingredients
+                : [];
+
+        document
+            .getElementById("ingredientList")
+            .innerHTML =
+            ingredients
+                .map(function (ingredient) {
+                    return `
+                        <li>
+                            ${escapeHtml(
+                                scaleIngredient(
+                                    ingredient,
+                                    chosenServings
+                                )
+                            )}
+                        </li>
+                    `;
+                })
+                .join("");
+    }
+
+    function loadRecipe() {
+        selectedRecipe =
+            findSelectedRecipe();
+
+        document
+            .getElementById("loadingCard")
+            .hidden = true;
+
+        if (!selectedRecipe) {
+            document
+                .getElementById("errorCard")
+                .hidden = false;
+
+            return;
+        }
+
+        originalServings =
+            Number(selectedRecipe.servings) || 4;
+
+        document
+            .getElementById("recipeCard")
+            .hidden = false;
+
+        document
+            .getElementById("recipeImage")
+            .src =
+            selectedRecipe.image || "food.jpg";
+
+        document
+            .getElementById("recipeName")
+            .textContent =
+            selectedRecipe.name;
+
+        document
+            .getElementById("recipeDescription")
+            .textContent =
+            selectedRecipe.description || "";
+
+        document
+            .getElementById("recipeCategory")
+            .textContent =
+            selectedRecipe.category || "Other";
+
+        document
+            .getElementById("recipeDifficulty")
+            .textContent =
+            selectedRecipe.difficulty ||
+            "Not listed";
+
+        document
+            .getElementById("recipePrepTime")
+            .textContent =
+            selectedRecipe.prepTime ||
+            selectedRecipe.time ||
+            "Not listed";
+
+        document
+            .getElementById("recipeCookTime")
+            .textContent =
+            selectedRecipe.cookTime ||
+            "Not listed";
+
+        document
+            .getElementById("originalServings")
+            .textContent =
+            originalServings;
+
+        document
+            .getElementById("servingInput")
+            .value =
+            originalServings;
+
+        displayIngredients();
+
+        const instructions =
+            normalizeInstructions(selectedRecipe);
+
+        document
+            .getElementById("instructionList")
+            .innerHTML =
+            instructions
+                .map(function (step) {
+                    return `
+                        <li>
+                            ${escapeHtml(step)}
+                        </li>
+                    `;
+                })
+                .join("");
+
+        if (selectedRecipe.notes) {
+            document
+                .getElementById("notesSection")
+                .hidden = false;
+
+            document
+                .getElementById("recipeNotes")
+                .textContent =
+                selectedRecipe.notes;
+        }
+
+        if (
+            selectedRecipe.source &&
+            selectedRecipe.source !== "Built In"
+        ) {
+            document
+                .getElementById("sourceSection")
+                .hidden = false;
+
+            document
+                .getElementById("sourceLink")
+                .href =
+                selectedRecipe.source;
+        }
+
+        if (selectedRecipe.isCustom) {
+            document
+                .getElementById("customButtons")
+                .hidden = false;
+        }
+    }
+
+    function resetServings() {
+        document
+            .getElementById("servingInput")
+            .value =
+            originalServings;
+
+        displayIngredients();
+    }
+
+    function getDisplayedIngredients() {
+        return Array.from(
+            document.querySelectorAll(
+                "#ingredientList li"
+            )
+        ).map(function (item) {
+            return item.textContent.trim();
+        });
+    }
+
+    function addToGrocery() {
+        const ingredients =
+            getDisplayedIngredients();
+
+        const shoppingList =
+            JSON.parse(
+                localStorage.getItem("shoppingList")
+            ) || [];
+
+        ingredients.forEach(function (ingredient) {
+            const exists =
+                shoppingList.some(function (item) {
+                    const itemName =
+                        typeof item === "string"
+                            ? item
+                            : item.name;
+
+                    return (
+                        itemName.toLowerCase() ===
+                        ingredient.toLowerCase()
+                    );
+                });
+
+            if (!exists) {
+                shoppingList.push({
+                    name: ingredient,
+                    done: false
+                });
+            }
+        });
+
+        localStorage.setItem(
+            "shoppingList",
+            JSON.stringify(shoppingList)
+        );
+
+        alert(
+            "Ingredients added to your grocery list! 🛒"
+        );
+    }
+
+    function saveFavorite() {
+        const favorites =
+            JSON.parse(
+                localStorage.getItem("favorites")
+            ) || [];
+
+        if (
+            !favorites.includes(
+                selectedRecipe.name
+            )
+        ) {
+            favorites.push(
+                selectedRecipe.name
+            );
+
+            localStorage.setItem(
+                "favorites",
+                JSON.stringify(favorites)
+            );
+
+            alert(
+                "Recipe saved to Favorites ❤️"
+            );
+        } else {
+            alert(
+                "This recipe is already saved."
+            );
+        }
+    }
+
+    function startCooking() {
+        localStorage.setItem(
+            "cookingRecipeId",
+            String(selectedRecipeId)
+        );
+
+        localStorage.removeItem(
+            "cookingStepIndex"
+        );
+
+        window.location.href =
+            "cooking-mode.html";
+    }
+
+    function editRecipe() {
+        localStorage.setItem(
+            "editingRecipe",
+            String(selectedRecipeId)
+        );
+
+        window.location.href =
+            "edit-recipe.html";
+    }
+
+    document
+        .getElementById("servingInput")
+        .addEventListener(
+            "input",
+            displayIngredients
+        );
+
+    loadRecipe();
+</script>
+
+<script src="update-app.js"></script>
+
+</body>
+
+</html>

@@ -50,11 +50,13 @@
 </nav>
 
 <header class="hero">
+
     <h1>🍳 Recipe Finder</h1>
 
     <p>
-        Search recipes, ingredients, categories, and difficulty.
+        Search your recipes, then tap one to see the full instructions.
     </p>
+
 </header>
 
 <main>
@@ -68,7 +70,7 @@
         <input
             id="searchBox"
             type="search"
-            placeholder="Try chicken, garlic, dinner, or easy..."
+            placeholder="Search chicken, pasta, dessert, easy..."
         >
 
         <br><br>
@@ -78,15 +80,43 @@
         </label>
 
         <select id="categoryFilter">
-            <option value="all">All categories</option>
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Dinner">Dinner</option>
-            <option value="Dessert">Dessert</option>
-            <option value="Date Night">Date Night</option>
-            <option value="Snack">Snack</option>
-            <option value="Drink">Drink</option>
-            <option value="Other">Other</option>
+
+            <option value="all">
+                All categories
+            </option>
+
+            <option value="Breakfast">
+                Breakfast
+            </option>
+
+            <option value="Lunch">
+                Lunch
+            </option>
+
+            <option value="Dinner">
+                Dinner
+            </option>
+
+            <option value="Dessert">
+                Dessert
+            </option>
+
+            <option value="Date Night">
+                Date Night
+            </option>
+
+            <option value="Snack">
+                Snack
+            </option>
+
+            <option value="Drink">
+                Drink
+            </option>
+
+            <option value="Other">
+                Other
+            </option>
+
         </select>
 
         <br><br>
@@ -96,21 +126,54 @@
         </label>
 
         <select id="difficultyFilter">
-            <option value="all">Any difficulty</option>
-            <option value="Easy">Easy</option>
-            <option value="Medium">Medium</option>
-            <option value="Hard">Hard</option>
-            <option value="Custom">Custom</option>
+
+            <option value="all">
+                Any difficulty
+            </option>
+
+            <option value="Easy">
+                Easy
+            </option>
+
+            <option value="Medium">
+                Medium
+            </option>
+
+            <option value="Hard">
+                Hard
+            </option>
+
+            <option value="Custom">
+                Custom
+            </option>
+
         </select>
 
         <br><br>
 
-        <button
-            type="button"
-            onclick="displayRecipes()"
-        >
-            🔎 Search
-        </button>
+        <label for="sortFilter">
+            <strong>Sort recipes</strong>
+        </label>
+
+        <select id="sortFilter">
+
+            <option value="default">
+                Default order
+            </option>
+
+            <option value="az">
+                Name: A–Z
+            </option>
+
+            <option value="za">
+                Name: Z–A
+            </option>
+
+            <option value="category">
+                Category
+            </option>
+
+        </select>
 
         <p
             id="resultCount"
@@ -119,7 +182,17 @@
 
     </section>
 
-    <section id="results"></section>
+    <section
+        id="results"
+        style="
+            width:min(1100px, 100%);
+            margin:20px auto;
+            display:grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+            gap:18px;
+        "
+    ></section>
 
 </main>
 
@@ -156,44 +229,49 @@
 
 <script>
     const builtInRecipes =
-        typeof recipes !== "undefined" ? recipes : [];
+        typeof recipes !== "undefined"
+            ? recipes.map(function (recipe) {
+                return {
+                    ...recipe,
+                    isCustom: false
+                };
+            })
+            : [];
 
     const customRecipes =
-        JSON.parse(
-            localStorage.getItem("customRecipes")
-        ) || [];
+        (
+            JSON.parse(
+                localStorage.getItem("customRecipes")
+            ) || []
+        ).map(function (recipe) {
+            return {
+                ...recipe,
+                isCustom: true
+            };
+        });
 
     const allRecipes = [
         ...builtInRecipes,
         ...customRecipes
     ];
 
-    function normalizeInstructions(recipe) {
-        if (Array.isArray(recipe.instructions)) {
-            return recipe.instructions;
-        }
-
-        if (typeof recipe.instructions === "string") {
-            return recipe.instructions
-                .split("\n")
-                .map(function (step) {
-                    return step.trim();
-                })
-                .filter(function (step) {
-                    return step.length > 0;
-                });
-        }
-
-        return [];
-    }
-
-    function escapeForButton(value) {
+    function escapeHtml(value) {
         return String(value)
-            .replace(/\\/g, "\\\\")
-            .replace(/'/g, "\\'");
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
-    function displayRecipes() {
+    function getRecipeId(recipe, index) {
+        return (
+            recipe.id ||
+            "recipe-" + index
+        );
+    }
+
+    function getFilteredRecipes() {
         const search =
             document
                 .getElementById("searchBox")
@@ -202,12 +280,21 @@
                 .trim();
 
         const category =
-            document.getElementById("categoryFilter").value;
+            document
+                .getElementById("categoryFilter")
+                .value;
 
         const difficulty =
-            document.getElementById("difficultyFilter").value;
+            document
+                .getElementById("difficultyFilter")
+                .value;
 
-        const matchingRecipes =
+        const sort =
+            document
+                .getElementById("sortFilter")
+                .value;
+
+        let matchingRecipes =
             allRecipes.filter(function (recipe) {
                 const ingredients =
                     Array.isArray(recipe.ingredients)
@@ -242,10 +329,50 @@
                 );
             });
 
-        renderRecipes(matchingRecipes);
+        if (sort === "az") {
+            matchingRecipes.sort(
+                function (first, second) {
+                    return first.name.localeCompare(
+                        second.name
+                    );
+                }
+            );
+        }
+
+        if (sort === "za") {
+            matchingRecipes.sort(
+                function (first, second) {
+                    return second.name.localeCompare(
+                        first.name
+                    );
+                }
+            );
+        }
+
+        if (sort === "category") {
+            matchingRecipes.sort(
+                function (first, second) {
+                    return (
+                        String(first.category)
+                            .localeCompare(
+                                String(second.category)
+                            ) ||
+                        String(first.name)
+                            .localeCompare(
+                                String(second.name)
+                            )
+                    );
+                }
+            );
+        }
+
+        return matchingRecipes;
     }
 
-    function renderRecipes(recipeList) {
+    function displayRecipes() {
+        const matchingRecipes =
+            getFilteredRecipes();
+
         const results =
             document.getElementById("results");
 
@@ -253,18 +380,24 @@
             document.getElementById("resultCount");
 
         resultCount.textContent =
-            recipeList.length +
-            (recipeList.length === 1
-                ? " recipe found"
-                : " recipes found");
+            matchingRecipes.length +
+            (
+                matchingRecipes.length === 1
+                    ? " recipe found"
+                    : " recipes found"
+            );
 
-        if (recipeList.length === 0) {
+        if (matchingRecipes.length === 0) {
             results.innerHTML = `
-                <div class="empty-message">
+                <div
+                    class="empty-message"
+                    style="grid-column:1 / -1;"
+                >
                     <h2>No recipes found</h2>
 
                     <p>
-                        Try another word, ingredient, or category.
+                        Try another recipe name,
+                        ingredient, or category.
                     </p>
                 </div>
             `;
@@ -273,132 +406,120 @@
         }
 
         results.innerHTML =
-            recipeList
-                .map(function (recipe, index) {
-                    const ingredients =
-                        Array.isArray(recipe.ingredients)
-                            ? recipe.ingredients
-                            : [];
-
-                    const instructions =
-                        normalizeInstructions(recipe);
+            matchingRecipes
+                .map(function (recipe) {
+                    const originalIndex =
+                        allRecipes.indexOf(recipe);
 
                     const recipeId =
-                        recipe.id ||
-                        recipe.name ||
-                        "recipe-" + index;
-
-                    const safeName =
-                        escapeForButton(recipe.name);
-
-                    const sourceButton =
-                        recipe.source &&
-                        recipe.source !== "Built In"
-                            ? `
-                                <p>
-                                    <a
-                                        href="${recipe.source}"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Open original recipe link
-                                    </a>
-                                </p>
-                            `
-                            : "";
-
-                    const notesSection =
-                        recipe.notes
-                            ? `
-                                <h3>Personal Notes</h3>
-                                <p>${recipe.notes}</p>
-                            `
-                            : "";
+                        getRecipeId(
+                            recipe,
+                            originalIndex
+                        );
 
                     return `
-                        <article class="card">
+                        <article
+                            class="card"
+                            role="button"
+                            tabindex="0"
+                            onclick="openRecipe(
+                                '${recipeId}'
+                            )"
+                            onkeydown="
+                                if (
+                                    event.key === 'Enter' ||
+                                    event.key === ' '
+                                ) {
+                                    openRecipe(
+                                        '${recipeId}'
+                                    );
+                                }
+                            "
+                            style="
+                                width:100%;
+                                margin:0;
+                                cursor:pointer;
+                            "
+                        >
 
                             <img
                                 class="recipe-image"
-                                src="${recipe.image || "food.jpg"}"
-                                alt="${recipe.name}"
-                                onerror="this.src='food.jpg'"
+                                src="${
+                                    escapeHtml(
+                                        recipe.image ||
+                                        "food.jpg"
+                                    )
+                                }"
+                                alt="${
+                                    escapeHtml(
+                                        recipe.name
+                                    )
+                                }"
+                                onerror="
+                                    this.src='food.jpg'
+                                "
                             >
 
-                            <h2>${recipe.name}</h2>
+                            <h2>
+                                ${
+                                    escapeHtml(
+                                        recipe.name
+                                    )
+                                }
+                            </h2>
 
                             <p>
                                 <strong>Category:</strong>
-                                ${recipe.category || "Other"}
+                                ${
+                                    escapeHtml(
+                                        recipe.category ||
+                                        "Other"
+                                    )
+                                }
                             </p>
 
                             <p>
                                 <strong>Difficulty:</strong>
-                                ${recipe.difficulty || "Not listed"}
+                                ${
+                                    escapeHtml(
+                                        recipe.difficulty ||
+                                        "Not listed"
+                                    )
+                                }
+                            </p>
+
+                            <p>
+                                <strong>Total time:</strong>
+                                ${
+                                    escapeHtml(
+                                        recipe.time ||
+                                        recipe.cookTime ||
+                                        recipe.prepTime ||
+                                        "Not listed"
+                                    )
+                                }
                             </p>
 
                             <p>
                                 <strong>Servings:</strong>
-                                ${recipe.servings || "Not listed"}
+                                ${
+                                    escapeHtml(
+                                        recipe.servings ||
+                                        "Not listed"
+                                    )
+                                }
                             </p>
-
-                            <p>
-                                <strong>Prep time:</strong>
-                                ${recipe.prepTime || recipe.time || "Not listed"}
-                            </p>
-
-                            <p>
-                                <strong>Cook time:</strong>
-                                ${recipe.cookTime || "Not listed"}
-                            </p>
-
-                            <h3>Ingredients</h3>
-
-                            <ul>
-                                ${ingredients
-                                    .map(function (ingredient) {
-                                        return `<li>${ingredient}</li>`;
-                                    })
-                                    .join("")}
-                            </ul>
-
-                            <h3>Instructions</h3>
-
-                            <ol>
-                                ${instructions
-                                    .map(function (step) {
-                                        return `<li>${step}</li>`;
-                                    })
-                                    .join("")}
-                            </ol>
-
-                            ${notesSection}
-
-                            ${sourceButton}
 
                             <button
                                 type="button"
-                                onclick="addToGrocery('${safeName}')"
+                                onclick="
+                                    event.stopPropagation();
+                                    openRecipe(
+                                        '${recipeId}'
+                                    );
+                                "
                             >
-                                🛒 Add Ingredients
-                            </button>
-
-                            <br><br>
-
-                            <button
-                                type="button"
-                                onclick="saveFavorite('${safeName}')"
-                            >
-                                ❤️ Save Favorite
-                            </button>
-
-                            <br><br>
-
-                            <button
-                                type="button"
-                                onclick="deleteCustomRecipe('${recipeId}')"
-                            >
-                                🗑️ Delete Custom Recipe
+                                View Recipe & Instructions
                             </button>
 
                         </article>
@@ -407,136 +528,30 @@
                 .join("");
     }
 
-    function findRecipeByName(name) {
-        return allRecipes.find(function (recipe) {
-            return recipe.name === name;
-        });
-    }
-
-    function addToGrocery(recipeName) {
-        const recipe = findRecipeByName(recipeName);
-
-        if (!recipe) {
-            alert("Recipe could not be found.");
-            return;
-        }
-
-        const shoppingList =
-            JSON.parse(
-                localStorage.getItem("shoppingList")
-            ) || [];
-
-        const ingredients =
-            Array.isArray(recipe.ingredients)
-                ? recipe.ingredients
-                : [];
-
-        ingredients.forEach(function (ingredient) {
-            const alreadyExists =
-                shoppingList.some(function (item) {
-                    const itemName =
-                        typeof item === "string"
-                            ? item
-                            : item.name;
-
-                    return itemName === ingredient;
-                });
-
-            if (!alreadyExists) {
-                shoppingList.push({
-                    name: ingredient,
-                    done: false
-                });
-            }
-        });
-
+    function openRecipe(recipeId) {
         localStorage.setItem(
-            "shoppingList",
-            JSON.stringify(shoppingList)
+            "selectedRecipeId",
+            String(recipeId)
         );
 
-        alert(
-            recipe.name +
-            " ingredients were added to the grocery list."
-        );
-    }
-
-    function saveFavorite(recipeName) {
-        const favorites =
-            JSON.parse(
-                localStorage.getItem("favorites")
-            ) || [];
-
-        if (!favorites.includes(recipeName)) {
-            favorites.push(recipeName);
-
-            localStorage.setItem(
-                "favorites",
-                JSON.stringify(favorites)
-            );
-
-            alert(
-                recipeName +
-                " was saved to Favorites ❤️"
-            );
-        } else {
-            alert(
-                "That recipe is already in Favorites."
-            );
-        }
-    }
-
-    function deleteCustomRecipe(recipeId) {
-        const savedCustomRecipes =
-            JSON.parse(
-                localStorage.getItem("customRecipes")
-            ) || [];
-
-        const matchIndex =
-            savedCustomRecipes.findIndex(
-                function (recipe) {
-                    return (
-                        String(recipe.id) ===
-                        String(recipeId)
-                    );
-                }
-            );
-
-        if (matchIndex === -1) {
-            alert(
-                "Only recipes you created can be deleted here."
-            );
-
-            return;
-        }
-
-        const shouldDelete =
-            confirm(
-                "Are you sure you want to delete this recipe?"
-            );
-
-        if (!shouldDelete) {
-            return;
-        }
-
-        savedCustomRecipes.splice(matchIndex, 1);
-
-        localStorage.setItem(
-            "customRecipes",
-            JSON.stringify(savedCustomRecipes)
-        );
-
-        location.reload();
+        window.location.href =
+            "recipe-details.html";
     }
 
     const requestedRecipe =
-        localStorage.getItem("recipeSearchRequest");
+        localStorage.getItem(
+            "recipeSearchRequest"
+        );
 
     if (requestedRecipe) {
-        document.getElementById("searchBox").value =
+        document
+            .getElementById("searchBox")
+            .value =
             requestedRecipe;
 
-        localStorage.removeItem("recipeSearchRequest");
+        localStorage.removeItem(
+            "recipeSearchRequest"
+        );
     }
 
     document
@@ -555,6 +570,13 @@
 
     document
         .getElementById("difficultyFilter")
+        .addEventListener(
+            "change",
+            displayRecipes
+        );
+
+    document
+        .getElementById("sortFilter")
         .addEventListener(
             "change",
             displayRecipes

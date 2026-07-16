@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <title>Settings ⚙️</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <meta name="theme-color" content="#8e44ad">
+
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
+
+    <meta
+        name="apple-mobile-web-app-title"
+        content="Recipe Buddy"
+    >
+</head>
+
+<body>
+
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="recipe.html">🍳 Recipes</a>
+    <a href="gallery.html">📸 Gallery</a>
+    <a href="grocery.html">🛒 Grocery</a>
+    <a href="favorites.html">❤️ Favorites</a>
+    <a href="settings.html">⚙️ Settings</a>
+</nav>
+
+<header class="hero">
+
+    <h1>⚙️ Settings</h1>
+
+    <p>
+        Change the look and feel of Recipe Buddy.
+    </p>
+
+</header>
+
+<main>
+
+    <section class="card">
+
+        <h2>🎨 Choose a Theme</h2>
+
+        <p>
+            Your theme will save automatically.
+        </p>
+
+        <div class="theme-grid">
+
+            <button
+                type="button"
+                class="theme-button purple-theme"
+                onclick="changeTheme('purple')"
+            >
+                💜 Purple
+            </button>
+
+            <button
+                type="button"
+                class="theme-button dark-theme"
+                onclick="changeTheme('dark')"
+            >
+                🌙 Dark
+            </button>
+
+            <button
+                type="button"
+                class="theme-button romantic-theme"
+                onclick="changeTheme('romantic')"
+            >
+                ❤️ Romantic
+            </button>
+
+            <button
+                type="button"
+                class="theme-button warm-theme"
+                onclick="changeTheme('warm')"
+            >
+                🍊 Warm Kitchen
+            </button>
+
+            <button
+                type="button"
+                class="theme-button green-theme"
+                onclick="changeTheme('green')"
+            >
+                🌿 Fresh Green
+            </button>
+
+        </div>
+
+        <p
+            id="themeStatus"
+            style="
+                text-align:center;
+                font-weight:bold;
+                margin-top:20px;
+            "
+        ></p>
+
+    </section>
+
+    <section class="card">
+
+        <h2>📱 App Information</h2>
+
+        <p>
+            <strong>App:</strong>
+            Recipe Buddy
+        </p>
+
+        <p>
+            <strong>Version:</strong>
+            3.0
+        </p>
+
+        <p>
+            <strong>Recipes:</strong>
+            200+
+        </p>
+
+    </section>
+
+    <section class="card">
+
+        <h2>🗑️ Reset App Data</h2>
+
+        <p>
+            This removes custom recipes, favorites,
+            grocery items, saved meals, and settings.
+        </p>
+
+        <button
+            type="button"
+            onclick="resetAppData()"
+        >
+            🗑️ Reset All Saved Data
+        </button>
+
+    </section>
+
+</main>
+
+<div class="mobile-nav">
+
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="recipe.html">
+        🍳
+        <span>Recipes</span>
+    </a>
+
+    <a href="cooking-mode.html">
+        👨‍🍳
+        <span>Cook</span>
+    </a>
+
+    <a href="grocery.html">
+        🛒
+        <span>Grocery</span>
+    </a>
+
+    <a href="settings.html">
+        ⚙️
+        <span>Settings</span>
+    </a>
+
+</div>
+
+<script>
+    const themes = {
+        purple: {
+            primary: "#8e44ad",
+            primaryLight: "#c77dff",
+            primaryDark: "#663399",
+            accent: "#ff8fd8",
+            background: "#fff0f7",
+            card: "#ffffff",
+            text: "#3b2035",
+            muted: "#765f70",
+            border: "#ead5e5",
+            heroStart: "#ff8fd8",
+            heroEnd: "#9b59ff"
+        },
+
+        dark: {
+            primary: "#6c5ce7",
+            primaryLight: "#a29bfe",
+            primaryDark: "#4b3fbf",
+            accent: "#00cec9",
+            background: "#121212",
+            card: "#1f1f1f",
+            text: "#f5f5f5",
+            muted: "#bdbdbd",
+            border: "#353535",
+            heroStart: "#2d3436",
+            heroEnd: "#6c5ce7"
+        },
+
+        romantic: {
+            primary: "#d63384",
+            primaryLight: "#ff8fab",
+            primaryDark: "#a61e66",
+            accent: "#ffb3c6",
+            background: "#fff0f5",
+            card: "#ffffff",
+            text: "#4a2138",
+            muted: "#7c5368",
+            border: "#f0c7d8",
+            heroStart: "#ff758f",
+            heroEnd: "#d63384"
+        },
+
+        warm: {
+            primary: "#e76f51",
+            primaryLight: "#f4a261",
+            primaryDark: "#b84c35",
+            accent: "#e9c46a",
+            background: "#fff8f0",
+            card: "#ffffff",
+            text: "#3f2d26",
+            muted: "#7b665d",
+            border: "#ead8cc",
+            heroStart: "#e76f51",
+            heroEnd: "#f4a261"
+        },
+
+        green: {
+            primary: "#2a9d8f",
+            primaryLight: "#52b788",
+            primaryDark: "#1f776c",
+            accent: "#95d5b2",
+            background: "#f1fff8",
+            card: "#ffffff",
+            text: "#203a35",
+            muted: "#5d766f",
+            border: "#cfe8dd",
+            heroStart: "#52b788",
+            heroEnd: "#2a9d8f"
+        }
+    };
+
+    function applyTheme(themeName) {
+        const theme =
+            themes[themeName] ||
+            themes.purple;
+
+        const root =
+            document.documentElement;
+
+        root.style.setProperty(
+            "--primary",
+            theme.primary
+        );
+
+        root.style.setProperty(
+            "--primary-light",
+            theme.primaryLight
+        );
+
+        root.style.setProperty(
+            "--primary-dark",
+            theme.primaryDark
+        );
+
+        root.style.setProperty(
+            "--accent",
+            theme.accent
+        );
+
+        root.style.setProperty(
+            "--background",
+            theme.background
+        );
+
+        root.style.setProperty(
+            "--card",
+            theme.card
+        );
+
+        root.style.setProperty(
+            "--text",
+            theme.text
+        );
+
+        root.style.setProperty(
+            "--muted",
+            theme.muted
+        );
+
+        root.style.setProperty(
+            "--border",
+            theme.border
+        );
+
+        root.style.setProperty(
+            "--hero-start",
+            theme.heroStart
+        );
+
+        root.style.setProperty(
+            "--hero-end",
+            theme.heroEnd
+        );
+
+        document
+            .querySelector('meta[name="theme-color"]')
+            .setAttribute(
+                "content",
+                theme.primary
+            );
+
+        document.body.dataset.theme =
+            themeName;
+    }
+
+    function changeTheme(themeName) {
+        localStorage.setItem(
+            "appTheme",
+            themeName
+        );
+
+        applyTheme(themeName);
+
+        const names = {
+            purple: "Purple",
+            dark: "Dark",
+            romantic: "Romantic",
+            warm: "Warm Kitchen",
+            green: "Fresh Green"
+        };
+
+        document
+            .getElementById("themeStatus")
+            .textContent =
+            names[themeName] +
+            " theme selected.";
+    }
+
+    function resetAppData() {
+        const shouldReset =
+            confirm(
+                "Are you sure you want to delete all saved app data?"
+            );
+
+        if (!shouldReset) {
+            return;
+        }
+
+        const keysToRemove = [
+            "customRecipes",
+            "favorites",
+            "shoppingList",
+            "herMeals",
+            "weeklyMealPlan",
+            "recipeSearchRequest",
+            "selectedRecipeId",
+            "cookingRecipeId",
+            "cookingStepIndex",
+            "editingRecipe",
+            "appTheme"
+        ];
+
+        keysToRemove.forEach(
+            function (key) {
+                localStorage.removeItem(key);
+            }
+        );
+
+        alert(
+            "All saved app data was removed."
+        );
+
+        window.location.reload();
+    }
+
+    const savedTheme =
+        localStorage.getItem("appTheme") ||
+        "purple";
+
+    applyTheme(savedTheme);
+
+    document
+        .getElementById("themeStatus")
+        .textContent =
+        "Current theme: " +
+        savedTheme;
+</script>
+
+<script src="update-app.js"></script>
+
+</body>
+
+</html>

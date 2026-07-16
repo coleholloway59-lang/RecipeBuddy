@@ -3363,7 +3363,26 @@ function startApp() {
     );
   }
 }
+if ("serviceWorker" in navigator) {
 
+    window.addEventListener("load", () => {
+
+        navigator.serviceWorker
+            .register("./sw.js")
+            .then(() => {
+
+                console.log("Recipe Buddy Service Worker Loaded");
+
+            })
+            .catch(err => {
+
+                console.log(err);
+
+            });
+
+    });
+
+}
 document.addEventListener(
   "DOMContentLoaded",
   startApp
