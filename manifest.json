@@ -1,17 +1,19 @@
 {
   "name": "Recipe Buddy",
   "short_name": "Recipe Buddy",
-  "description": "A personal cooking app for recipes, groceries, and meal ideas.",
-  "start_url": "index.html",
+  "description": "Recipes, favorites, groceries, and meals made with love.",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0b0714",
-  "theme_color": "#8e44ad",
   "orientation": "portrait",
+  "background_color": "#fff0f7",
+  "theme_color": "#8e44ad",
   "icons": [
     {
       "src": "icon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
